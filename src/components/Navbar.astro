@@ -1,0 +1,54 @@
+---
+import { ExternalLink } from "lucide-vue-next";
+---
+
+<script>
+    window.addEventListener("scroll", function () {
+        const header = document.querySelector("#navbar");
+        header?.classList.toggle("bg-pearl-bush-100", window.scrollY > 0);
+        header?.classList.toggle("backdrop-blur-md", window.scrollY > 0);
+    });
+</script>
+
+<div
+    id="navbar"
+    class="px-5 py-5 items-center flex justify-between fixed w-full top-0 z-50 transition-colors ease-out duration-500 bg-opacity-50"
+>
+    <div class="max-h-full flex gap-5">
+        <div class="h-10 pr-5 border-r-2 border-bandicoot-400 sm:border-none">
+            <img
+                class="h-10 object-cover object-center"
+                src="/images/logos/buecher-heimat.png"
+                alt="Das Logo der Bücher-Heimat"
+            />
+        </div>
+
+        <div class="flex flex-row gap-2 items-center sm:hidden">
+            <img
+                class="h-6 object-cover object-center"
+                src="/images/logos/oeffentliche.png"
+                alt="Das Logo der Öffentlichen Versicherung Braunschweig"
+            />
+            <img
+                class="h-6 object-cover object-center"
+                src="/images/logos/bad-harzburg-stiftung.png"
+                alt="Das Logo der Bad Harzburg Stiftung"
+            />
+            <img
+                class="h-6 object-cover object-center"
+                src="/images/logos/stadtbuecherei.png"
+                alt="Das Logo der Stadtbücherei Bad Harzburg"
+            />
+        </div>
+    </div>
+    <div>
+        <a href="https://die-buecherheimat.de/" target="_blank">
+            <button
+                class="bg-bandicoot-400 backdrop-blur-md bg-opacity-50 text-pearl-bush-50 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg w-[fit-content] py-2 px-4 font-semibold"
+            >
+                Die Bücher-Heimat
+                <ExternalLink size="1rem" />
+            </button>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+---
+import type { Icon } from "lucide-vue-next";
+
+interface Props {
+    text: string;
+    Icon: Icon;
+}
+
+const { text, Icon } = Astro.props;
+---
+
+<div
+    class="w-72 text-pearl-bush-100 flex justify-center flex-col items-center gap-5"
+>
+    <div class="rounded-full border-[5px] border-pearl-bush-100 w-min p-5">
+        <Icon size="50" />
+    </div>
+    <div class="text-center font-serif text-lg font-bold sm:text-base">
+        {text}
+    </div>
+</div>
