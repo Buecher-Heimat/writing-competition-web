@@ -1,4 +1,4 @@
-# Writing competition web platfrom
+# Writing competition web platform
 
 This is the repo for the web platform for the writing competition. It is built using [Astro](https://astro.build/). Currently, there is only a first landing page, but more will be added in the future.
 
