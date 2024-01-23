@@ -1,4 +1,5 @@
 ---
+import { PenTool } from "lucide-vue-next";
 import CompetitionCard from "../components/CompetitionCard.astro";
 import GuideStep from "../components/GuideStep.astro";
 import SummaryPoint from "../components/SummaryPoint.astro";
@@ -8,266 +9,259 @@ import { ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue-next";
 ---
 
 <Layout title="Schreibwettbewerbe Bad Harzburg">
-	<main>
-		<section
-			class="min-h-[95vh] md:pt-32 w-screen flex flex-row items-center justify-center relative px-5"
-		>
-			<div class="absolute w-full h-full z-0 md:hidden">
-				<img
-					class="absolute left-[35%] top-16 lg:w-28"
-					src="/images/shapes/three.svg"
-					alt="Shapes"
-				/>
-				<img
-					class="absolute left-[8%] top-[30%] lg:w-16"
-					src="/images/shapes/two1.svg"
-					alt="Some shapes"
-				/>
-				<img
-					class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
-					src="/images/shapes/three.svg"
-					alt="Some shapes"
-				/>
-				<img
-					class="absolute right-[50%] bottom-10 lg:w-28 rotate-12"
-					src="/images/shapes/one.svg"
-					alt="Some shapes"
-				/>
-			</div>
-			<div
-				class="absolute top-0 right-0 bottom-0 z-0 w-[40%] lg:top-auto lg:left-0 lg:w-full lg:h-56"
-			>
-				<img
-					class="h-full z-0 relative w-full object-cover object-center"
-					src="/images/baustelle.png"
-					alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
-				/>
-				<div
-					class="bg-gradient-to-r lg:bg-gradient-to-b from-pearl-bush-100 to-transparent w-full h-full absolute top-0 right-0 bottom-0"
-				>
-				</div>
-			</div>
-			<div
-				class="flex flex-row gap-20 w-[75%] xl:w-[90%] md:w-full md:flex-col justify-between z-10 items-center"
-			>
-				<div
-					class="w-min border-l-4 border-twine-400 pl-5 flex flex-col justify-between py-3 lg:w-1/2 sm:w-full sm:p-0 sm:border-none"
-				>
-					<div>
-						<h1
-							class="text-twine-400 font-bold flex flex-col font-serif small-caps text-7xl lg:text-4xl"
-						>
-							Schreib! <span
-								class="uppercase font-sans font-light italic"
-								>Wettbewerbe</span
-							>
-						</h1>
-						<h2
-							class="text-3xl lg:text-xl font-black small-caps text-bandicoot-400 mt-3"
-						>
-							Bad Harzburg
-						</h2>
-					</div>
+  <main>
+    <section
+      class="min-h-[95vh] md:pt-32 w-screen flex flex-row items-center justify-center relative px-5"
+    >
+      <div class="absolute w-full h-full z-0 md:hidden">
+        <img
+          class="absolute left-[35%] top-16 lg:w-28"
+          src="/images/shapes/three.svg"
+          alt="Shapes"
+        />
+        <img
+          class="absolute left-[8%] top-[30%] lg:w-16"
+          src="/images/shapes/two1.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
+          src="/images/shapes/three.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute right-[50%] bottom-10 lg:w-28 rotate-12"
+          src="/images/shapes/one.svg"
+          alt="Some shapes"
+        />
+      </div>
+      <div
+        class="absolute top-0 right-0 bottom-0 z-0 w-[40%] lg:top-auto lg:left-0 lg:w-full lg:h-56"
+      >
+        <img
+          class="h-full z-0 relative w-full object-cover object-center"
+          src="/images/baustelle.png"
+          alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
+        />
+        <div
+          class="bg-gradient-to-r lg:bg-gradient-to-b from-pearl-bush-100 to-transparent w-full h-full absolute top-0 right-0 bottom-0"
+        >
+        </div>
+      </div>
+      <div
+        class="flex flex-row gap-20 w-[75%] xl:w-[90%] md:w-full md:flex-col justify-between z-10 items-center"
+      >
+        <div
+          class="w-min border-l-4 border-twine-400 pl-5 flex flex-col justify-between py-3 lg:w-1/2 sm:w-full sm:p-0 sm:border-none"
+        >
+          <div>
+            <h1
+              class="text-twine-400 font-bold flex flex-col font-serif small-caps text-7xl lg:text-4xl"
+            >
+              Schreib! <span class="uppercase font-sans font-light italic"
+                >Wettbewerbe</span
+              >
+            </h1>
+            <h2
+              class="text-3xl lg:text-xl font-black small-caps text-bandicoot-400 mt-3"
+            >
+              Bad Harzburg
+            </h2>
+          </div>
 
-					<div>
-						<p class="mb-5 mt-5 font-serif leading-5 lg:text-sm">
-							Buchstaben im Kopf? Sei dabei und teile deine
-							einzigartige Geschichte bei einem unserer
-							Schreibwettbewerbe mit uns! Wir suchen nach
-							inspirierenden Erzählungen, kreativen Ideen und
-							deinem ganz persönlichen Schreibstil.
-						</p>
-						<a href="#darum-gehts">
-							<button
-								class="hover:bg-bandicoot-400 hover:text-pearl-bush-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] w-[fit-content] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400"
-							>
-								Mehr erfahren
-								<ArrowDown size="1rem" />
-							</button>
-						</a>
-					</div>
-				</div>
-				<div class="pr-40 xl:pr-0 lg:pr-0 md:pb-20">
-					<div
-						class="flex flex-col items-center w-[24rem] lg:w-80 sm:w-full bg-bandicoot-400 rounded-2xl text-pearl-bush-100 p-8"
-					>
-						<img
-							class="lg:w-1/2"
-							src="/images/under-construction.svg"
-							alt="Baustellenzaun, auf dem ein Helm hängt"
-						/>
-						<h2
-							class="text-2xl lg:text-xl font-black small-caps mb-3"
-						>
-							Under Construction
-						</h2>
-						<p class="text-base font-serif lg:text-sm">
-							Wir arbeiten gerade daran, hier eine Bad Harzburger
-							Literaturplattform zu schaffen. Zu einem späteren
-							Zeitpunkt kannst du dich hier online zu den
-							Wettbewerben anmelden und deine Texte einreichen.
-						</p>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section id="darum-gehts">
-			<div class="w-full h-2 bg-bandicoot-400 opacity-20"></div>
-			<div class="w-full h-2 bg-bandicoot-400 opacity-50"></div>
-			<div
-				class="w-full bg-bandicoot-400 py-16 flex justify-center flex-col items-center gap-16"
-			>
-				<h1
-					class="small-caps font-serif text-3xl font-bold text-pearl-bush-100"
-				>
-					Und darum geht's
-				</h1>
-				<div class="flex justify-evenly w-full flex-wrap sm:gap-10">
-					<SummaryPoint
-						text="Mehrere Wettbewerbe pro Jahr mit unterschiedlichen Sponsoren"
-						Icon={Medal}
-					/>
-					<SummaryPoint
-						text="Alle Texte werden hier auf der  Online-Plattform veröffentlicht"
-						Icon={Laptop}
-					/>
-					<SummaryPoint
-						text="Die Gewinner jeder Altersgruppe werden in einer Zusammenstellung gedruckt."
-						Icon={Book}
-					/>
-				</div>
-			</div>
-		</section>
-		<section
-			class="flex max-w-screen min-h-screen lg:flex-col h-[fit-content] overflow-hidden"
-		>
-			<div
-				class="bg-schreib-pattern relative z-10 bg-no-repeat bg-cover w-[40%] xl:w-[50%] lg:w-full flex-shrink-0 pl-32 pt-32 pr-16 lg:pr-32 pb-16 sm:px-5 bg-twine-400 flex flex-col gap-5"
-			>
-				<div class="w-full bg-pearl-bush-50 p-5 rounded-2xl shadow-xl">
-					<h2
-						class="small-caps font-serif text-3xl font-bold text-pearl-bush-950"
-					>
-						Die Wettbewerbe
-					</h2>
-					<h3 class="font-bold text-bandicoot-400">
-						Das sind unsere Wettbewerbe
-					</h3>
-				</div>
-				<div>
-					<CompetitionCard
-						title="Wettbewerb Öffentliche"
-						startDate={new Date("2024-01-02")}
-						endDate={new Date("2024-05-30")}
-						ageGroups={[
-							[16, 21],
-							[22, 28],
-							[29, 40],
-							[41, 60],
-							[61],
-						]}
-						imageUri="/images/oeffentliche.png"
-					/>
-				</div>
-			</div>
-			<div class="pr-32 lg:pr-16 pt-32 pl-16 pb-16 sm:px-5 relative">
-				<div class="absolute w-full h-full z-0 md:hidden">
-					<img
-						class="absolute right-0 top-10 lg:w-28"
-						src="/images/shapes/three.svg"
-						alt="Shapes"
-					/>
-					<img
-						class="absolute right-[8%] bottom-20 lg:w-16"
-						src="/images/shapes/two1.svg"
-						alt="Some shapes"
-					/>
-					<img
-						class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
-						src="/images/shapes/three.svg"
-						alt="Some shapes"
-					/>
-					<img
-						class="absolute right-[50%] -top-32 lg:w-10 rotate-12"
-						src="/images/shapes/one.svg"
-						alt="Some shapes"
-					/>
-					<img
-						class="absolute left-[8%] -top-48 lg:w-16 rotate-45"
-						src="/images/shapes/two1.svg"
-						alt="Some shapes"
-					/>
-				</div>
-				<div class="pl-16 mb-6 z-10 relative">
-					<h2
-						class="font-serif text-7xl font-black small-caps text-twine-400 sm:text-4xl"
-					>
-						So geht's
-					</h2>
-					<h3
-						class="font-light italic text-bandicoot-400 text-2xl sm:text-lg"
-					>
-						Es ist eigentlich ganz einfach
-					</h3>
-				</div>
-				<div class="flex flex-col gap-8 z-10 relative">
-					<GuideStep
-						title="Such dir ein Thema aus"
-						number={1}
-						description="Über welches Thema du schreibst, darfst du dir aussuchen. Egal, ob es um eine fantastische Geschichte, eine romantische Liebeserzählung oder ein gesellschaftskritisches Essay geht - es hängt nicht davon ab, ob das gewählte Thema populär ist oder den aktuellen Trends entspricht. Was zählt, ist die Originalität und die Fähigkeit, die Leser zu fesseln."
-					/>
-					<GuideStep
-						title="Schreibe den Text"
-						number={2}
-						description="Auch hier hast du die volle Freiheit. Die einzigen Vorgaben sind, dass der Text natürlich bisher noch nicht veröffentlicht worden sein darf, auf Deutsch verfasst sein muss und die Länge von 3 Seiten A4, Arial 12 Pkt nicht überschreiten sollte."
-					/>
-					<GuideStep
-						title="Reiche den Text ein"
-						number={3}
-						description="Bis du den Text hier auf der Online-Plattform einreichen kannst, dauert es noch ein bisschen. Wenn du ihn unbedingt loswerden möchtest, kannst du unse eine E-Mail mit dem Text an info@die-buecher-heimat.de senden. Mit der Einreichung stimmst du zu, dass dein Text hier und eventuell in einem Buch veröffentlicht wird. Wenn du unter 18 Jahre alt bist, müssen das deine Eltern noch schriftlich bestätigen."
-					/>
-					<GuideStep
-						title="Profit"
-						number={4}
-						description="Jetzt heißt es warten, bis unsere Jury aus Vertreterinnen und Vertretern der Öffentliche Versicherung Braunschweig, der Bad-Harzburg-Stiftung, der Bücher-Heimat gGmbh Bad Harzburg, der Harzburger Aktion und der Stadtbücherei Bad Harzburg die Gewinner kührt. Aus jeder Altersgruppe werden drei Siegerinnen oder Sieger ausgewählt. "
-					/>
-				</div>
-				<div class="w-full flex justify-center mt-12">
-					<a href="#darum-gehts">
-						<button
-							class="hover:bg-bandicoot-400 hover:text-pearl-bush-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] w-[fit-content] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400"
-						>
-							Teilnahmebedingungen
-							<FileDown size="1rem" />
-						</button>
-					</a>
-				</div>
-			</div>
-		</section>
-		<section
-			class="flex gap-10 px-10 flex-wrap py-16 bg-pearl-bush-50 justify-center items-center"
-		>
-			<img
-				src="/images/logos/buecher-heimat.png"
-				alt="Das Logo der Bücher-Heimat"
-			/>
-			<img
-				src="/images/logos/oeffentliche.png"
-				alt="Das Logo der Öffentlichen Versicherung Braunschweig"
-			/>
-			<img
-				src="/images/logos/bad-harzburg-stiftung.png"
-				alt="Das Logo der Bad Harzburg Stiftung"
-			/>
-			<img
-				src="/images/logos/stadtbuecherei.png"
-				alt="Das Logo der Stadtbücherei Bad Harzburg"
-			/>
-		</section>
-		<section
-			class="bg-bandicoot-400 py-2 text-pearl-bush-50 flex justify-center text-sm"
-		>
-			<div>© Die Bücher-Heimat | 2023</div>
-		</section>
-	</main>
+          <div>
+            <p class="mb-5 mt-5 font-serif leading-5 lg:text-sm">
+              Buchstaben im Kopf? Sei dabei und teile Deine einzigartige
+              Geschichte bei einem unserer Schreibwettbewerbe mit uns! Wir
+              suchen nach inspirierenden Erzählungen, kreativen Ideen und Deinem
+              ganz persönlichen Schreibstil.
+            </p>
+            <a href="#darum-gehts">
+              <button
+                class="hover:bg-bandicoot-400 hover:text-pearl-bush-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] w-[fit-content] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400"
+              >
+                Mehr erfahren
+                <ArrowDown size="1rem" />
+              </button>
+            </a>
+          </div>
+        </div>
+        <div class="pr-40 xl:pr-0 lg:pr-0 md:pb-20">
+          <div
+            class="flex flex-col items-center w-[24rem] lg:w-80 sm:w-full bg-bandicoot-400 rounded-2xl text-pearl-bush-100 p-8"
+          >
+            <img
+              class="lg:w-1/2"
+              src="/images/under-construction.svg"
+              alt="Baustellenzaun, auf dem ein Helm hängt"
+            />
+            <h2 class="text-2xl lg:text-xl font-black small-caps mb-3">
+              Under Construction
+            </h2>
+            <p class="text-base font-serif lg:text-sm">
+              Wir arbeiten gerade daran, hier eine Bad Harzburger
+              Literaturplattform zu schaffen. Zu einem späteren Zeitpunkt kannst
+              Du Dich hier online zu den Wettbewerben anmelden und Deine Texte
+              einreichen.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="darum-gehts">
+      <div class="w-full h-2 bg-bandicoot-400 opacity-20"></div>
+      <div class="w-full h-2 bg-bandicoot-400 opacity-50"></div>
+      <div
+        class="w-full bg-bandicoot-400 py-16 flex justify-center flex-col items-center gap-16"
+      >
+        <h1
+          class="small-caps font-serif text-3xl font-bold text-pearl-bush-100"
+        >
+          Und darum geht's
+        </h1>
+        <div class="flex justify-evenly w-full flex-wrap sm:gap-10">
+          <SummaryPoint
+            text="Du schreibst einen fesselnden Text zu einem Thema Deiner Wahl"
+            Icon={PenTool}
+          />
+          <SummaryPoint
+            text="Bei einem unserer Wettbewerbe kannst Du Deinen Text einreichen"
+            Icon={Medal}
+          />
+          <SummaryPoint
+            text="Alle Texte werden hier auf der  Online-Plattform veröffentlicht"
+            Icon={Laptop}
+          />
+          <SummaryPoint
+            text="Die Gewinner jeder Altersgruppe werden in einer Zusammenstellung gedruckt."
+            Icon={Book}
+          />
+        </div>
+      </div>
+    </section>
+    <section
+      class="flex max-w-screen min-h-screen lg:flex-col h-[fit-content] overflow-hidden"
+    >
+      <div
+        class="bg-schreib-pattern relative z-10 bg-no-repeat bg-cover w-[40%] xl:w-[50%] lg:w-full flex-shrink-0 pl-32 pt-32 pr-16 lg:pr-32 pb-16 sm:px-5 bg-twine-400 flex flex-col gap-5"
+      >
+        <div class="w-full bg-pearl-bush-50 p-5 rounded-2xl shadow-xl">
+          <h2
+            class="small-caps font-serif text-3xl font-bold text-pearl-bush-950"
+          >
+            Die Wettbewerbe
+          </h2>
+          <h3 class="font-bold text-bandicoot-400">
+            Das sind unsere Wettbewerbe
+          </h3>
+        </div>
+        <div>
+          <CompetitionCard
+            title="Buchstaben im Kopf"
+            subtitle="In Kooperation mit der Öffentlichen Versicherung Braunschweig"
+            startDate={new Date("2024-01-02")}
+            endDate={new Date("2024-05-30")}
+            ageGroups={[[16, 21], [22, 28], [29, 40], [41, 60], [61]]}
+            imageUri="/images/oeffentliche.png"
+          />
+        </div>
+      </div>
+      <div class="pr-32 lg:pr-16 pt-32 pl-16 pb-16 sm:px-5 relative">
+        <div class="pl-16 mb-6 z-10 relative">
+          <h2
+            class="font-serif text-7xl font-black small-caps text-twine-400 sm:text-4xl"
+          >
+            So geht's
+          </h2>
+          <h3 class="font-light italic text-bandicoot-400 text-2xl sm:text-lg">
+            Es ist eigentlich ganz einfach
+          </h3>
+        </div>
+        <div class="flex flex-col gap-8 z-10 relative">
+          <GuideStep
+            title="Such Dir ein Thema aus"
+            number={1}
+            description="Über welches Thema Du schreibst, darfst Du Dir aussuchen. Egal, ob es um eine fantastische Geschichte, eine romantische Liebeserzählung oder ein gesellschaftskritisches Essay geht - es hängt nicht davon ab, ob das gewählte Thema populär ist oder den aktuellen Trends entspricht. Was zählt, ist die Originalität und die Fähigkeit, die Leser zu fesseln."
+          />
+          <GuideStep
+            title="Schreibe den Text"
+            number={2}
+            description="Auch hier hast Du die volle Freiheit. Die einzigen Vorgaben sind, dass der Text natürlich bisher noch nicht veröffentlicht worden sein darf, auf Deutsch verfasst sein muss und die Länge von 3 Seiten A4, Arial 12 Pkt nicht überschreiten sollte."
+          />
+          <GuideStep
+            title="Reiche den Text ein"
+            number={3}
+            description="Bis Du den Text hier auf der Online-Plattform einreichen kannst, dauert es noch ein bisschen. Wenn Du ihn unbedingt loswerden möchtest, kannst Du uns eine E-Mail mit dem Text an info@die-buecher-heimat.de senden. Mit der Einreichung stimmst Du zu, dass Dein Text hier und eventuell in einem Buch veröffentlicht wird. Wenn Du unter 18 Jahre alt bist, müssen das Deine  Eltern noch schriftlich bestätigen."
+          />
+          <GuideStep
+            title="Profit"
+            number={4}
+            description="Jetzt heißt es warten, bis unsere Jury aus Vertreterinnen und Vertretern der Öffentliche Versicherung Braunschweig, der Bad-Harzburg-Stiftung, der Bücher-Heimat gGmbH Bad Harzburg, der Harzburger Aktion und der Stadtbücherei Bad Harzburg die Gewinner kührt. Aus jeder Altersgruppe werden drei Siegerinnen oder Sieger ausgewählt. Die Texte der Gewinner werden in einem Buch veröffentlicht, der oder die Erstplatzierte erhält zusätzlich einen Sachpreis."
+          />
+        </div>
+        <div class="w-full flex justify-center mt-12 z-10">
+          <a href="/ausschreibung-buchstaben-im-kopf.pdf" target="_blank">
+            <button
+              class="hover:bg-bandicoot-400 hover:text-pearl-bush-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] w-[fit-content] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400"
+            >
+              Teilnahmebedingungen
+              <FileDown size="1rem" />
+            </button>
+          </a>
+        </div>
+        <div class="absolute w-full h-full z-0 md:hidden">
+          <img
+            class="absolute right-0 top-10 lg:w-28"
+            src="/images/shapes/three.svg"
+            alt="Shapes"
+          />
+          <img
+            class="absolute right-[8%] bottom-20 lg:w-16"
+            src="/images/shapes/two1.svg"
+            alt="Some shapes"
+          />
+          <img
+            class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
+            src="/images/shapes/three.svg"
+            alt="Some shapes"
+          />
+          <img
+            class="absolute right-[50%] -top-32 lg:w-10 rotate-12"
+            src="/images/shapes/one.svg"
+            alt="Some shapes"
+          />
+          <img
+            class="absolute left-[8%] -top-48 lg:w-16 rotate-45"
+            src="/images/shapes/two1.svg"
+            alt="Some shapes"
+          />
+        </div>
+      </div>
+    </section>
+    <section
+      class="flex gap-10 px-10 flex-wrap py-16 bg-pearl-bush-50 justify-center items-center"
+    >
+      <img
+        src="/images/logos/buecher-heimat.png"
+        alt="Das Logo der Bücher-Heimat"
+      />
+      <img
+        src="/images/logos/oeffentliche.png"
+        alt="Das Logo der Öffentlichen Versicherung Braunschweig"
+      />
+      <img
+        src="/images/logos/bad-harzburg-stiftung.png"
+        alt="Das Logo der Bad Harzburg Stiftung"
+      />
+      <img
+        src="/images/logos/stadtbuecherei.png"
+        alt="Das Logo der Stadtbücherei Bad Harzburg"
+      />
+    </section>
+    <section
+      class="bg-bandicoot-400 py-2 text-pearl-bush-50 flex justify-center text-sm"
+    >
+      <div>© Die Bücher-Heimat | 2024</div>
+    </section>
+  </main>
 </Layout>

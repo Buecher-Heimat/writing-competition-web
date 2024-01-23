@@ -2,56 +2,62 @@
 type AgeGroup = [number, number?];
 
 interface Props {
-    title: string;
-    startDate: Date;
-    endDate: Date;
-    ageGroups: AgeGroup[];
-    imageUri: string;
+  title: string;
+  subtitle: string;
+  startDate: Date;
+  endDate: Date;
+  ageGroups: AgeGroup[];
+  imageUri: string;
 }
 
-const { title, startDate, endDate, ageGroups, imageUri } = Astro.props;
+const { title, startDate, endDate, ageGroups, imageUri, subtitle } =
+  Astro.props;
 ---
 
 <div
-    class="@container flex flex-row w-full bg-pearl-bush-50 p-5 rounded-2xl shadow-xl gap-5"
+  class="@container flex flex-row w-full bg-pearl-bush-50 p-5 rounded-2xl shadow-xl gap-5"
 >
-    <div class="w-1/3 @lg:w-1/4 hidden @md:flex items-center">
-        <div
-            class="w-full aspect-square bg-white bg-opacity-60 rounded-full flex items-center justify-center"
-        >
-            <div
-                class="w-[80%] p-2 overflow-hidden aspect-square bg-white rounded-full flex items-center justify-center"
-            >
-                <img src={imageUri} />
-            </div>
-        </div>
+  <!-- <div class="w-1/3 @lg:w-1/4 hidden @md:flex items-center">
+    <div
+      class="w-full aspect-square bg-white bg-opacity-60 rounded-full flex items-center justify-center"
+    >
+      <div
+        class="w-[80%] p-2 overflow-hidden aspect-square bg-white rounded-full flex items-center justify-center"
+      >
+        <img src={imageUri} />
+      </div>
     </div>
-    <div>
-        <h1
-            class="font-serif text-2xl font-bold text-bandicoot-500 small-caps mb-1"
-        >
-            {title}
-        </h1>
-        <div
-            class="bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50"
-        >
-            {startDate.toLocaleDateString("de-DE")}
-            <span class="font-thin">bis</span>
-            {endDate.toLocaleDateString("de-DE")}
-        </div>
-
-        <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2">
-            Altersgruppen
-        </h3>
-
-        <ul class="flex flex-wrap gap-2">
-            {
-                ageGroups.map(([min, max]) => (
-                    <li class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400">
-                        {max ? `${min}-${max}` : `${min}+`} Jahre
-                    </li>
-                ))
-            }
-        </ul>
+  </div> -->
+  <div>
+    <h1
+      class="font-serif text-2xl font-bold text-bandicoot-500 small-caps mb-1"
+    >
+      {title}
+    </h1>
+    <h2 class="text-bandicoot-400 text-sm font-medium font-serif mb-2">
+      {subtitle}
+    </h2>
+    <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2">Zeitraum</h3>
+    <div
+      class="bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50"
+    >
+      {startDate.toLocaleDateString("de-DE")}
+      <span class="font-thin">bis</span>
+      {endDate.toLocaleDateString("de-DE")}
     </div>
+
+    <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2">
+      Altersgruppen
+    </h3>
+
+    <ul class="flex flex-wrap gap-2">
+      {
+        ageGroups.map(([min, max]) => (
+          <li class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400">
+            {max ? `${min}-${max}` : `${min}+`} Jahre
+          </li>
+        ))
+      }
+    </ul>
+  </div>
 </div>
