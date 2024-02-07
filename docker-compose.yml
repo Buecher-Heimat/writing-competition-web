@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  admin:
+    image: node:20.11.0
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./admin:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    working_dir: /home/node/app/
+    command: sh -c "yarn install && yarn dev"
+    depends_on:
+      - mongo
+    env_file:
+      - .env
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    command:
+      - --storageEngine=wiredTiger
+    volumes:
+      - data:/data/db
+    logging:
+      driver: none
+
+  organizer:
+    image: node:20.11.0
+    ports:
+      - '3001:5173'
+    volumes:
+      - ./organizer:/home/node/app
+    working_dir: /home/node/app
+    command: bash -c "npm install && npm run dev"
+    depends_on:
+      - admin
+    env_file:
+      - .env
+
+  user:
+    image: node:20.11.0
+    ports:
+      - '3002:4321'
+    volumes:
+      - ./user:/home/node/app
+    working_dir: /home/node/app
+    command: bash -c "npm install && npm run dev"
+    depends_on:
+      - admin
+    env_file:
+      - .env
+volumes:
+  data:
+  node_modules:
