@@ -15,6 +15,9 @@ const Posts: CollectionConfig = {
         update: isAdmin,
         delete: isAdmin,
     },
+    hooks: {
+        afterChange: [afterChangeHook],
+    },
     fields: [
         {
             name: "title",
