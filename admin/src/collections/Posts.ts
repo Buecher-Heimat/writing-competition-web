@@ -90,6 +90,13 @@ const Posts: CollectionConfig = {
             type: "richText",
             required: true,
         },
+        {
+            name: "competition",
+            label: "Competition",
+            type: "relationship",
+            relationTo: "competitions",
+            hasMany: false,
+        }
     ]
 }
 
