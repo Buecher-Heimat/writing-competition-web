@@ -1,0 +1,49 @@
+---
+import { Trophy } from "lucide-vue-next";
+
+interface Props {
+    title: string;
+    winner: boolean;
+    author: string;
+    date: Date;
+    competition: string;
+    ageGroup: [number, number];
+    excerpt: string;
+}
+
+const { title, winner, author, date, competition, ageGroup, excerpt }: Props =
+    Astro.props;
+---
+
+<div class="bg-white rounded-xl py-4 max-w-2xl flex flex-col">
+    <div class="w-full px-6">
+        <div class="flex gap-4 items-center">
+            <h3
+                class="font-serif text-bandicoot-400 text-2xl font-semibold small-caps mb-2"
+            >
+                {author}
+            </h3>
+            {winner && <Trophy class="text-twine-400 h-5 w-5 mb-1" />}
+        </div>
+        <h4 class="font-serif text-bandicoot-400 font-medium">
+            {title}
+        </h4>
+    </div>
+    <div
+        class="px-6 py-2 my-4 flex gap-x-3 italic text-sm font-semibold flex-wrap border-t-2 border-b-2 border-bandicoot-400"
+    >
+        <p>{date.toLocaleDateString("de-DE")}</p>
+        <p>{competition}</p>
+        <p>Altersgruppe {ageGroup[0]}-{ageGroup[1]}</p>
+    </div>
+    <div class="px-6 relative h-full min-h-[5rem]">
+        <p class="line-clamp-6 font-serif text-sm text-bandicoot-400 h-full">
+            {excerpt}
+        </p>
+        <div
+            class="text-sm font-serif text-bandicoot-400 absolute w-full h-full bg-gradient-to-t from-white from-20% to-transparent bottom-0 left-0 flex items-end justify-center"
+        >
+            weiterlesen >
+        </div>
+    </div>
+</div>
