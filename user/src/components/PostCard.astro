@@ -15,7 +15,10 @@ const { title, winner, author, date, competition, ageGroup, excerpt }: Props =
     Astro.props;
 ---
 
-<div class="bg-white rounded-xl py-4 max-w-2xl flex flex-col">
+<a
+    href={"/texte/" + encodeURI(title.toLowerCase().replace(/ /g, "-"))}
+    class="bg-white rounded-xl py-4 max-w-2xl flex flex-col"
+>
     <div class="w-full px-6">
         <div class="flex gap-4 items-center">
             <h3
@@ -46,4 +49,4 @@ const { title, winner, author, date, competition, ageGroup, excerpt }: Props =
             weiterlesen >
         </div>
     </div>
-</div>
+</a>
