@@ -14,8 +14,6 @@
     "@astrojs/node": "^8.2.0",
     "@astrojs/tailwind": "^5.0.3",
     "@astrojs/vue": "^4.0.2",
-    "@fontsource/noto-sans": "^5.0.18",
-    "@fontsource/noto-serif": "^5.0.18",
     "@tailwindcss/container-queries": "^0.1.1",
     "astro": "^4.0.3",
     "lucide-vue-next": "^0.294.0",
