@@ -149,23 +149,6 @@ const Competitions: CollectionConfig = {
                     type: "textarea"
                 }
             ]
-        },
-        {
-            name: "posts",
-            label: "Posts",
-            type: "relationship",
-            relationTo: "posts",
-            hasMany: true
-        },
-        {
-            name: "winners",
-            label: "Winners",
-            admin: {
-                description: "The winners of the competition. Be sure to add one for each age group."
-            },
-            type: "relationship",
-            relationTo: "posts",
-            hasMany: true
         }
     ]
 }

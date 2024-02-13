@@ -91,6 +91,11 @@ const Posts: CollectionConfig = {
             required: true,
         },
         {
+            name: "winner",
+            label: "Winner",
+            type: "checkbox",
+        },
+        {
             name: "competition",
             label: "Competition",
             type: "relationship",
