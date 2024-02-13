@@ -1,0 +1,132 @@
+---
+type AgeGroup = [number, number?];
+
+const ageGroups: AgeGroup[] = [
+    [16, 21], [22, 28], [29, 40], [41, 60], [61]
+];
+
+const startDate: Date = new Date("2024-01-02");
+const endDate: Date = new Date("2024-05-30");
+
+import GuideStep from "../components/GuideStep.astro";
+import Layout from "../layouts/Layout.astro";
+
+import { ArrowDown, FileUp } from "lucide-vue-next";
+---
+
+<Layout title="Schreibwettbewerbe Bad Harzburg">
+    <main>
+        <section class="min-h-[90vh] w-screen flex items-center justify-center">
+            <div class="absolute w-full h-full z-[-1] md:hidden">
+                <img
+                class="absolute right-[15%] top-24 lg:w-28"
+                src="/images/shapes/three.svg"
+                alt="Shapes"
+                />
+                <img
+                class="absolute left-[8%] top-[15%] lg:w-16"
+                src="/images/shapes/two1.svg"
+                alt="Some shapes"
+                />
+                <img
+                class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
+                src="/images/shapes/three.svg"
+                alt="Some shapes"
+                />
+                <img
+                class="absolute right-[10%] bottom-10 lg:w-28 rotate-12"
+                src="/images/shapes/one.svg"
+                alt="Some shapes"
+                />
+            </div>
+            <div class="h-[36rem] flex flex-row">
+                <img
+                    class="object-cover w-[36rem] h-full rounded-2xl"
+                    src="/images/baustelle.png"
+                    alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
+                />
+                <div class="w-[44rem] h-full my-4 mx-8 flex flex-col place-content-between">
+                    <h1 class="text-twine-400 font-bold font-serif small-caps text-7xl lg:text-4xl">
+                        Buchstaben im Kopf
+                    </h1>
+                    <h2 class="text-3xl lg:text-xl font-black small-caps text-bandicoot-400 mt-3">
+                        Ein Schreibwettbewerb in Kooperation mit der Öffentlichen Versicherung Braunschweig
+                    </h2>
+                    <div class="flex flex-row flex-wrap">
+                        <div>
+                            <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2" >
+                                Altersgruppen
+                            </h3>
+                            <ul class="flex flex-wrap gap-2">
+                                {
+                                ageGroups.map(([min, max]) => (
+                                    <li class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400">
+                                    {max ? `${min}-${max}` : `${min}+`} Jahre
+                                    </li>
+                                ))
+                                }
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2">
+                                Zeitraum
+                            </h3>
+                            <div class="bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50">
+                                {startDate.toLocaleDateString("de-DE")}
+                                <span class="font-thin">bis</span>
+                                {endDate.toLocaleDateString("de-DE")}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row">
+                        <button class="bg-twine-400 text-pearl-bush-50 font-serif font-semibold">
+                            Mitmachen
+                            <FileUp size="1rem" />
+                        </button>
+                        <button class="hover:bg-bandicoot-400 hover:text-pearl-bush-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] w-[fit-content] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400">
+                            Mehr erfahren
+                            <ArrowDown size="1rem" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="h-32 w-screen bg-white flex items-center justify-center">
+            <img
+                class="h-16"
+                src="/images/logos/oeffentliche.png"
+                alt="Das Logo der Öffentlichen Versicherung Braunschweig"
+            />
+        </section>
+        <section class="min-h-[95vh] w-screen bg-bandicoot-400 px-36 py-24">
+            <h1 class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-4xl">
+                So geht's
+                <span class="text-3xl uppercase font-sans font-light italic">
+                    Es ist eigentlich ganz einfach
+                </span>
+            </h1>
+            <div class="flex flex-row flex-wrap gap-8 z-10 relative">
+                <GuideStep
+                  title="Such Dir ein Thema aus"
+                  number={1}
+                  description="Über welches Thema Du schreibst, darfst Du Dir aussuchen. Egal, ob es um eine fantastische Geschichte, eine romantische Liebeserzählung oder ein gesellschaftskritisches Essay geht - es hängt nicht davon ab, ob das gewählte Thema populär ist oder den aktuellen Trends entspricht. Was zählt, ist die Originalität und die Fähigkeit, die Leser zu fesseln."
+                />
+                <GuideStep
+                  title="Schreibe den Text"
+                  number={2}
+                  description="Auch hier hast Du die volle Freiheit. Die einzigen Vorgaben sind, dass der Text natürlich bisher noch nicht veröffentlicht worden sein darf, auf Deutsch verfasst sein muss und die Länge von 3 Seiten A4, Arial 12 Pkt nicht überschreiten sollte."
+                />
+                <GuideStep
+                  title="Reiche den Text ein"
+                  number={3}
+                  description="Bis Du den Text hier auf der Online-Plattform einreichen kannst, dauert es noch ein bisschen. Wenn Du ihn unbedingt loswerden möchtest, kannst Du uns eine E-Mail mit dem Text an info@die-buecher-heimat.de senden. Mit der Einreichung stimmst Du zu, dass Dein Text hier und eventuell in einem Buch veröffentlicht wird. Wenn Du unter 18 Jahre alt bist, müssen das Deine  Eltern noch schriftlich bestätigen."
+                />
+                <GuideStep
+                  title="Profit"
+                  number={4}
+                  description="Jetzt heißt es warten, bis unsere Jury aus Vertreterinnen und Vertretern der Öffentliche Versicherung Braunschweig, der Bad-Harzburg-Stiftung, der Bücher-Heimat gGmbH Bad Harzburg, der Harzburger Aktion und der Stadtbücherei Bad Harzburg die Gewinner kührt. Aus jeder Altersgruppe werden drei Siegerinnen oder Sieger ausgewählt. Die Texte der Gewinner werden in einem Buch veröffentlicht, der oder die Erstplatzierte erhält zusätzlich einen Sachpreis."
+                />
+              </div>
+        </section>
+    </main>
+  </Layout>
