@@ -87,7 +87,7 @@ const Posts: CollectionConfig = {
         {
             name: "content",
             label: "Content",
-            type: "richText",
+            type: "textarea",
             required: true,
         },
         {
