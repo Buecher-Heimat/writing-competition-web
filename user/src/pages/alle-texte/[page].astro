@@ -1,22 +1,85 @@
 ---
+import qs from "qs";
+
 import Layout from "../../layouts/Layout.astro";
 import PostCard from "../../components/PostCard.astro";
 import { Trophy } from "lucide-vue-next";
 
 const LIMIT_PER_PAGE = 12;
 
+// Get all competitions
+const competitionsResponse = await fetch(
+    import.meta.env.PUBLIC_BACKEND_URL + "/api/competitions",
+);
+const competitionsData = await competitionsResponse.json();
+const competitions = competitionsData.docs;
+
 // Get the last part of the path
 const { page } = Astro.params;
 
-console.log(page);
+const url = Astro.request.url;
+const queryParams = qs.parse(url.split("?")[1]);
 
+const query: any = {};
+
+if (queryParams.q) {
+    query.or = [
+        {
+            title: {
+                like: queryParams.q,
+            },
+        },
+        {
+            author: {
+                like: queryParams.q,
+            },
+        },
+    ];
+}
+
+if (
+    queryParams.competition &&
+    queryParams.competition !== "all" &&
+    competitions.find((c: any) => c.title === queryParams.competition)
+) {
+    query["competition.title"] = {
+        equals: queryParams.competition,
+    };
+} else {
+    queryParams.competition = "all";
+}
+
+if (queryParams.only_winners) {
+    query.winner = {
+        equals: true,
+    };
+}
+
+const stringifiedQuery = qs.stringify({
+    where: query,
+});
+
+console.log(
+    import.meta.env.PUBLIC_BACKEND_URL +
+        "/api/posts?" +
+        new URLSearchParams({
+            page: page && !isNaN(parseFloat(page)) ? page.toString() : "1",
+            limit: LIMIT_PER_PAGE.toString(),
+        }) +
+        "&" +
+        stringifiedQuery,
+);
+
+// Fetch the posts
 const response = await fetch(
     import.meta.env.PUBLIC_BACKEND_URL +
         "/api/posts?" +
         new URLSearchParams({
             page: page && !isNaN(parseFloat(page)) ? page.toString() : "1",
             limit: LIMIT_PER_PAGE.toString(),
-        }),
+        }) +
+        "&" +
+        stringifiedQuery,
 );
 
 const data = await response.json();
@@ -67,6 +130,8 @@ const { hasPrevPage, hasNextPage, prevPage, nextPage } = data;
         </div>
         <div class="z-10 py-10 w-full flex justify-end">
             <form
+                action="/alle-texte/1"
+                method="GET"
                 class="text-bandicoot-400 font-medium font-serif w-full flex gap-3 justify-end items-center flex-wrap"
             >
                 <div
@@ -79,8 +144,10 @@ const { hasPrevPage, hasNextPage, prevPage, nextPage } = data;
                     >
                         <input
                             type="checkbox"
+                            name="only_winners"
                             id="checkbox"
                             class="peer hidden"
+                            checked={queryParams.only_winners ? true : false}
                         />
                         <div
                             class="flex justify-center items-center slider h-full w-10 aspect-square bg-white rounded-md text-bandicoot-400 peer-checked:bg-twine-400 peer-checked:text-white"
@@ -90,19 +157,34 @@ const { hasPrevPage, hasNextPage, prevPage, nextPage } = data;
                     </label>
 
                     <select
-                        name="Wettbewerb"
+                        name="competition"
                         id="select_competition"
                         class="bg-white p-2 px-4 pr-9 flex rounded-md h-full focus:ring-2 focus:ring-twine-400 border-none"
                     >
-                        <option value="none">Alle Wettbewerbe</option>
-                        <option value="wettbewerb1">Buchstaben im Kopf</option>
+                        <option value="all">Alle Wettbewerbe</option>
+                        {
+                            competitions.map((competition: any) => (
+                                <option
+                                    value={competition.title}
+                                    selected={
+                                        queryParams.competition ===
+                                        competition.title
+                                            ? true
+                                            : false
+                                    }
+                                >
+                                    {competition.title}
+                                </option>
+                            ))
+                        }
                     </select>
                 </div>
                 <div class="flex gap-3 h-10">
                     <div class="max-w-xs w-full relative">
                         <input
                             type="search"
-                            name="Suche"
+                            name="q"
+                            value={queryParams.q?.toString() || ""}
                             id="input_search"
                             placeholder="Autor:in oder Titel..."
                             class="bg-white peer h-full w-full p-2 px-4 rounded-md border-none placeholder:text-bandicoot-400/60 outline-none accent-twine-400 focus:ring-2 focus:ring-twine-400"
@@ -128,7 +210,7 @@ const { hasPrevPage, hasNextPage, prevPage, nextPage } = data;
                 posts.map((post: any) => (
                     <PostCard
                         title={post.title}
-                        winner={false}
+                        winner={post.winner}
                         author={post.author}
                         competition={post.competition.title}
                         ageGroup={[
@@ -183,5 +265,11 @@ const { hasPrevPage, hasNextPage, prevPage, nextPage } = data;
             e.preventDefault();
             document.getElementById("input_search")?.focus();
         }
+    });
+
+    // On change of anything in the form, submit the form
+    document.querySelector("form")?.addEventListener("change", (e) => {
+        e.preventDefault();
+        document.querySelector("form")?.submit();
     });
 </script>
