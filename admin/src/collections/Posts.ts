@@ -94,6 +94,11 @@ const Posts: CollectionConfig = {
             name: "winner",
             label: "Winner",
             type: "checkbox",
+            access: {
+                read: () => true,
+                update: isAdmin,
+                create: isAdmin
+            }
         },
         {
             name: "competition",
