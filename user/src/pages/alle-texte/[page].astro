@@ -1,0 +1,187 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { Trophy } from "lucide-vue-next";
+
+const LIMIT_PER_PAGE = 12;
+
+// Get the last part of the path
+const { page } = Astro.params;
+
+console.log(page);
+
+const response = await fetch(
+    import.meta.env.PUBLIC_BACKEND_URL +
+        "/api/posts?" +
+        new URLSearchParams({
+            page: page && !isNaN(parseFloat(page)) ? page.toString() : "1",
+            limit: LIMIT_PER_PAGE.toString(),
+        }),
+);
+
+const data = await response.json();
+const posts = data.docs;
+const { hasPrevPage, hasNextPage, prevPage, nextPage } = data;
+---
+
+<Layout title="Posts">
+    <section class="flex flex-col px-40 md:px-10 w-full relative box-border">
+        <div class="absolute w-full h-full z-0 md:hidden pointer-events-none">
+            <img
+                class="absolute left-[35%] top-16 lg:w-28"
+                src="/images/shapes/three.svg"
+                alt="Shapes"
+            />
+            <img
+                class="absolute left-[8%] top-[30%] lg:w-16"
+                src="/images/shapes/two1.svg"
+                alt="Some shapes"
+            />
+            <img
+                class="absolute right-[20%] -rotate-90 top-[50%] lg:w-16"
+                src="/images/shapes/two1.svg"
+                alt="Some shapes"
+            />
+            <img
+                class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
+                src="/images/shapes/three.svg"
+                alt="Some shapes"
+            />
+            <img
+                class="absolute right-[50%] bottom-10 lg:w-28 rotate-12"
+                src="/images/shapes/one.svg"
+                alt="Some shapes"
+            />
+        </div>
+        <div class="pt-16 pb-10 mt-20 z-10">
+            <h1
+                class="font-serif text-6xl font-bold small-caps text-twine-400 sm:text-4xl"
+            >
+                Traumhaft tolle Texte
+            </h1>
+            <h2
+                class="max-w-md text-3xl leading-tight lg:text-xl font-bold small-caps text-bandicoot-400 mt-3"
+            >
+                Hier findest Du alle Texte der bisherigen Wettbewerbe.
+            </h2>
+        </div>
+        <div class="z-10 py-10 w-full flex justify-end">
+            <form
+                class="text-bandicoot-400 font-medium font-serif w-full flex gap-3 justify-end items-center flex-wrap"
+            >
+                <div
+                    class="flex gap-3 border-r-2 border-twine-400 px-3 flex-wrap"
+                >
+                    <label
+                        class="switch"
+                        for="checkbox"
+                        title="Nur Gewinnertexte"
+                    >
+                        <input
+                            type="checkbox"
+                            id="checkbox"
+                            class="peer hidden"
+                        />
+                        <div
+                            class="flex justify-center items-center slider h-full w-10 aspect-square bg-white rounded-md text-bandicoot-400 peer-checked:bg-twine-400 peer-checked:text-white"
+                        >
+                            <Trophy class="h-5 w-5" />
+                        </div>
+                    </label>
+
+                    <select
+                        name="Wettbewerb"
+                        id="select_competition"
+                        class="bg-white p-2 px-4 pr-9 flex rounded-md h-full focus:ring-2 focus:ring-twine-400 border-none"
+                    >
+                        <option value="none">Alle Wettbewerbe</option>
+                        <option value="wettbewerb1">Buchstaben im Kopf</option>
+                    </select>
+                </div>
+                <div class="flex gap-3 h-10">
+                    <div class="max-w-xs w-full relative">
+                        <input
+                            type="search"
+                            name="Suche"
+                            id="input_search"
+                            placeholder="Autor:in oder Titel..."
+                            class="bg-white peer h-full w-full p-2 px-4 rounded-md border-none placeholder:text-bandicoot-400/60 outline-none accent-twine-400 focus:ring-2 focus:ring-twine-400"
+                        />
+                        <div
+                            class="absolute peer-focus:hidden flex justify-center items-center font-sans font-medium text-[0.6rem] bg-bandicoot-400 text-white px-1 rounded right-2 top-2 bottom-2 cursor-pointer hover:bg-twine-400 transition-colors duration-300 ease-in-out"
+                        >
+                            Strg+K
+                        </div>
+                    </div>
+                    <input
+                        type="submit"
+                        value="Suchen"
+                        class="h-full bg-twine-400 text-white p-1 px-3 rounded-md cursor-pointer hover:bg-bandicoot-500 transition-colors duration-300 ease-in-out"
+                    />
+                </div>
+            </form>
+        </div>
+    </section>
+    <section class="px-40 md:px-10 pb-10">
+        <div class="grid lg:grid-cols-1 xl:grid-cols-2 grid-cols-3 gap-10">
+            {
+                posts.map((post: any) => (
+                    <PostCard
+                        title={post.title}
+                        winner={false}
+                        author={post.author}
+                        competition={post.competition.title}
+                        ageGroup={[
+                            post.agegroup.age_start,
+                            post.agegroup.age_end,
+                        ]}
+                        date={new Date(post.createdAt)}
+                        excerpt={post.content}
+                    />
+                ))
+            }
+        </div>
+        <div>
+            <nav class="flex justify-center items-center gap-5 mt-10">
+                {
+                    hasPrevPage && (
+                        <a
+                            href={`/alle-texte/${prevPage}`}
+                            class={`${
+                                hasPrevPage
+                                    ? "text-twine-400"
+                                    : "text-bandicoot-400"
+                            } font-serif font-bold text-2xl`}
+                        >
+                            &larr; Vorherige Seite
+                        </a>
+                    )
+                }
+                {
+                    hasNextPage && (
+                        <a
+                            href={`/alle-texte/${nextPage}`}
+                            class={`${
+                                hasNextPage
+                                    ? "text-twine-400"
+                                    : "text-bandicoot-400"
+                            } font-serif font-bold text-2xl`}
+                        >
+                            Nächste Seite &rarr;
+                        </a>
+                    )
+                }
+            </nav>
+        </div>
+    </section>
+</Layout>
+
+<script>
+    // Strg+K to focus search input
+    document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "k") {
+            e.preventDefault();
+            document.getElementById("input_search")?.focus();
+        }
+    });
+</script>
