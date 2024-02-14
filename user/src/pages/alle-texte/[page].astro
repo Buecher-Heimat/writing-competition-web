@@ -120,7 +120,9 @@ if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
             alt="Shapes"
         />
     </div>
-    <section class="flex flex-col px-40 md:px-10 w-full relative box-border">
+    <section
+        class="flex flex-col px-40 md:px-10 xs:px-5 2xs:px-3 w-full relative box-border"
+    >
         <div class="pt-16 pb-10 mt-20 z-10">
             <h1
                 class="font-serif text-6xl font-bold small-caps text-twine-400 sm:text-4xl"
@@ -142,7 +144,7 @@ if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
                 queryParams.competition !== "all" ||
                 queryParams.only_winners
             ) && (
-                <section class="px-40 md:px-10 pb-10 w-full z-10">
+                <section class="px-40 md:px-10 xs:px-5 2xs:px-3 pb-10 w-full z-10">
                     <div class="flex flex-col justify-center items-center">
                         <img
                             class="w-64 sm:mt-20 mt-32"
@@ -163,16 +165,16 @@ if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
             queryParams.q ||
             queryParams.competition !== "all" ||
             queryParams.only_winners) && (
-            <section class="px-40 md:px-10 pb-10 w-full z-10">
-                <div class="z-10 py-10 w-full flex justify-end">
+            <section class="px-40 md:px-10 xs:px-5 2xs:px-3 pb-10 w-full z-10">
+                <div class="z-10 py-10 2xs:pt-0 w-full flex justify-end">
                     <form
                         action="/alle-texte/1"
                         method="GET"
                         class="text-bandicoot-400 font-medium font-serif w-full flex gap-3 justify-end items-center flex-wrap"
                     >
-                        <div class="flex gap-3 border-r-2 border-twine-400 px-3 flex-wrap">
+                        <div class="flex gap-3 2xs:w-full md:border-none md:px-0 border-r-2 border-twine-400 px-3 flex-wrap">
                             <label
-                                class="switch"
+                                class="switch 2xs:w-full"
                                 for="checkbox"
                                 title="Nur Gewinnertexte"
                             >
@@ -185,7 +187,7 @@ if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
                                         queryParams.only_winners ? true : false
                                     }
                                 />
-                                <div class="flex justify-center items-center slider h-full w-10 aspect-square bg-white rounded-md text-bandicoot-400 peer-checked:bg-twine-400 peer-checked:text-white">
+                                <div class="flex justify-center items-center slider h-10 2xs:w-full w-10 bg-white rounded-md text-bandicoot-400 peer-checked:bg-twine-400 peer-checked:text-white">
                                     <Trophy class="h-5 w-5" />
                                 </div>
                             </label>
@@ -193,7 +195,7 @@ if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
                             <select
                                 name="competition"
                                 id="select_competition"
-                                class="bg-white p-2 px-4 pr-9 flex rounded-md h-full focus:ring-2 focus:ring-twine-400 border-none"
+                                class="bg-white 2xs:w-full p-2 px-4 pr-9 flex rounded-md h-full focus:ring-2 focus:ring-twine-400 border-none"
                             >
                                 <option value="all">Alle Wettbewerbe</option>
                                 {competitions.map((competition: any) => (
@@ -211,8 +213,8 @@ if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
                                 ))}
                             </select>
                         </div>
-                        <div class="flex gap-3 h-10">
-                            <div class="max-w-xs w-full relative">
+                        <div class="flex gap-3 h-10 2xs:h-fit 2xs:flex-wrap">
+                            <div class="max-w-xs 2xs:max-w-full w-full relative">
                                 <input
                                     type="search"
                                     name="q"
@@ -228,7 +230,7 @@ if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
                             <input
                                 type="submit"
                                 value="Suchen"
-                                class="h-full bg-twine-400 text-white p-1 px-3 rounded-md cursor-pointer hover:bg-bandicoot-500 transition-colors duration-300 ease-in-out"
+                                class="h-full 2xs:h-10 2xs:w-full bg-twine-400 text-white p-1 px-3 rounded-md cursor-pointer hover:bg-bandicoot-500 transition-colors duration-300 ease-in-out"
                             />
                         </div>
                     </form>
