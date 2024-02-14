@@ -59,17 +59,6 @@ const stringifiedQuery = qs.stringify({
     where: query,
 });
 
-console.log(
-    import.meta.env.PUBLIC_BACKEND_URL +
-        "/api/posts?" +
-        new URLSearchParams({
-            page: page && !isNaN(parseFloat(page)) ? page.toString() : "1",
-            limit: LIMIT_PER_PAGE.toString(),
-        }) +
-        "&" +
-        stringifiedQuery,
-);
-
 // Fetch the posts
 const response = await fetch(
     import.meta.env.PUBLIC_BACKEND_URL +
@@ -85,37 +74,53 @@ const response = await fetch(
 const data = await response.json();
 const posts = data.docs;
 const { hasPrevPage, hasNextPage, prevPage, nextPage } = data;
+
+if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
+    return Astro.redirect(
+        "/alle-texte/" + data.totalPages + "?" + qs.stringify(queryParams),
+    );
+}
 ---
 
 <Layout title="Posts">
+    <div class="absolute w-full h-full z-0 md:hidden pointer-events-none">
+        <img
+            class="absolute left-[35%] top-16 lg:w-28"
+            src="/images/shapes/three.svg"
+            alt="Shapes"
+        />
+        <img
+            class="absolute left-[8%] top-[30%] lg:w-16"
+            src="/images/shapes/two1.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute right-[20%] -rotate-90 top-[50%] lg:w-16"
+            src="/images/shapes/two1.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
+            src="/images/shapes/three.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute right-[50%] bottom-10 lg:w-28 rotate-12"
+            src="/images/shapes/one.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute right-[30%] top-[10%] lg:w-28 rotate-12"
+            src="/images/shapes/one.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute right-0 top-[30%] rotate-180 lg:w-28"
+            src="/images/shapes/three.svg"
+            alt="Shapes"
+        />
+    </div>
     <section class="flex flex-col px-40 md:px-10 w-full relative box-border">
-        <div class="absolute w-full h-full z-0 md:hidden pointer-events-none">
-            <img
-                class="absolute left-[35%] top-16 lg:w-28"
-                src="/images/shapes/three.svg"
-                alt="Shapes"
-            />
-            <img
-                class="absolute left-[8%] top-[30%] lg:w-16"
-                src="/images/shapes/two1.svg"
-                alt="Some shapes"
-            />
-            <img
-                class="absolute right-[20%] -rotate-90 top-[50%] lg:w-16"
-                src="/images/shapes/two1.svg"
-                alt="Some shapes"
-            />
-            <img
-                class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
-                src="/images/shapes/three.svg"
-                alt="Some shapes"
-            />
-            <img
-                class="absolute right-[50%] bottom-10 lg:w-28 rotate-12"
-                src="/images/shapes/one.svg"
-                alt="Some shapes"
-            />
-        </div>
         <div class="pt-16 pb-10 mt-20 z-10">
             <h1
                 class="font-serif text-6xl font-bold small-caps text-twine-400 sm:text-4xl"
@@ -128,134 +133,171 @@ const { hasPrevPage, hasNextPage, prevPage, nextPage } = data;
                 Hier findest Du alle Texte der bisherigen Wettbewerbe.
             </h2>
         </div>
-        <div class="z-10 py-10 w-full flex justify-end">
-            <form
-                action="/alle-texte/1"
-                method="GET"
-                class="text-bandicoot-400 font-medium font-serif w-full flex gap-3 justify-end items-center flex-wrap"
-            >
-                <div
-                    class="flex gap-3 border-r-2 border-twine-400 px-3 flex-wrap"
-                >
-                    <label
-                        class="switch"
-                        for="checkbox"
-                        title="Nur Gewinnertexte"
-                    >
-                        <input
-                            type="checkbox"
-                            name="only_winners"
-                            id="checkbox"
-                            class="peer hidden"
-                            checked={queryParams.only_winners ? true : false}
+    </section>
+    <!-- If there are no posts and no search -->
+    {
+        data.totalDocs === 0 &&
+            !(
+                queryParams.q ||
+                queryParams.competition !== "all" ||
+                queryParams.only_winners
+            ) && (
+                <section class="px-40 md:px-10 pb-10 w-full z-10">
+                    <div class="flex flex-col justify-center items-center">
+                        <img
+                            class="w-64 sm:mt-20 mt-32"
+                            src="/images/illustrations/MeditatingDoodle.svg"
+                            alt="A person meditating"
                         />
-                        <div
-                            class="flex justify-center items-center slider h-full w-10 aspect-square bg-white rounded-md text-bandicoot-400 peer-checked:bg-twine-400 peer-checked:text-white"
-                        >
-                            <Trophy class="h-5 w-5" />
-                        </div>
-                    </label>
-
-                    <select
-                        name="competition"
-                        id="select_competition"
-                        class="bg-white p-2 px-4 pr-9 flex rounded-md h-full focus:ring-2 focus:ring-twine-400 border-none"
-                    >
-                        <option value="all">Alle Wettbewerbe</option>
-                        {
-                            competitions.map((competition: any) => (
-                                <option
-                                    value={competition.title}
-                                    selected={
-                                        queryParams.competition ===
-                                        competition.title
-                                            ? true
-                                            : false
-                                    }
-                                >
-                                    {competition.title}
-                                </option>
-                            ))
-                        }
-                    </select>
-                </div>
-                <div class="flex gap-3 h-10">
-                    <div class="max-w-xs w-full relative">
-                        <input
-                            type="search"
-                            name="q"
-                            value={queryParams.q?.toString() || ""}
-                            id="input_search"
-                            placeholder="Autor:in oder Titel..."
-                            class="bg-white peer h-full w-full p-2 px-4 rounded-md border-none placeholder:text-bandicoot-400/60 outline-none accent-twine-400 focus:ring-2 focus:ring-twine-400"
-                        />
-                        <div
-                            class="absolute peer-focus:hidden flex justify-center items-center font-sans font-medium text-[0.6rem] bg-bandicoot-400 text-white px-1 rounded right-2 top-2 bottom-2 cursor-pointer hover:bg-twine-400 transition-colors duration-300 ease-in-out"
-                        >
-                            Strg+K
-                        </div>
+                        <p class="text-bandicoot-500 font-serif max-w-sm text-center">
+                            Noch sind keine Texte eingereicht worden. Schau doch
+                            später nochmal vorbei.
+                        </p>
                     </div>
-                    <input
-                        type="submit"
-                        value="Suchen"
-                        class="h-full bg-twine-400 text-white p-1 px-3 rounded-md cursor-pointer hover:bg-bandicoot-500 transition-colors duration-300 ease-in-out"
-                    />
+                </section>
+            )
+    }
+    <!-- If there are posts or a search -->
+    {
+        (data.totalDocs !== 0 ||
+            queryParams.q ||
+            queryParams.competition !== "all" ||
+            queryParams.only_winners) && (
+            <section class="px-40 md:px-10 pb-10 w-full z-10">
+                <div class="z-10 py-10 w-full flex justify-end">
+                    <form
+                        action="/alle-texte/1"
+                        method="GET"
+                        class="text-bandicoot-400 font-medium font-serif w-full flex gap-3 justify-end items-center flex-wrap"
+                    >
+                        <div class="flex gap-3 border-r-2 border-twine-400 px-3 flex-wrap">
+                            <label
+                                class="switch"
+                                for="checkbox"
+                                title="Nur Gewinnertexte"
+                            >
+                                <input
+                                    type="checkbox"
+                                    name="only_winners"
+                                    id="checkbox"
+                                    class="peer hidden"
+                                    checked={
+                                        queryParams.only_winners ? true : false
+                                    }
+                                />
+                                <div class="flex justify-center items-center slider h-full w-10 aspect-square bg-white rounded-md text-bandicoot-400 peer-checked:bg-twine-400 peer-checked:text-white">
+                                    <Trophy class="h-5 w-5" />
+                                </div>
+                            </label>
+
+                            <select
+                                name="competition"
+                                id="select_competition"
+                                class="bg-white p-2 px-4 pr-9 flex rounded-md h-full focus:ring-2 focus:ring-twine-400 border-none"
+                            >
+                                <option value="all">Alle Wettbewerbe</option>
+                                {competitions.map((competition: any) => (
+                                    <option
+                                        value={competition.title}
+                                        selected={
+                                            queryParams.competition ===
+                                            competition.title
+                                                ? true
+                                                : false
+                                        }
+                                    >
+                                        {competition.title}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div class="flex gap-3 h-10">
+                            <div class="max-w-xs w-full relative">
+                                <input
+                                    type="search"
+                                    name="q"
+                                    value={queryParams.q?.toString() || ""}
+                                    id="input_search"
+                                    placeholder="Autor:in oder Titel..."
+                                    class="bg-white peer h-full w-full p-2 px-4 rounded-md border-none placeholder:text-bandicoot-400/60 outline-none accent-twine-400 focus:ring-2 focus:ring-twine-400"
+                                />
+                                <div class="absolute peer-focus:hidden flex justify-center items-center font-sans font-medium text-[0.6rem] bg-bandicoot-400 text-white px-1 rounded right-2 top-2 bottom-2 cursor-pointer hover:bg-twine-400 transition-colors duration-300 ease-in-out">
+                                    Strg+K
+                                </div>
+                            </div>
+                            <input
+                                type="submit"
+                                value="Suchen"
+                                class="h-full bg-twine-400 text-white p-1 px-3 rounded-md cursor-pointer hover:bg-bandicoot-500 transition-colors duration-300 ease-in-out"
+                            />
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-    </section>
-    <section class="px-40 md:px-10 pb-10">
-        <div class="grid lg:grid-cols-1 xl:grid-cols-2 grid-cols-3 gap-10">
-            {
-                posts.map((post: any) => (
-                    <PostCard
-                        title={post.title}
-                        winner={post.winner}
-                        author={post.author}
-                        competition={post.competition.title}
-                        ageGroup={[
-                            post.agegroup.age_start,
-                            post.agegroup.age_end,
-                        ]}
-                        date={new Date(post.createdAt)}
-                        excerpt={post.content}
-                    />
-                ))
-            }
-        </div>
-        <div>
-            <nav class="flex justify-center items-center gap-5 mt-10">
-                {
-                    hasPrevPage && (
-                        <a
-                            href={`/alle-texte/${prevPage}`}
-                            class={`${
-                                hasPrevPage
-                                    ? "text-twine-400"
-                                    : "text-bandicoot-400"
-                            } font-serif font-bold text-2xl`}
-                        >
-                            &larr; Vorherige Seite
-                        </a>
-                    )
-                }
-                {
-                    hasNextPage && (
-                        <a
-                            href={`/alle-texte/${nextPage}`}
-                            class={`${
-                                hasNextPage
-                                    ? "text-twine-400"
-                                    : "text-bandicoot-400"
-                            } font-serif font-bold text-2xl`}
-                        >
-                            Nächste Seite &rarr;
-                        </a>
-                    )
-                }
-            </nav>
-        </div>
-    </section>
+                {posts.length === 0 && (
+                    <div class="flex flex-col justify-center items-center sm:mt-10 mt-20">
+                        <img
+                            class="w-64 -mb-10"
+                            src="/images/illustrations/LayingDoodle.svg"
+                            alt="Eine Person, die auf dem Boden liegt und auf ihr Handy schaut."
+                        />
+                        <p class="text-bandicoot-500 font-serif max-w-sm text-center">
+                            Es gibt noch keine Texte, die Deiner Suche
+                            entsprechen. Ändere das doch!
+                        </p>
+                        <button class="hover:bg-bandicoot-400 mt-5 hover:text-pearl-bush-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] w-[fit-content] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400">
+                            Deinen Text einreichen
+                        </button>
+                    </div>
+                )}
+                {posts.length > 0 && (
+                    <div class="grid lg:grid-cols-1 xl:grid-cols-2 grid-cols-3 gap-10">
+                        {posts.map((post: any) => (
+                            <PostCard
+                                title={post.title}
+                                winner={post.winner}
+                                author={post.author}
+                                competition={post.competition.title}
+                                ageGroup={[
+                                    post.agegroup.age_start,
+                                    post.agegroup.age_end,
+                                ]}
+                                date={new Date(post.createdAt)}
+                                excerpt={post.content}
+                            />
+                        ))}
+                    </div>
+                )}
+                <div>
+                    <nav class="flex justify-center items-center gap-5 mt-10">
+                        {hasPrevPage && (
+                            <a
+                                href={`/alle-texte/${prevPage}`}
+                                class={`${
+                                    hasPrevPage
+                                        ? "text-twine-400"
+                                        : "text-bandicoot-400"
+                                } font-serif font-bold text-2xl`}
+                            >
+                                &larr; Vorherige Seite
+                            </a>
+                        )}
+                        {hasNextPage && (
+                            <a
+                                href={`/alle-texte/${nextPage}`}
+                                class={`${
+                                    hasNextPage
+                                        ? "text-twine-400"
+                                        : "text-bandicoot-400"
+                                } font-serif font-bold text-2xl`}
+                            >
+                                Nächste Seite &rarr;
+                            </a>
+                        )}
+                    </nav>
+                </div>
+            </section>
+        )
+    }
 </Layout>
 
 <script>
