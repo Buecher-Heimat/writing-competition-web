@@ -19,6 +19,12 @@ export default {
 
 			'sm': { 'max': '639px' },
 			// => @media (max-width: 639px) { ... }
+
+			'xs': { 'max': '512px' },
+			// => @media (max-width: 512px) { ... }
+
+			'2xs': { 'max': '383px' },
+			// => @media (max-width: 383px) { ... }
 		},
 		extend: {
 			colors: {
