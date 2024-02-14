@@ -16,6 +16,7 @@ export default buildConfig({
     bundler: webpackBundler(),
   },
   editor: slateEditor({}),
+  cors: '*',
   collections: [
     Users,
     Posts,
