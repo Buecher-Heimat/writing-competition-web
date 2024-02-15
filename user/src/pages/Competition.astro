@@ -18,49 +18,49 @@ import { ArrowDown, FileUp } from "lucide-vue-next";
     <main>
         <section class="min-h-[90vh] w-screen flex items-center justify-center">
             <div class="absolute w-full h-full z-[-1] md:hidden">
+        <img
+          class="absolute left-[35%] top-16 lg:w-28"
+          src="/images/shapes/three.svg"
+          alt="Shapes"
+        />
+        <img
+          class="absolute left-[8%] top-[30%] lg:w-16"
+          src="/images/shapes/two1.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
+          src="/images/shapes/three.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute right-[50%] bottom-10 lg:w-28 rotate-12"
+          src="/images/shapes/one.svg"
+          alt="Some shapes"
+        />
+      </div>
+            <div class="h-[36rem] flex flex-row items-center">
                 <img
-                class="absolute right-[15%] top-24 lg:w-28"
-                src="/images/shapes/three.svg"
-                alt="Shapes"
-                />
-                <img
-                class="absolute left-[8%] top-[15%] lg:w-16"
-                src="/images/shapes/two1.svg"
-                alt="Some shapes"
-                />
-                <img
-                class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
-                src="/images/shapes/three.svg"
-                alt="Some shapes"
-                />
-                <img
-                class="absolute right-[10%] bottom-10 lg:w-28 rotate-12"
-                src="/images/shapes/one.svg"
-                alt="Some shapes"
-                />
-            </div>
-            <div class="h-[36rem] flex flex-row">
-                <img
-                    class="object-cover w-[36rem] h-full rounded-2xl"
+                    class="object-cover w-[36rem] h-full rounded-2xl shadow-2xl"
                     src="/images/baustelle.png"
                     alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
                 />
-                <div class="w-[44rem] h-full my-4 mx-8 flex flex-col place-content-between">
-                    <h1 class="text-twine-400 font-bold font-serif small-caps text-7xl lg:text-4xl">
+                <div class="w-[46rem] h-full py-4 px-14 flex flex-col justify-between">
+                    <h1 class="text-twine-400 font-bold font-serif small-caps text-8xl lg:text-4xl">
                         Buchstaben im Kopf
                     </h1>
-                    <h2 class="text-3xl lg:text-xl font-black small-caps text-bandicoot-400 mt-3">
+                    <h2 class="text-4xl lg:text-xl font-black small-caps text-bandicoot-400 mt-3">
                         Ein Schreibwettbewerb in Kooperation mit der Öffentlichen Versicherung Braunschweig
                     </h2>
-                    <div class="flex flex-row flex-wrap">
+                    <div class="flex flex-row justify-between">
                         <div>
-                            <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2" >
+                            <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2" >
                                 Altersgruppen
                             </h3>
-                            <ul class="flex flex-wrap gap-2">
+                            <ul class="flex flex-wrap gap-1">
                                 {
                                 ageGroups.map(([min, max]) => (
-                                    <li class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400">
+                                    <li class="w-24 h-8 border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400 flex justify-center items-center">
                                     {max ? `${min}-${max}` : `${min}+`} Jahre
                                     </li>
                                 ))
@@ -68,32 +68,32 @@ import { ArrowDown, FileUp } from "lucide-vue-next";
                             </ul>
                         </div>
                         <div>
-                            <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2">
+                            <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2">
                                 Zeitraum
                             </h3>
-                            <div class="bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50">
+                            <div class="h-8 bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50 flex justify-center items-center">
                                 {startDate.toLocaleDateString("de-DE")}
                                 <span class="font-thin">bis</span>
                                 {endDate.toLocaleDateString("de-DE")}
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-row">
-                        <button class="bg-twine-400 text-pearl-bush-50 font-serif font-semibold">
+                    <div class="flex flex-row gap-2">
+                        <button class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
                             Mitmachen
-                            <FileUp size="1rem" />
+                            <FileUp size="1.5rem" />
                         </button>
-                        <button class="hover:bg-bandicoot-400 hover:text-pearl-bush-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] w-[fit-content] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400">
+                        <button class="w-52 hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 justify-evenly">
                             Mehr erfahren
-                            <ArrowDown size="1rem" />
+                            <ArrowDown size="1.5rem" />
                         </button>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="h-32 w-screen bg-white flex items-center justify-center">
+        <section class="h-36 w-screen bg-white flex items-center justify-center">
             <img
-                class="h-16"
+                class="h-18"
                 src="/images/logos/oeffentliche.png"
                 alt="Das Logo der Öffentlichen Versicherung Braunschweig"
             />
