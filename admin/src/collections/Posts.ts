@@ -87,8 +87,18 @@ const Posts: CollectionConfig = {
         {
             name: "content",
             label: "Content",
-            type: "richText",
+            type: "textarea",
             required: true,
+        },
+        {
+            name: "winner",
+            label: "Winner",
+            type: "checkbox",
+            access: {
+                read: () => true,
+                update: isAdmin,
+                create: isAdmin
+            }
         },
         {
             name: "competition",

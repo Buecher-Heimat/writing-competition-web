@@ -4,7 +4,7 @@ export function isApproved({ req: { user } }) {
         return true
     }
     return {
-        approved: {
+        approved_by_organizer: {
             equals: true,
         },
     }

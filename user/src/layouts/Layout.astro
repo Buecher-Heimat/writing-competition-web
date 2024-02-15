@@ -1,14 +1,4 @@
 ---
-import "@fontsource/noto-serif";
-import "@fontsource/noto-serif/500.css";
-import "@fontsource/noto-serif/800.css";
-import "@fontsource/noto-serif/600.css";
-
-import "@fontsource/noto-sans";
-import "@fontsource/noto-sans/600.css";
-import "@fontsource/noto-sans/800.css";
-import "@fontsource/noto-sans/900.css";
-import "@fontsource/noto-sans/300-italic.css";
 import Navbar from "../components/Navbar.astro";
 
 interface Props {
@@ -31,13 +21,24 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class="w-screen overflow-x-hidden">
 		<Navbar />
-		<slot />
+		<main
+			class="min-h-screen w-screen flex flex-col items-center overflow-hidden"
+		>
+			<slot />
+		</main>
+		<footer
+			class="bg-bandicoot-400 py-2 text-pearl-bush-50 flex justify-center text-sm"
+		>
+			<div>© Die Bücher-Heimat | 2024</div>
+		</footer>
 	</body>
 </html>
 
 <style is:global>
+	@import url("/fonts/fonts.css");
+
 	.small-caps {
 		font-variant-caps: small-caps;
 	}
