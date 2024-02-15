@@ -86,25 +86,17 @@ import { ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue-next";
             </a>
           </div>
         </div>
-        <div class="pr-40 xl:pr-0 lg:pr-0 md:pb-20">
-          <div
-            class="flex flex-col items-center w-[24rem] lg:w-80 sm:w-full bg-bandicoot-400 rounded-2xl text-pearl-bush-100 p-8"
-          >
-            <img
-              class="lg:w-1/2"
-              src="/images/under-construction.svg"
-              alt="Baustellenzaun, auf dem ein Helm hängt"
-            />
-            <h2 class="text-2xl lg:text-xl font-black small-caps mb-3">
-              Under Construction
-            </h2>
-            <p class="text-base font-serif lg:text-sm">
-              Wir arbeiten gerade daran, hier eine Bad Harzburger
-              Literaturplattform zu schaffen. Zu einem späteren Zeitpunkt kannst
-              Du Dich hier online zu den Wettbewerben anmelden und Deine Texte
-              einreichen.
-            </p>
-          </div>
+        <div class="pr-40 xl:pr-0 lg:pr-0 md:pb-20 w-full">
+         <div>
+          <CompetitionCard
+            title="Buchstaben im Kopf"
+            subtitle="In Kooperation mit der Öffentlichen Versicherung Braunschweig"
+            startDate={new Date("2024-01-02")}
+            endDate={new Date("2024-05-30")}
+            ageGroups={[[16, 21], [22, 28], [29, 40], [41, 60], [61]]}
+            imageUri="/images/oeffentliche.png"
+          />
+        </div>
         </div>
       </div>
     </section>
@@ -143,7 +135,7 @@ import { ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue-next";
       class="flex max-w-screen min-h-screen lg:flex-col h-[fit-content] overflow-hidden"
     >
       <div
-        class="bg-schreib-pattern relative z-10 bg-no-repeat bg-cover w-[40%] xl:w-[50%] lg:w-full flex-shrink-0 pl-32 pt-32 pr-16 lg:pr-32 pb-16 sm:px-5 bg-twine-400 flex flex-col gap-5"
+        class="  w-[40%] xl:w-[50%] lg:w-full flex-shrink-0 pl-32 pt-32 pr-16 lg:pr-32 pb-16 sm:px-5 bg-pearl-bush-1e00 flex flex-col gap-5"
       >
         <div class="w-full bg-pearl-bush-50 p-5 rounded-2xl shadow-xl">
           <h2
@@ -238,6 +230,48 @@ import { ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue-next";
         </div>
       </div>
     </section>
+
+    <div class="overflow-x-auto">
+  <div class="flex">
+    <!-- Hier kommen Ihre Card-Komponenten -->
+    <div class="w-full bg-white shadow-md mx-4 p-4">
+      <h2 class="text-lg font-semibold">Card 1</h2>
+      <p>Text für Card 1</p>
+    </div>
+     <div class="w-full bg-white shadow-md mx-4 p-4">
+      <h2 class="text-lg font-semibold">Card 1</h2>
+      <p>Text für Card 1</p>
+    </div>
+     <div class="w-full bg-white shadow-md mx-4 p-4">
+      <h2 class="text-lg font-semibold">Card 1</h2>
+      <p>Text für Card 1</p>
+    </div>
+     <div class="w-full bg-white shadow-md mx-4 p-4">
+      <h2 class="text-lg font-semibold">Card 1</h2>
+      <p>Text für Card 1</p>
+    </div>
+     <div class="w-full bg-white shadow-md mx-4 p-4">
+      <h2 class="text-lg font-semibold">Card 1</h2>
+      <p>Text für Card 1</p>
+    </div>
+     <div class="w-full bg-white shadow-md mx-4 p-4">
+      <h2 class="text-lg font-semibold">Card 1</h2>
+      <p>Text für Card 1</p>
+    </div>
+         <div class="w-full bg-white shadow-md mx-4 p-4">
+      <h2 class="text-lg font-semibold">Card 1</h2>
+      <p>Text für Card 1</p>
+    </div>
+    <button onclick="scrollRight()">Nach rechts scrollen</button>
+
+  </div>
+</div>
+<script>
+  function scrollRight() {
+    const container = document.getElementById('cardContainer');
+    container.scrollLeft += 100; // Anpassen der Scroll-Geschwindigkeit
+  }
+</script>
     <section
       class="flex gap-10 px-10 flex-wrap py-16 bg-pearl-bush-50 justify-center items-center"
     >
