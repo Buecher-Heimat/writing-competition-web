@@ -4,8 +4,10 @@ import CompetitionCard from "../components/CompetitionCard.astro";
 import GuideStep from "../components/GuideStep.astro";
 import SummaryPoint from "../components/SummaryPoint.astro";
 import Layout from "../layouts/Layout.astro";
+import PostCard from '../components/PostCard.astro';
 
-import { ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue-next";
+
+import { ArrowRight, ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue-next";
 ---
 
 <Layout title="Schreibwettbewerbe Bad Harzburg">
@@ -63,7 +65,7 @@ import { ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue-next";
               >
             </h1>
             <h2
-              class="text-3xl lg:text-xl font-black small-caps text-bandicoot-400 mt-3"
+              class="text-3xl lg:text-xl font-bold small-caps text-bandicoot-400 mt-3"
             >
               Bad Harzburg
             </h2>
@@ -230,67 +232,93 @@ import { ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue-next";
         </div>
       </div>
     </section>
-
-    <div class="overflow-x-auto">
-  <div class="flex">
-    <!-- Hier kommen Ihre Card-Komponenten -->
-    <div class="w-full bg-white shadow-md mx-4 p-4">
-      <h2 class="text-lg font-semibold">Card 1</h2>
-      <p>Text für Card 1</p>
-    </div>
-     <div class="w-full bg-white shadow-md mx-4 p-4">
-      <h2 class="text-lg font-semibold">Card 1</h2>
-      <p>Text für Card 1</p>
-    </div>
-     <div class="w-full bg-white shadow-md mx-4 p-4">
-      <h2 class="text-lg font-semibold">Card 1</h2>
-      <p>Text für Card 1</p>
-    </div>
-     <div class="w-full bg-white shadow-md mx-4 p-4">
-      <h2 class="text-lg font-semibold">Card 1</h2>
-      <p>Text für Card 1</p>
-    </div>
-     <div class="w-full bg-white shadow-md mx-4 p-4">
-      <h2 class="text-lg font-semibold">Card 1</h2>
-      <p>Text für Card 1</p>
-    </div>
-     <div class="w-full bg-white shadow-md mx-4 p-4">
-      <h2 class="text-lg font-semibold">Card 1</h2>
-      <p>Text für Card 1</p>
-    </div>
-         <div class="w-full bg-white shadow-md mx-4 p-4">
-      <h2 class="text-lg font-semibold">Card 1</h2>
-      <p>Text für Card 1</p>
-    </div>
-    <button onclick="scrollRight()">Nach rechts scrollen</button>
-
-  </div>
-</div>
-<script>
-  function scrollRight() {
-    const container = document.getElementById('cardContainer');
-    container.scrollLeft += 100; // Anpassen der Scroll-Geschwindigkeit
-  }
-</script>
-    <section
-      class="flex gap-10 px-10 flex-wrap py-16 bg-pearl-bush-50 justify-center items-center"
+    <section class="bg-bandicoot-400 px-36 py-14">
+    <h1
+      class="small-caps font-serif text-3xl font-bold text-pearl-bush-100 text-center px-36 py-14"
     >
-      <img
-        src="/images/logos/buecher-heimat.png"
-        alt="Das Logo der Bücher-Heimat"
-      />
-      <img
-        src="/images/logos/oeffentliche.png"
-        alt="Das Logo der Öffentlichen Versicherung Braunschweig"
-      />
-      <img
-        src="/images/logos/bad-harzburg-stiftung.png"
-        alt="Das Logo der Bad Harzburg Stiftung"
-      />
-      <img
-        src="/images/logos/stadtbuecherei.png"
-        alt="Das Logo der Stadtbücherei Bad Harzburg"
-      />
+      Die neuesten Veröffentlichungen     
+    </h1>
+      <div id="cardContainer" class="flex overflow-x-auto">
+       
+        <div class="flex gap-10">
+          <PostCard
+            title="Heikos Welt"
+            winner={true} 
+            author="Heiko Fleisch"
+            date={new Date()} 
+            competition="Kultur"
+            ageGroup={[20, 30]}  
+            excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
+          />
+        </div>
+
+        <div class="flex gap-10">
+          <PostCard
+            title="Heikos Welt"
+            winner={true} 
+            author="Heiko Fleisch"
+            date={new Date()} 
+            competition="Kultur"
+            ageGroup={[20, 30]}  
+            excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
+          />
+        </div>
+
+        <div class="flex gap-10">
+          <PostCard
+            title="Heikos Welt"
+            winner={true} 
+            author="Heiko Fleisch"
+            date={new Date()} 
+            competition="Kultur"
+            ageGroup={[20, 30]}  
+            excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
+          />
+        </div>
+
+        <div class="flex gap-10">
+          <PostCard
+            title="Heikos Welt"
+            winner={true} 
+            author="Heiko Fleisch"
+            date={new Date()} 
+            competition="Kultur"
+            ageGroup={[20, 30]}  
+            excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
+          />
+        </div>
+
+        <div class="flex gap-10">
+          <PostCard
+            title="Heikos Welt"
+            winner={true} 
+            author="Heiko Fleisch"
+            date={new Date()} 
+            competition="Kultur"
+            ageGroup={[20, 30]}  
+            excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
+          />
+        </div>
+      </div>
+
+      <h1
+      class="small-caps font-serif text-5xl font-bold text-pearl-bush-100 text-center px-36 py-14"
+    >
+Dein Text soll auch hier stehen?
+    </h1>
+
+    <button class="mx-auto hover:bg-bandicoot-400 hover:text-twine-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg py-2 px-4 font-semibold text-pearl-bush-100 bg-twine-400">
+      Mitmachen
+      </button>
+      
     </section>
-  </main>
+    
+
+<section class="flex gap-10 px-10 flex-wrap py-16 bg-pearl-bush-50 justify-center items-center">
+  <img src="/images/logos/buecher-heimat.png" alt="Das Logo der Bücher-Heimat" />
+  <img src="/images/logos/oeffentliche.png" alt="Das Logo der Öffentlichen Versicherung Braunschweig" />
+  <img src="/images/logos/bad-harzburg-stiftung.png" alt="Das Logo der Bad Harzburg Stiftung" />
+  <img src="/images/logos/stadtbuecherei.png" alt="Das Logo der Stadtbücherei Bad Harzburg" />
+</section>
+</main>
 </Layout>
