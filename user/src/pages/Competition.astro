@@ -1,27 +1,28 @@
 ---
 type AgeGroup = [number, number?];
 
-const ageGroups: AgeGroup[] = [
-    [16, 21], [22, 28], [29, 40], [41, 60], [61]
-];
+const ageGroups: AgeGroup[] = [[16, 21], [22, 28], [29, 40], [41, 60], [61]];
 
 const startDate: Date = new Date("2024-01-02");
 const endDate: Date = new Date("2024-05-30");
 
 import GuideStep from "../components/GuideStep.astro";
+import PostCard from "../components/PostCard.astro";
 import Layout from "../layouts/Layout.astro";
 
-import { ArrowDown, FileUp } from "lucide-vue-next";
+import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
 ---
 
 <Layout title="Schreibwettbewerbe Bad Harzburg">
-    <main>
-        <section class="min-h-[90vh] w-screen flex items-center justify-center">
-            <div class="absolute w-full h-full z-[-1] md:hidden">
+  <main>
+    <section
+      class="min-h-[90vh] w-screen flex items-center justify-center relative"
+    >
+      <div class="absolute w-full h-full z-[-1] md:hidden">
         <img
           class="absolute left-[35%] top-16 lg:w-28"
           src="/images/shapes/three.svg"
-          alt="Shapes"
+          alt="Some shapes"
         />
         <img
           class="absolute left-[8%] top-[30%] lg:w-16"
@@ -39,106 +40,308 @@ import { ArrowDown, FileUp } from "lucide-vue-next";
           alt="Some shapes"
         />
       </div>
-            <div class="h-[36rem] flex flex-row items-center">
-                <img
-                    class="object-cover w-[36rem] h-full rounded-2xl shadow-2xl"
-                    src="/images/baustelle.png"
-                    alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
-                />
-                <div class="w-[46rem] h-full py-4 px-14 flex flex-col justify-between">
-                    <h1 class="text-twine-400 font-bold font-serif small-caps text-8xl lg:text-4xl">
-                        Buchstaben im Kopf
-                    </h1>
-                    <h2 class="text-4xl lg:text-xl font-black small-caps text-bandicoot-400 mt-3">
-                        Ein Schreibwettbewerb in Kooperation mit der Öffentlichen Versicherung Braunschweig
-                    </h2>
-                    <div class="flex flex-row justify-between">
-                        <div>
-                            <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2" >
-                                Altersgruppen
-                            </h3>
-                            <ul class="flex flex-wrap gap-1">
-                                {
-                                ageGroups.map(([min, max]) => (
-                                    <li class="w-24 h-8 border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400 flex justify-center items-center">
-                                    {max ? `${min}-${max}` : `${min}+`} Jahre
-                                    </li>
-                                ))
-                                }
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2">
-                                Zeitraum
-                            </h3>
-                            <div class="h-8 bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50 flex justify-center items-center">
-                                {startDate.toLocaleDateString("de-DE")}
-                                <span class="font-thin">bis</span>
-                                {endDate.toLocaleDateString("de-DE")}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-row gap-2">
-                        <button class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
-                            Mitmachen
-                            <FileUp size="1.5rem" />
-                        </button>
-                        <button class="w-52 hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 justify-evenly">
-                            Mehr erfahren
-                            <ArrowDown size="1.5rem" />
-                        </button>
-                    </div>
-                </div>
+      <div class="h-[36rem] flex flex-row items-center">
+        <img
+          class="object-cover w-[36rem] h-full rounded-2xl shadow-2xl"
+          src="/images/baustelle.png"
+          alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
+        />
+        <div class="w-[46rem] h-full py-4 px-14 flex flex-col justify-between">
+          <h1
+            class="text-twine-400 font-bold font-serif small-caps text-8xl lg:text-4xl leading-[6rem]"
+          >
+            Buchstaben im Kopf
+          </h1>
+          <h2
+            class="text-3xl lg:text-xl font-bold small-caps text-bandicoot-400 mt-3 leading-8"
+          >
+            Ein Schreibwettbewerb in Kooperation mit der Öffentlichen
+            Versicherung Braunschweig
+          </h2>
+          <div class="flex flex-row justify-between">
+            <div>
+              <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2">
+                Altersgruppen
+              </h3>
+              <ul class="flex flex-wrap gap-1">
+                {
+                  ageGroups.map(([min, max]) => (
+                    <li class="w-24 h-8 border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400 flex justify-center items-center">
+                      {max ? `${min}-${max}` : `${min}+`} Jahre
+                    </li>
+                  ))
+                }
+              </ul>
             </div>
-        </section>
-        <section class="h-36 w-screen bg-white flex items-center justify-center">
-            <img
-                class="h-18"
-                src="/images/logos/oeffentliche.png"
-                alt="Das Logo der Öffentlichen Versicherung Braunschweig"
-            />
-        </section>
-        <section class="w-screen bg-bandicoot-400 px-36 py-24">
-            <h1 class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-4xl">
-                So geht's
-                <span class="text-3xl uppercase font-sans font-light italic">
-                    Es ist eigentlich ganz einfach
-                </span>
-            </h1>
-            <div class="flex flex-row flex-wrap gap-8 z-10 relative">
-                <div class="w-[40vw]">
-                    <GuideStep
-                        title="Such Dir ein Thema aus"
-                        number={1}                  
-                        description="Über welches Thema Du schreibst, darfst Du Dir aussuchen. Egal, ob es um eine fantastische Geschichte, eine romantische Liebeserzählung oder ein gesellschaftskritisches Essay geht - es hängt nicht davon ab, ob das gewählte Thema populär ist oder den aktuellen Trends entspricht. Was zählt, ist die Originalität und die Fähigkeit, die Leser zu fesseln."
-                        textColor="text-pearl-bush-100"
-                    />
-                </div>
-                <div class="w-[40vw]">
-                    <GuideStep
-                        title="Schreibe den Text"
-                        number={2}
-                        description="Auch hier hast Du die volle Freiheit. Die einzigen Vorgaben sind, dass der Text natürlich bisher noch nicht veröffentlicht worden sein darf, auf Deutsch verfasst sein muss und die Länge von 3 Seiten A4, Arial 12 Pkt nicht überschreiten sollte."
-                        textColor="text-pearl-bush-100"
-                    />
-                </div>
-                <div class="w-[40vw]">
-                    <GuideStep
-                        title="Reiche den Text ein"
-                        number={3}
-                        description="Bis Du den Text hier auf der Online-Plattform einreichen kannst, dauert es noch ein bisschen. Wenn Du ihn unbedingt loswerden möchtest, kannst Du uns eine E-Mail mit dem Text an info@die-buecher-heimat.de senden. Mit der Einreichung stimmst Du zu, dass Dein Text hier und eventuell in einem Buch veröffentlicht wird. Wenn Du unter 18 Jahre alt bist, müssen das Deine  Eltern noch schriftlich bestätigen."
-                        textColor="text-pearl-bush-100"
-                    />
-                </div>
-                <div class="w-[40vw]">
-                    <GuideStep
-                        title="Profit"
-                        number={4}
-                        description="Jetzt heißt es warten, bis unsere Jury aus Vertreterinnen und Vertretern der Öffentliche Versicherung Braunschweig, der Bad-Harzburg-Stiftung, der Bücher-Heimat gGmbH Bad Harzburg, der Harzburger Aktion und der Stadtbücherei Bad Harzburg die Gewinner kührt. Aus jeder Altersgruppe werden drei Siegerinnen oder Sieger ausgewählt. Die Texte der Gewinner werden in einem Buch veröffentlicht, der oder die Erstplatzierte erhält zusätzlich einen Sachpreis."
-                        textColor="text-pearl-bush-100"
-                    />
-                </div>
+            <div>
+              <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2">
+                Zeitraum
+              </h3>
+              <div
+                class="h-8 bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50 flex justify-center items-center"
+              >
+                {startDate.toLocaleDateString("de-DE")}
+                <span class="font-thin">bis</span>
+                {endDate.toLocaleDateString("de-DE")}
               </div>
-        </section>
-    </main>
-  </Layout>
+            </div>
+          </div>
+          <div class="flex flex-row gap-2">
+            <button
+              class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
+            >
+              Mitmachen
+              <FileUp size="1.5rem" />
+            </button>
+            <button
+              class="w-52 hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 justify-evenly"
+            >
+              Mehr erfahren
+              <ArrowDown size="1.5rem" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="h-36 w-screen bg-white flex items-center justify-center">
+      <img
+        class="h-18"
+        src="/images/logos/oeffentliche.png"
+        alt="Das Logo der Öffentlichen Versicherung Braunschweig"
+      />
+    </section>
+    <section class="w-screen bg-bandicoot-400 px-36 py-20">
+      <h1
+        class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-4xl mb-14 ml-16"
+      >
+        So geht's
+        <span class="text-3xl uppercase font-sans font-light italic">
+          Es ist eigentlich ganz einfach
+        </span>
+      </h1>
+      <div class="grid grid-cols-2 lg:grid-cols-1 gap-8 z-10 relative">
+        <GuideStep
+          title="Such Dir ein Thema aus"
+          number={1}
+          description="Über welches Thema Du schreibst, darfst Du Dir aussuchen. Egal, ob es um eine fantastische Geschichte, eine romantische Liebeserzählung oder ein gesellschaftskritisches Essay geht - es hängt nicht davon ab, ob das gewählte Thema populär ist oder den aktuellen Trends entspricht. Was zählt, ist die Originalität und die Fähigkeit, die Leser zu fesseln."
+          textColor="text-pearl-bush-100"
+        />
+        <GuideStep
+          title="Schreibe den Text"
+          number={2}
+          description="Auch hier hast Du die volle Freiheit. Die einzigen Vorgaben sind, dass der Text natürlich bisher noch nicht veröffentlicht worden sein darf, auf Deutsch verfasst sein muss und die Länge von 3 Seiten A4, Arial 12 Pkt nicht überschreiten sollte."
+          textColor="text-pearl-bush-100"
+        />
+        <GuideStep
+          title="Reiche den Text ein"
+          number={3}
+          description="Bis Du den Text hier auf der Online-Plattform einreichen kannst, dauert es noch ein bisschen. Wenn Du ihn unbedingt loswerden möchtest, kannst Du uns eine E-Mail mit dem Text an info@die-buecher-heimat.de senden. Mit der Einreichung stimmst Du zu, dass Dein Text hier und eventuell in einem Buch veröffentlicht wird. Wenn Du unter 18 Jahre alt bist, müssen das Deine  Eltern noch schriftlich bestätigen."
+          textColor="text-pearl-bush-100"
+        />
+        <GuideStep
+          title="Profit"
+          number={4}
+          description="Jetzt heißt es warten, bis unsere Jury aus Vertreterinnen und Vertretern der Öffentliche Versicherung Braunschweig, der Bad-Harzburg-Stiftung, der Bücher-Heimat gGmbH Bad Harzburg, der Harzburger Aktion und der Stadtbücherei Bad Harzburg die Gewinner kührt. Aus jeder Altersgruppe werden drei Siegerinnen oder Sieger ausgewählt. Die Texte der Gewinner werden in einem Buch veröffentlicht, der oder die Erstplatzierte erhält zusätzlich einen Sachpreis."
+          textColor="text-pearl-bush-100"
+        />
+      </div>
+    </section>
+    <section class="w-screen relative">
+      <div class="absolute w-full h-full z-[-1] md:hidden">
+        <img
+          class="absolute right-[5%] -top-2 lg:w-28 -rotate-45"
+          src="/images/shapes/two1.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[2%] top-20 lg:w-16 rotate-45"
+          src="/images/shapes/three.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[8%] bottom-12 lg:w-28 rotate-12"
+          src="/images/shapes/two1.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute right-[15%] -bottom-10 lg:w-28 rotate-90"
+          src="/images/shapes/three.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute right-[45%] top-40 lg:w-28 rotate-12"
+          src="/images/shapes/one.svg"
+          alt="Some shapes"
+        />
+      </div>
+      <div class="px-36 py-20">
+        <div class="mb-14">
+          <h2
+            class="small-caps font-serif text-4xl font-bold text-pearl-bush-950"
+          >
+            Deine Konkurrenz
+          </h2>
+          <h3 class="font-bold text-basic text-bandicoot-400">
+            Diese Texte haben andere einreicht.
+          </h3>
+        </div>
+        <div class="grid grid-cols-3 lg:grid-cols-1 gap-6">
+          <PostCard
+            title="Die Geschichte von der kleinen Maus"
+            winner={false}
+            author="Max Mustermann"
+            date={new Date("2024-01-02")}
+            competition="Buchstaben im Kopf"
+            ageGroup={[41, 60]}
+            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden. Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
+          />
+          <PostCard
+            title="Die Geschichte von der kleinen Maus"
+            winner={false}
+            author="Max Mustermann"
+            date={new Date("2024-01-02")}
+            competition="Buchstaben im Kopf"
+            ageGroup={[41, 60]}
+            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
+          />
+          <PostCard
+            title="Die Geschichte von der kleinen Maus"
+            winner={false}
+            author="Max Mustermann"
+            date={new Date("2024-01-02")}
+            competition="Buchstaben im Kopf"
+            ageGroup={[41, 60]}
+            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
+          />
+          <PostCard
+            title="Die Geschichte von der kleinen Maus"
+            winner={false}
+            author="Max Mustermann"
+            date={new Date("2024-01-02")}
+            competition="Buchstaben im Kopf"
+            ageGroup={[41, 60]}
+            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
+          />
+          <PostCard
+            title="Die Geschichte von der kleinen Maus"
+            winner={false}
+            author="Max Mustermann"
+            date={new Date("2024-01-02")}
+            competition="Buchstaben im Kopf"
+            ageGroup={[41, 60]}
+            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
+          />
+          <PostCard
+            title="Die Geschichte von der kleinen Maus"
+            winner={false}
+            author="Max Mustermann"
+            date={new Date("2024-01-02")}
+            competition="Buchstaben im Kopf"
+            ageGroup={[41, 60]}
+            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
+          />
+        </div>
+        <div class="flex justify-end mt-14">
+          <button
+            class="w-fit hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 justify-evenly"
+          >
+            Alle Texte
+            <ArrowRight size="1.5rem" />
+          </button>
+        </div>
+      </div>
+    </section>
+    <section
+      class="w-screen bg-bandicoot-400 basis-2/3 flex flex-row justify-around px-36 py-20 gap-28"
+    >
+      <div class="w-[58%] flex flex-col">
+        <h1
+          class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-4xl mb-14"
+        >
+          Bevor du loslegst
+          <span class="text-3xl uppercase font-sans font-light italic"
+            >Ein Paar Tipps zum Schreiben deines Textes
+          </span>
+        </h1>
+        <div class="flex flex-col gap-6 text-pearl-bush-100">
+          <span
+            >Überlege Dir, in welcher Zeit (Gegenwart oder Vergangenheit) und
+            aus welcher Erzählperspektive (aus der Ich-Perspektive oder lieber
+            in der dritten Person - er, sie -) Du schreiben möchtest. Versuche
+            es ruhig auf unterschiedliche Arten und schau, was Dir mehr liegt.</span
+          >
+          <span
+            >Wähle einen Inhalt, der Dir wirklich am Herzen liegt, man wird
+            Deiner Geschichte anmerken, wenn Du voll hinter ihr stehst. Bedenke
+            bei der Wahl Deiner Überschrift, dass sie neugierig auf Deine
+            Geschichte machen sollte und zum Inhalt passt.</span
+          >
+          <span
+            >Achte darauf, dass Du keine Begriffe verwendest, die Du nicht
+            wirklich kennst. Achte auf die korrekte Verwendung von Zeiten, falls
+            Du unterschiedliche Zeitebenen benutzt.</span
+          >
+          <span
+            >Lass ein Rechtschreibprogramm Deine Geschichte prüfen und dann eine
+            oder besser mehrere Personen aus Deinem Umfeld den Text lesen und
+            auf Verständlichkeit und nochmals Rechtschreibung korrigieren (das
+            macht auch jede*r bekannte Autor*in).</span
+          >
+        </div>
+      </div>
+      <div class="w-fit flex items-center justify-center">
+        <div
+          class="min-w-[20rem] min-h-[20rem] bg-pearl-bush-100 rounded-full flex items-center justify-center"
+        >
+          <PenTool class="text-twine-400" size="150" />
+        </div>
+      </div>
+    </section>
+    <section class="w-screen flex justify-center pt-20 pb-40 relative">
+      <div class="absolute w-full h-full z-[-1] md:hidden">
+        <img
+          class="absolute -right-[1%] top-10 lg:w-28 rotate-45"
+          src="/images/shapes/three.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute right-[18%] bottom-8 lg:w-28 rotate-45"
+          src="/images/shapes/two1.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[0%] top-8 lg:w-16 rotate-180"
+          src="/images/shapes/two1.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[18%] bottom-8 lg:w-28 rotate-12"
+          src="/images/shapes/three.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[45%] bottom-32 lg:w-28 rotate-12"
+          src="/images/shapes/one.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[8%] bottom-12 lg:w-28"
+          src="/images/shapes/one.svg"
+          alt="Some shapes"
+        />
+      </div>
+      <div class="w-[32rem] flex flex-col items-center gap-12">
+        <h1
+          class="text-bandicoot-400 font-bold font-serif small-caps text-5xl text-center"
+        >
+          Worauf wartest Du noch?!
+        </h1>
+        <button
+          class="w-80 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
+        >
+          Mitmachen
+        </button>
+      </div>
+    </section>
+  </main>
+</Layout>
