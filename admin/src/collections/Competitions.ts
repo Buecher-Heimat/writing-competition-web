@@ -149,6 +149,35 @@ const Competitions: CollectionConfig = {
                     type: "textarea"
                 }
             ]
+        },
+        {
+            name: "text_min_length",
+            label: "Minimum text length",
+            admin: {
+                description: "The minimum length of the text that can be submitted"
+            },
+            type: "number",
+            defaultValue: 280,
+            required: true
+        },
+        {
+            name: "text_max_length",
+            label: "Maximum text length",
+            admin: {
+                description: "The maximum length of the text that can be submitted"
+            },
+            type: "number",
+            defaultValue: 11000,
+            required: true
+        },
+        {
+            name: "terms_and_conditions",
+            label: "Terms and conditions",
+            admin: {
+                description: "The terms and conditions of the competition"
+            },
+            type: "textarea",
+            required: true
         }
     ]
 }
