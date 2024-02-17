@@ -10,6 +10,8 @@ import Posts from './collections/Posts'
 import Competitions from './collections/Competitions'
 import Media from './collections/Media'
 
+import PrivacyCompetition from './globals/PrivacyCompetition'
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -22,6 +24,9 @@ export default buildConfig({
     Posts,
     Competitions,
     Media
+  ],
+  globals: [
+    PrivacyCompetition,
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
