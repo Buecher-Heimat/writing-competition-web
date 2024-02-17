@@ -16,7 +16,7 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
 <Layout title="Schreibwettbewerbe Bad Harzburg">
   <main>
     <section
-      class="min-h-[90vh] w-screen flex flex-row 2xl:flex-col items-center justify-center relative px-52 xl:px-36 md:px-28 py-20"
+      class="min-h-[90vh] w-screen flex flex-row 2xl:flex-col items-center justify-center relative px-52 xl:px-36 md:px-28 sm:px-4 py-20 gap-14"
     >
       <div class="absolute w-full h-full z-[-1] md:hidden">
         <img
@@ -41,12 +41,12 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
         />
       </div>
       <img
-        class="object-cover w-[36rem] h-[36rem] rounded-2xl shadow-2xl"
+        class="min-w-[36rem] h-[36rem] md:min-w-[24rem] md:h-[24rem] rounded-2xl shadow-2xl object-cover"
         src="/images/baustelle.png"
         alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
       />
       <div
-        class="w-[46rem] 2xl:w-full h-[36rem] 2xl:h-full py-4 px-14 flex flex-col justify-between 2xl:gap-8"
+        class="w-[46rem] 2xl:w-full h-[36rem] 2xl:h-full py-4 flex flex-col justify-between 2xl:gap-8"
       >
         <h1
           class="text-twine-400 font-bold font-serif small-caps text-8xl 2xl:text-center lg:text-6xl leading-[6rem]"
@@ -59,12 +59,14 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
           Ein Schreibwettbewerb in Kooperation mit der Öffentlichen Versicherung
           Braunschweig
         </h2>
-        <div class="flex flex-row justify-between gap-2">
-          <div>
+        <div
+          class="flex flex-row md:flex-col justify-between 2xl:justify-evenly md:items-center gap-2"
+        >
+          <div class="md:flex md:flex-col md:items-center">
             <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2">
               Altersgruppen
             </h3>
-            <ul class="flex flex-wrap gap-1">
+            <ul class="flex flex-wrap md:justify-center gap-1">
               {
                 ageGroups.map(([min, max]) => (
                   <li class="w-24 h-8 border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400 flex justify-center items-center">
@@ -74,7 +76,7 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
               }
             </ul>
           </div>
-          <div>
+          <div class="md:flex md:flex-col md:items-center">
             <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2">
               Zeitraum
             </h3>
@@ -87,7 +89,9 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
             </div>
           </div>
         </div>
-        <div class="flex flex-row 2xl:justify-center gap-2">
+        <div
+          class="flex flex-row md:flex-col 2xl:justify-center items-center gap-2"
+        >
           <button
             class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
           >
@@ -103,7 +107,14 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
         </div>
       </div>
     </section>
-    <section class="h-36 w-screen bg-white flex items-center justify-center">
+    <section
+      class="w-screen bg-white flex flex-wrap items-center justify-center py-8 px-8"
+    >
+      <img
+        class="h-18"
+        src="/images/logos/oeffentliche.png"
+        alt="Das Logo der Öffentlichen Versicherung Braunschweig"
+      />
       <img
         class="h-18"
         src="/images/logos/oeffentliche.png"
