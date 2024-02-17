@@ -70,13 +70,13 @@ export interface Competition {
   date_winner_announcement?: string | null;
   sponsor_string?: string | null;
   sponsors?:
-    | {
-        name: string;
-        link?: string | null;
-        logo: string | Media;
-        id?: string | null;
-      }[]
-    | null;
+  | {
+    name: string;
+    link?: string | null;
+    logo: string | Media;
+    id?: string | null;
+  }[]
+  | null;
   agegroups: {
     age_start?: number | null;
     age_end?: number | null;
@@ -87,6 +87,9 @@ export interface Competition {
     description?: string | null;
     id?: string | null;
   }[];
+  text_min_length: number;
+  text_max_length: number;
+  terms_and_conditions: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -144,14 +147,14 @@ export interface PayloadPreference {
   };
   key?: string | null;
   value?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
+  | {
+    [k: string]: unknown;
+  }
+  | unknown[]
+  | string
+  | number
+  | boolean
+  | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -169,5 +172,5 @@ export interface PayloadMigration {
 
 
 declare module 'payload' {
-  export interface GeneratedTypes extends Config {}
+  export interface GeneratedTypes extends Config { }
 }
