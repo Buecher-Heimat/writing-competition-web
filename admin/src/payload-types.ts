@@ -15,7 +15,10 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  globals: {};
+  globals: {
+    privacy_competition: PrivacyCompetition;
+    writing_tips: WritingTip;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -70,13 +73,13 @@ export interface Competition {
   date_winner_announcement?: string | null;
   sponsor_string?: string | null;
   sponsors?:
-  | {
-    name: string;
-    link?: string | null;
-    logo: string | Media;
-    id?: string | null;
-  }[]
-  | null;
+    | {
+        name: string;
+        link?: string | null;
+        logo: string | Media;
+        id?: string | null;
+      }[]
+    | null;
   agegroups: {
     age_start?: number | null;
     age_end?: number | null;
@@ -89,7 +92,22 @@ export interface Competition {
   }[];
   text_min_length: number;
   text_max_length: number;
-  terms_and_conditions: string;
+  terms_conditions: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  terms_conditions_html?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -147,14 +165,14 @@ export interface PayloadPreference {
   };
   key?: string | null;
   value?:
-  | {
-    [k: string]: unknown;
-  }
-  | unknown[]
-  | string
-  | number
-  | boolean
-  | null;
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -169,8 +187,49 @@ export interface PayloadMigration {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy_competition".
+ */
+export interface PrivacyCompetition {
+  id: string;
+  privacy: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  privacy_html?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "writing_tips".
+ */
+export interface WritingTip {
+  id: string;
+  tips?:
+    | {
+        tip: string;
+        id?: string | null;
+      }[]
+    | null;
+  last_updated: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
 
 
 declare module 'payload' {
-  export interface GeneratedTypes extends Config { }
+  export interface GeneratedTypes extends Config {}
 }
