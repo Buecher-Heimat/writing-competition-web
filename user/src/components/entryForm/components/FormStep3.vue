@@ -38,10 +38,15 @@ watch(() => openTermsAndConditions.value, (value) => {
                 </div>
                 <div class="flex flex-col gap-5 mt-5">
                     <DetailsElement title="Teilnahmebedingungen">
-                        <p class="text-bandicoot-400">{{ store.competition?.terms_and_conditions }}</p>
+                        <div class="text-bandicoot-400 prose" v-html="store.competition?.terms_conditions_html"></div>
                     </DetailsElement>
                     <DetailsElement title="Schreibtipps">
-
+                        <div class="flex flex-col gap-3">
+                            <div v-for="(writingTip, index) in store.writingTips?.tips" :key="index"
+                                class="text-bandicoot-400 border-2 p-5 border-bandicoot-400 rounded-lg">
+                                {{ writingTip.tip }}
+                            </div>
+                        </div>
                     </DetailsElement>
                 </div>
             </div>

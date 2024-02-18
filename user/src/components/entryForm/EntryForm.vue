@@ -11,7 +11,7 @@ import { Vue3Lottie } from 'vue3-lottie';
 import { Loader2 } from 'lucide-vue-next';
 
 const store = useEntryFormStore(pinia);
-store.loadCompetition();
+store.loadData();
 
 const showHints = ref(false);
 
@@ -98,14 +98,14 @@ const form: FormStep[] = [
             },
             {
                 field: 'content',
-                message: 'Dein Text ist zu kurz! (min. ' + store.competition?.text_min_length + ' Zeichen)',
+                message: 'Dein Text ist zu kurz! (min. ' + store.competition?.text_min_length?.toString() + ' Zeichen)',
                 validate: () => {
-                    return store.formData.content?.length > store.competition?.text_min_length;
+                    return store.formData.content?.length >= store.competition?.text_min_length;
                 }
             },
             {
                 field: 'content',
-                message: 'Dein Text ist zu lang! (max. ' + store.competition?.text_max_length + ' Zeichen)',
+                message: 'Dein Text ist zu lang! (max. ' + store.competition?.text_max_length?.toString() + ' Zeichen)',
                 validate: () => {
                     return store.formData.content?.length <= store.competition?.text_max_length;
                 }

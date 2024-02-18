@@ -1,6 +1,6 @@
 import { createPinia, defineStore } from "pinia";
-import { fetchRunningCompetitions } from "./api";
-import type { Competition } from "../payload";
+import { fetchPrivacyCompetition, fetchRunningCompetitions, fetchWritingTips } from "./api";
+import type { Competition, PrivacyCompetition, WritingTip } from "../payload";
 
 export const pinia = createPinia();
 
@@ -37,27 +37,58 @@ export const useEntryFormStore = defineStore({
         highestStep: JSON.parse(localStorage.getItem("highestStep") || "0") as number,
         formData: JSON.parse(localStorage.getItem("entryForm") || JSON.stringify(defaultFormData)) as PostCreationInput,
         competition: {} as Competition,
+        privacy: {} as PrivacyCompetition,
+        writingTips: {} as WritingTip,
     }),
     actions: {
-        async loadCompetition() {
+        async loadData() {
             this.loading = true;
-            const competitions = await fetchRunningCompetitions();
-
-            if (competitions.length === 0) {
-                this.warning = "Es scheinen keine Wettbewerbe aktiv zu sein.";
-                return;
-            }
-
-            if (competitions[0].id !== this.formData.competition) {
-                if (this.currentStep > 0) {
-                    this.warning = "Der aktive Wettbewerb scheint sich seit Deiner letzten Bearbeitung geändert zu haben. Bitte überprüfe Deine Eingaben.";
-                }
-                this.formData.competition = competitions[0].id;
-                this.saveToLocalStorage();
-            }
-
-            this.competition = competitions[0];
+            await Promise.all([
+                this.loadCompetition(),
+                this.loadPrivacy(),
+                this.loadWritingTips(),
+            ]);
             this.loading = false;
+        },
+        async loadCompetition() {
+            try {
+                const competitions = await fetchRunningCompetitions();
+
+                if (competitions.length === 0) {
+                    this.warning = "Es scheinen keine Wettbewerbe aktiv zu sein.";
+                    return;
+                }
+
+                if (competitions[0].id !== this.formData.competition) {
+                    if (this.currentStep > 0) {
+                        this.warning = "Der aktive Wettbewerb scheint sich seit Deiner letzten Bearbeitung geändert zu haben. Bitte überprüfe Deine Eingaben.";
+                    }
+                    this.formData.competition = competitions[0].id;
+                    this.saveToLocalStorage();
+                }
+
+                this.competition = competitions[0];
+            } catch (error) {
+                console.error(error);
+                this.warning = "Der aktuelle Wettbewerb konnte nicht geladen werden.";
+            }
+        },
+        async loadPrivacy() {
+            try {
+
+                this.privacy = await fetchPrivacyCompetition();
+            } catch (error) {
+                console.error(error);
+                this.warning = "Die Datenschutzerklärung konnte nicht geladen werden.";
+            }
+        },
+        async loadWritingTips() {
+            try {
+                this.writingTips = await fetchWritingTips();
+            } catch (error) {
+                console.error(error);
+                this.warning = "Die Schreibtipps konnten nicht geladen werden.";
+            }
         },
         submitForm() {
             this.loading = true;

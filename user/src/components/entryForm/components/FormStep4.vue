@@ -23,10 +23,10 @@ const store = useEntryFormStore(pinia);
                 </div>
                 <div class="flex flex-col gap-5 mt-5">
                     <DetailsElement title="Teilnahmebedingungen">
-                        <p class="text-bandicoot-400">{{ store.competition?.terms_and_conditions }}</p>
+                        <div class="text-bandicoot-400 prose" v-html="store.competition?.terms_conditions_html"></div>
                     </DetailsElement>
                     <DetailsElement class="w-full" title="Datenschutzerklärung">
-                        <p class="text-bandicoot-400">{{ store.competition?.terms_and_conditions }}</p>
+                        <div class="text-bandicoot-400 prose" v-html="store.privacy.privacy_html"></div>
                     </DetailsElement>
                 </div>
             </div>
@@ -41,9 +41,9 @@ const store = useEntryFormStore(pinia);
                 </div>
 
                 <CheckboxElement v-model="store.formData.accept_privacy"
-                    title="Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten zu. *" />
+                    title="Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten zu.*" />
                 <CheckboxElement v-model="store.formData.accept_terms"
-                    title="Ich habe die Teilnahmebedingungen gelesen und akzeptiere sie. *" />
+                    title="Ich habe die Teilnahmebedingungen gelesen und akzeptiere sie.*" />
                 <CheckboxElement v-model="store.formData.permission_publish_forever"
                     title="Ich bin damit einverstanden, dass mein Text auch nach Ende des Wettbewerbs auf dieser Plattform zugänglich bleibt." />
 
