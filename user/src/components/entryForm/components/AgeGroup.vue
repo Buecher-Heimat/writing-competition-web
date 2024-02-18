@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import { useEntryFormStore, pinia } from '../../../lib/entryFormStore';
 import { checkIfAgeIsInRange, createAgeGroupString } from '../../../lib/ageGroups';
+import { watch } from 'vue';
 
 const props = defineProps<{
     ageGroup: { age_start: number | null | undefined, age_end: number | null | undefined };
 }>();
 
 const store = useEntryFormStore(pinia);
+
+watch(() => store.formData.age_author, () => {
+    if (
+        checkIfAgeIsInRange(store.formData.age_author, [props.ageGroup.age_start, props.ageGroup.age_end])) {
+        store.formData.agegroup = props.ageGroup;
+    }
+});
 </script>
 
 <template>

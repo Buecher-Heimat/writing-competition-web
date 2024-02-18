@@ -11,8 +11,8 @@ export interface PostCreationInput {
     phone: string | undefined;
     age_author: number;
     agegroup: {
-        age_start: number;
-        age_end: number;
+        age_start: number | null | undefined;
+        age_end: number | null | undefined;
     }
     permission_publish_forever: boolean;
     accept_terms: boolean;
