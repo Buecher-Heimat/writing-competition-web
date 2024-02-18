@@ -1,5 +1,5 @@
 import { createPinia, defineStore } from "pinia";
-import { fetchPrivacyCompetition, fetchRunningCompetitions, fetchWritingTips } from "./api";
+import { createPost, fetchPrivacyCompetition, fetchRunningCompetitions, fetchWritingTips } from "./api";
 import type { Competition, PrivacyCompetition, WritingTip } from "../payload";
 
 export const pinia = createPinia();
@@ -30,7 +30,7 @@ export const useEntryFormStore = defineStore({
     id: "entryForm",
     state: () => ({
         finished: false,
-        loading: true,
+        loading: false,
         warning: "",
         currentStep: JSON.parse(localStorage.getItem("currentStep") || "0") as number,
         lastStep: JSON.parse(localStorage.getItem("lastStep") || "0") as number,
@@ -90,27 +90,31 @@ export const useEntryFormStore = defineStore({
                 this.warning = "Die Schreibtipps konnten nicht geladen werden.";
             }
         },
-        submitForm() {
+        async submitForm() {
             this.loading = true;
             console.log(JSON.stringify(this.formData));
-            console.log("Form submitted!");
-            setTimeout(() => {
+            try {
+                const response = await createPost(this.formData);
+                if (response.doc?.id) {
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.finished = true;
+                        this.clearLocalStorage();
+                    }, 2000);
+                } else {
+                    throw Error("Dein Beitrag konnte nicht gespeichert werden. Bitte versuche es später erneut.");
+                }
+            } catch (error) {
                 this.loading = false;
-                this.finished = true;
-            }, 2000);
-        },
-        clearForm() {
-            this.formData = {} as PostCreationInput;
-            this.currentStep = 0;
-            this.saveToLocalStorage();
+                console.error(error);
+                this.warning = "Dein Beitrag konnte nicht gespeichert werden. Bitte versuche es später erneut.";
+            }
         },
         clearLocalStorage() {
-            localStorage.removeItem("entryForm");
-            localStorage.removeItem("currentStep");
-            localStorage.removeItem("lastStep");
-            localStorage.removeItem("highestStep");
+            localStorage.clear();
         },
         saveToLocalStorage() {
+            if (this.finished) return;
             localStorage.setItem("entryForm", JSON.stringify(this.formData));
             localStorage.setItem("currentStep", JSON.stringify(this.currentStep));
             localStorage.setItem("lastStep", JSON.stringify(this.lastStep));

@@ -1,5 +1,6 @@
 import qs from "qs";
 import type { Competition } from "../payload";
+import type { PostCreationInput } from "./entryFormStore";
 
 const BASE_URL = import.meta.env.PUBLIC_BACKEND_URL + "/api";
 
@@ -35,4 +36,23 @@ export async function fetchWritingTips() {
         BASE_URL + "/globals/writing_tips",
     );
     return await writingTipsResponse.json();
+}
+
+export async function createPost(data: PostCreationInput) {
+    const response = await fetch(
+        BASE_URL + "/posts",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to create post");
+    }
+
+    return await response.json();
 }
