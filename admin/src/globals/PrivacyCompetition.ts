@@ -1,8 +1,14 @@
 import { GlobalConfig } from "payload/types";
 import { isAdmin } from "../accessControl/isAdmin";
 
+import {
+    HTMLConverterFeature,
+    lexicalEditor,
+    lexicalHTML
+} from '@payloadcms/richtext-lexical'
+
 const PrivacyCompetition: GlobalConfig = {
-    slug: "privacy-competition",
+    slug: "privacy_competition",
     label: "Privacy statement for competitions",
     access: {
         read: () => true,
@@ -11,16 +17,17 @@ const PrivacyCompetition: GlobalConfig = {
     fields: [
         {
             name: "privacy",
-            type: "textarea",
+            type: "richText",
             label: "Privacy statement",
             required: true,
+            editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                    ...defaultFeatures,
+                    HTMLConverterFeature({}),
+                ],
+            }),
         },
-        {
-            name: "last_updated",
-            type: "date",
-            label: "Last updated",
-            required: true,
-        }
+        lexicalHTML('privacy', { name: 'privacy_html' }),
     ],
 };
 

@@ -1,6 +1,12 @@
 import { CollectionConfig } from "payload/types";
 import { isAdmin } from "../accessControl/isAdmin";
 
+import {
+    HTMLConverterFeature,
+    lexicalEditor,
+    lexicalHTML
+} from '@payloadcms/richtext-lexical'
+
 const Competitions: CollectionConfig = {
     slug: "competitions",
     admin: {
@@ -171,14 +177,21 @@ const Competitions: CollectionConfig = {
             required: true
         },
         {
-            name: "terms_and_conditions",
+            name: "terms_conditions",
             label: "Terms and conditions",
             admin: {
                 description: "The terms and conditions of the competition"
             },
-            type: "textarea",
-            required: true
-        }
+            type: "richText",
+            required: true,
+            editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                    ...defaultFeatures,
+                    HTMLConverterFeature({}),
+                ],
+            }),
+        },
+        lexicalHTML('terms_conditions', { name: 'terms_conditions_html' }),
     ]
 }
 
