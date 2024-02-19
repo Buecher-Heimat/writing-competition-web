@@ -42,7 +42,7 @@ const store = useEntryFormStore(pinia);
                 <div
                     class="w-full gap-2 mt-2 flex flex-col justify-center items-center font-sans text-bandicoot-400 font-medium">
                     <div class="w-full flex flex-col gap-1">
-                        <label for="name" class="text-bandicoot-400">Dein Name *</label>
+                        <label for="author" class="text-bandicoot-400">Dein Name *</label>
                         <input
                             class="w-full border-2 rounded-lg border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400"
                             type="text" name="name" id="author" v-model="store.formData.author">
@@ -57,7 +57,7 @@ const store = useEntryFormStore(pinia);
                         <label for="phone" class="text-bandicoot-400">Deine Telefonnummer</label>
                         <input
                             class="w-full border-2 rounded-lg border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400"
-                            type="tel" name="phone" v-model="store.formData.phone">
+                            type="tel" name="phone" id="phone" v-model="store.formData.phone">
                     </div>
                 </div>
             </div>

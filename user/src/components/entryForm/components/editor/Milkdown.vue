@@ -84,26 +84,32 @@ const toolbar = [
   {
     icon: Undo2,
     action: undo,
+    title: 'Rückgängig',
   },
   {
     icon: Redo2,
     action: redo,
+    title: 'Wiederholen',
   },
   {
     icon: Bold,
     action: toggleBold,
+    title: 'Fett',
   },
   {
     icon: Italic,
     action: toggleItalic,
+    title: 'Kursiv',
   },
   {
     icon: Code,
     action: toggleInlineCode,
+    title: 'Monospace',
   },
   {
     icon: Quote,
     action: addBlockquote,
+    title: 'Zitat',
   },
 ]
 
@@ -162,7 +168,7 @@ function focusEditor() {
   <div>
     <div class="bg-white border-bandicoot-400 w-full flex items-center flex-col overflow-hidden"
       :class="{ 'fixed top-0 left-0 bottom-0 w-screen z-50': fullscreen, 'relative h-full border-2 rounded-xl z-10': !fullscreen }">
-      <div class="absolute bottom-2 left-2 bg-bandicoot-400 text-white shadow-lg p-2 rounded-md"
+      <div class="absolute bottom-2 left-2 bg-bandicoot-400 text-white shadow-lg p-2 rounded-md" title="Zeichenanzahl"
         :class="{ 'bg-red-400': store.formData.content?.length > store.competition?.text_max_length || store.formData.content?.length < store.competition?.text_min_length }">
         {{ numberWithPoints(store.formData.content_length || 0) }} / {{
           numberWithPoints(store.competition?.text_max_length)
@@ -175,17 +181,17 @@ function focusEditor() {
           <img src="/images/logos/buecher-heimat.png" alt="Logo" class="h-8 w-auto" />
         </a>
         <div class="flex gap-2 flex-wrap">
-          <button v-for="(item, index) in toolbar" :key="index" @click.prevent="item.action"
+          <button v-for="(item, index) in toolbar" :key="index" :title="item.title" @click.prevent="item.action"
             class="p-2 hover:bg-twine-100 rounded transition-all duration-300 ease-out">
             <component :is="item.icon" :size="16" />
           </button>
         </div>
         <div class="flex gap-2 h-fit">
-          <button @click.prevent="downloadMarkdown"
+          <button @click.prevent="downloadMarkdown" title="Download als Markdown-Datei"
             class="p-2 hover:bg-twine-100 rounded transition-all duration-300 ease-out">
             <Download :size="16" />
           </button>
-          <button @click.prevent="fullscreen = !fullscreen"
+          <button @click.prevent="fullscreen = !fullscreen" title="Vollbildmodus"
             class="p-2 hover:bg-twine-100 rounded transition-all duration-300 ease-out ">
             <Maximize2 v-if="!fullscreen" :size="16" />
             <Minimize2 v-else :size="16" />

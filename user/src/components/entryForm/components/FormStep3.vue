@@ -23,7 +23,7 @@ const store = useEntryFormStore(pinia);
                     <p class="font-bold text-bandicoot-400 leading-tight">{{ description }}</p>
                 </div>
                 <div class="flex flex-col gap-5 mt-5">
-                    <DetailsElement title="Teilnahmebedingungen">
+                    <DetailsElement title="Unsere Vorgaben">
                         <div class="text-bandicoot-400 prose" v-html="store.competition?.terms_conditions_html"></div>
                     </DetailsElement>
                     <DetailsElement title="Schreibtipps">

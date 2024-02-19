@@ -21,7 +21,7 @@ watch(() => open.value, (value) => {
 
 <template>
     <div>
-        <div @click="open = true"
+        <div @click="open = true" :title="title"
             class="text-bandicoot-400 p-5 font-medium cursor-pointer bg-white border-2 border-bandicoot-400 rounded-lg gap-5 flex justify-between items-center z-10 relative">
             {{ title }}
             <Maximize2 :size="16" />
