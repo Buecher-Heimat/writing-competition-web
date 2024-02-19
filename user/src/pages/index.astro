@@ -238,9 +238,8 @@ import { ArrowRight, ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue
     >
       Die neuesten Veröffentlichungen     
     </h1>
-      <div id="cardContainer" class="flex overflow-x-auto">
-       
-        <div class="flex gap-10">
+      <div id="cardContainer" class="flex overflow-x-auto">  
+        <div class="flex gap-10 px-5 py-5">
           <PostCard
             title="Heikos Welt"
             winner={true} 
@@ -251,8 +250,7 @@ import { ArrowRight, ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue
             excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
           />
         </div>
-
-        <div class="flex gap-10">
+        <div class="flex gap-10 px-5 py-5">
           <PostCard
             title="Heikos Welt"
             winner={true} 
@@ -263,8 +261,7 @@ import { ArrowRight, ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue
             excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
           />
         </div>
-
-        <div class="flex gap-10">
+        <div class="flex gap-10 px-5 py-5">
           <PostCard
             title="Heikos Welt"
             winner={true} 
@@ -275,8 +272,7 @@ import { ArrowRight, ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue
             excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
           />
         </div>
-
-        <div class="flex gap-10">
+        <div class="flex gap-10 px-5 py-5">
           <PostCard
             title="Heikos Welt"
             winner={true} 
@@ -287,8 +283,7 @@ import { ArrowRight, ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue
             excerpt="Um das Augenlicht seiner Mutter retten zu können, braucht Heiko einiges, aber vor allem Geld. Doch er ist nicht gerade erfolgreich in seinem Leben und somit kann er die teure Operation nicht finanzieren. Doch dann trifft er auf die Unterwelt der Dart-Wettkämpfe in der Berliner Kneipenkultur. Dabei stellt sich heraus, dass er talentiert ist und schnell wird er zum Gewinner, der viel Geld gewinnt. Doch das gefällt der Unterwelt nicht, denn diese haben andere Pläne für ihn."
           />
         </div>
-
-        <div class="flex gap-10">
+       <div class="flex gap-10 px-5 py-5">
           <PostCard
             title="Heikos Welt"
             winner={true} 
@@ -300,20 +295,28 @@ import { ArrowRight, ArrowDown, Medal, Laptop, Book, FileDown } from "lucide-vue
           />
         </div>
       </div>
-
-      <h1
-      class="small-caps font-serif text-5xl font-bold text-pearl-bush-100 text-center px-36 py-14"
+    <h1
+    class="small-caps font-serif text-5xl font-bold text-pearl-bush-100 text-center py-40"
     >
-Dein Text soll auch hier stehen?
+      Dein Text soll auch hier stehen?
     </h1>
-
     <button class="mx-auto hover:bg-bandicoot-400 hover:text-twine-100 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg py-2 px-4 font-semibold text-pearl-bush-100 bg-twine-400">
       Mitmachen
       </button>
-      
-    </section>
-    
-
+      <div class="absolute w-full h-full z-0 md:hidden">
+        <img
+          class="absolute right-[15%] -top-80 lg:w-16 rotate-13"
+          src="/images/shapes/three.svg"
+          alt="Some shapes"
+        />
+        <img
+          class="absolute left-[5%] -top-48 lg:w-16 rotate-"
+          src="/images/shapes/one.svg"
+          alt="Some shapes"
+        />
+      </div>
+    </div>
+  </section>
 <section class="flex gap-10 px-10 flex-wrap py-16 bg-pearl-bush-50 justify-center items-center">
   <img src="/images/logos/buecher-heimat.png" alt="Das Logo der Bücher-Heimat" />
   <img src="/images/logos/oeffentliche.png" alt="Das Logo der Öffentlichen Versicherung Braunschweig" />
