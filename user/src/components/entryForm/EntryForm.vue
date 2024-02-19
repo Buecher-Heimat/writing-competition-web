@@ -20,7 +20,7 @@ export interface FormStep {
     description: string;
     validation?: {
         field: string;
-        message: string;
+        message: () => string;
         validate: () => boolean;
     }[];
     component: typeof FormStep1;
@@ -33,7 +33,7 @@ const form: FormStep[] = [
         validation: [
             {
                 field: '',
-                message: 'Es läuft gerade kein Wettbewerb. Schau doch später nochmal vorbei!',
+                message: () => 'Es läuft gerade kein Wettbewerb. Schau doch später nochmal vorbei!',
                 validate: () => {
                     return store.competition !== undefined && store.competition.title !== undefined;
                 }
@@ -47,7 +47,7 @@ const form: FormStep[] = [
         validation: [
             {
                 field: 'age_author',
-                message: 'Es gibt keine passende Altersgruppe für Dich! An diesem Wettbewerb kannst Du leider nicht teilnehmen.',
+                message: () => 'Es gibt keine passende Altersgruppe für Dich! An diesem Wettbewerb kannst Du leider nicht teilnehmen.',
                 validate: () => {
                     return store.competition.agegroups?.some((agegroup) => {
                         return checkIfAgeIsInRange(store.formData.age_author, [agegroup.age_start, agegroup.age_end]);
@@ -56,21 +56,21 @@ const form: FormStep[] = [
             },
             {
                 field: 'author',
-                message: 'Bitte gib Deinen Namen an!',
+                message: () => 'Bitte gib Deinen Namen an!',
                 validate: () => {
                     return store.formData.author?.length > 0;
                 }
             },
             {
                 field: 'author',
-                message: 'Dein Name ist zu lang! (max. 100 Zeichen)',
+                message: () => 'Dein Name ist zu lang! (max. 100 Zeichen)',
                 validate: () => {
                     return store.formData.author === undefined || store.formData.author?.length <= 100;
                 }
             },
             {
                 field: 'email',
-                message: 'Deine E-Mail-Adresse ist ungültig!',
+                message: () => 'Deine E-Mail-Adresse ist ungültig!',
                 validate: () => {
                     return store.formData.email?.includes('@') && store.formData.email?.length <= 250;
                 }
@@ -84,28 +84,28 @@ const form: FormStep[] = [
         validation: [
             {
                 field: 'title',
-                message: 'Bitte gib Deinem Text einen Titel!',
+                message: () => 'Bitte gib Deinem Text einen Titel!',
                 validate: () => {
                     return store.formData.title?.length > 0 && store.formData.title !== "Beispieltitel";
                 }
             },
             {
                 field: 'title',
-                message: 'Dein Titel ist zu lang! (max. 100 Zeichen)',
+                message: () => 'Dein Titel ist zu lang! (max. 100 Zeichen)',
                 validate: () => {
                     return store.formData.title === undefined || store.formData.title?.length <= 100;
                 }
             },
             {
                 field: 'content',
-                message: 'Dein Text ist zu kurz! (min. ' + store.competition?.text_min_length?.toString() + ' Zeichen)',
+                message: () => 'Dein Text ist zu kurz! (min. ' + store.competition?.text_min_length?.toString() + ' Zeichen)',
                 validate: () => {
                     return store.formData.content?.length >= store.competition?.text_min_length;
                 }
             },
             {
                 field: 'content',
-                message: 'Dein Text ist zu lang! (max. ' + store.competition?.text_max_length?.toString() + ' Zeichen)',
+                message: () => 'Dein Text ist zu lang! (max. ' + store.competition?.text_max_length?.toString() + ' Zeichen)',
                 validate: () => {
                     return store.formData.content?.length <= store.competition?.text_max_length;
                 }
@@ -120,14 +120,14 @@ const form: FormStep[] = [
         validation: [
             {
                 field: 'terms',
-                message: 'Bitte akzeptiere die Teilnahmebedingungen!',
+                message: () => 'Bitte akzeptiere die Teilnahmebedingungen!',
                 validate: () => {
                     return store.formData.accept_terms;
                 }
             },
             {
                 field: 'privacy',
-                message: 'Bitte akzeptiere die Datenschutzerklärung!',
+                message: () => 'Bitte akzeptiere die Datenschutzerklärung!',
                 validate: () => {
                     return store.formData.accept_privacy;
                 }
@@ -277,7 +277,7 @@ function getShowHints() {
                                         :key="index"
                                         class="text-white leading-tight text-sm font-medium bg-red-400 p-2 rounded-lg w-full"
                                         :class="{ 'opacity-100': showHints }">
-                                        {{ v.message }}
+                                        {{ v.message() }}
                                     </p>
                                 </TransitionGroup>
                             </div>
