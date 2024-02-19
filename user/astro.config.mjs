@@ -14,6 +14,15 @@ export default defineConfig({
       },
     },
   })],
+  redirects: {
+    '/alle-texte': '/alle-texte/1',
+    '/alletexte': '/alle-texte/1',
+    '/all-posts': '/alle-texte/1',
+    '/alle-posts': '/alle-texte/1',
+    '/beiträge': '/alle-texte/1',
+    '/alle-beiträge': '/alle-texte/1',
+    '/mitmachen': '/text-einreichen',
+  },
   output: "server",
   adapter: node({
     mode: "standalone"
