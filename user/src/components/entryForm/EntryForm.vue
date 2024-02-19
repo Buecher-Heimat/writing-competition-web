@@ -58,7 +58,7 @@ const form: FormStep[] = [
                 field: 'author',
                 message: () => 'Bitte gib Deinen Namen an!',
                 validate: () => {
-                    return store.formData.author?.length > 0;
+                    return store.formData.author?.length > 1;
                 }
             },
             {
@@ -72,7 +72,7 @@ const form: FormStep[] = [
                 field: 'email',
                 message: () => 'Deine E-Mail-Adresse ist ungültig!',
                 validate: () => {
-                    return store.formData.email?.includes('@') && store.formData.email?.length <= 250;
+                    return /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(store.formData.email) && store.formData.email?.length <= 250;
                 }
             }
         ],
@@ -202,7 +202,7 @@ function getShowHints() {
             Bildschirm und einer Tastatur einzureichen!
         </div>
         <div
-            class="w-full min-h-[80vh] bg-white rounded-3xl overflow-hidden shadow-lg relative flex flex-col transition-all duration-300 ease-out">
+            class="w-full min-h-[85vh] bg-white rounded-3xl overflow-hidden shadow-lg relative flex flex-col transition-all duration-300 ease-out">
             <Transition name="fade">
                 <div v-if="store.finished || store.loading"
                     class="absolute h-full w-full bottom-0 top-0 left-0 right-0 flex justify-center items-center bg-grey/30 backdrop-blur-sm z-[41]">
