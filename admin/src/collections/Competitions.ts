@@ -115,12 +115,12 @@ const Competitions: CollectionConfig = {
         },
         {
             name: "agegroups",
+            label: "Age groups",
             labels: {
                 singular: "Age group",
                 plural: "Age groups"
             },
             type: "array",
-            minRows: 1,
             required: true,
             fields: [
                 {
@@ -137,6 +137,7 @@ const Competitions: CollectionConfig = {
         },
         {
             name: "instruction_steps",
+            label: "Instruction steps",
             labels: {
                 singular: "Instruction step",
                 plural: "Instruction steps"

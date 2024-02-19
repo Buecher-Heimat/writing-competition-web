@@ -56,11 +56,13 @@ const Posts: CollectionConfig = {
                 {
                     name: "age_start",
                     label: "Start",
+                    required: true,
                     type: "number"
                 },
                 {
                     name: "age_end",
                     label: "End",
+                    required: true,
                     type: "number"
                 }
             ]
@@ -102,6 +104,7 @@ const Posts: CollectionConfig = {
         },
         {
             name: "competition",
+            required: true,
             label: "Competition",
             type: "relationship",
             relationTo: "competitions",
