@@ -18,6 +18,7 @@ export interface PostCreationInput {
     accept_terms: boolean;
     accept_privacy: boolean;
     content: string;
+    content_length: number;
     competition: string;
 }
 

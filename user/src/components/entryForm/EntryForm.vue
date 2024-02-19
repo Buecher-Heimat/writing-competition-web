@@ -100,14 +100,14 @@ const form: FormStep[] = [
                 field: 'content',
                 message: () => 'Dein Text ist zu kurz! (min. ' + store.competition?.text_min_length?.toString() + ' Zeichen)',
                 validate: () => {
-                    return store.formData.content?.length >= store.competition?.text_min_length;
+                    return store.formData.content_length >= store.competition?.text_min_length;
                 }
             },
             {
                 field: 'content',
                 message: () => 'Dein Text ist zu lang! (max. ' + store.competition?.text_max_length?.toString() + ' Zeichen)',
                 validate: () => {
-                    return store.formData.content?.length <= store.competition?.text_max_length;
+                    return store.formData.content_length <= store.competition?.text_max_length;
                 }
             }
         ],

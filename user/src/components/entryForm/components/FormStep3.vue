@@ -2,7 +2,6 @@
 import Editor from './editor/Milkdown.vue';
 import { MilkdownProvider } from "@milkdown/vue";
 import { pinia, useEntryFormStore } from '../../../lib/entryFormStore';
-import { ref, watch } from 'vue';
 import DetailsElement from './misc/DetailsElement.vue';
 
 const props = defineProps<{
@@ -12,19 +11,6 @@ const props = defineProps<{
 }>();
 
 const store = useEntryFormStore(pinia);
-
-const openTermsAndConditions = ref(false);
-const openWritingTips = ref(false);
-
-watch(() => openTermsAndConditions.value, (value) => {
-    if (value) {
-        document.body.style.overflow = 'hidden'
-        document.getElementById('navbar')?.style.setProperty('display', 'none', 'important')
-    } else {
-        document.body.style.overflow = 'auto'
-        document.getElementById('navbar')?.style.removeProperty('display')
-    }
-});
 </script>
 
 <template>

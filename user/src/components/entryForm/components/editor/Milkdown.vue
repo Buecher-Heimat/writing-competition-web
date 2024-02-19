@@ -24,8 +24,9 @@ const editor = useEditor((root) => {
       }))
       ctx.set(rootCtx, root)
       ctx.set(defaultValueCtx, store.formData.content)
-      ctx.get(listenerCtx).markdownUpdated((_, markdown) => {
+      ctx.get(listenerCtx).markdownUpdated((ctx, markdown) => {
         store.formData.content = markdown;
+        store.formData.content_length = document.getElementById('milkdown')?.innerText.replaceAll("\n", "").length || 0;
       });
     })
     .use(commonmark)
@@ -163,7 +164,8 @@ function focusEditor() {
       :class="{ 'fixed top-0 left-0 bottom-0 w-screen z-50': fullscreen, 'relative h-full border-2 rounded-xl z-10': !fullscreen }">
       <div class="absolute bottom-2 left-2 bg-bandicoot-400 text-white shadow-lg p-2 rounded-md"
         :class="{ 'bg-red-400': store.formData.content?.length > store.competition?.text_max_length || store.formData.content?.length < store.competition?.text_min_length }">
-        {{ numberWithPoints(store.formData.content?.length) }} / {{ numberWithPoints(store.competition?.text_max_length)
+        {{ numberWithPoints(store.formData.content_length || 0) }} / {{
+          numberWithPoints(store.competition?.text_max_length)
         }}
       </div>
 
@@ -198,7 +200,7 @@ function focusEditor() {
             {{ store.formData.title }}
           </h1>
           <hr class="m-0">
-          <Milkdown class="h-full" />
+          <Milkdown id="milkdown" class="h-full" />
           <div :class="{ 'h-40': fullscreen, 'h-20': !fullscreen }"></div>
         </div>
       </div>
