@@ -88,6 +88,13 @@ export default {
 			},
 			backgroundImage: {
 				'schreib-pattern': "url('/images/schreib-pattern.png')",
+			},
+			typography: {
+				DEFAULT: {
+					css: {
+						maxWidth: '100ch', // add required value here
+					}
+				}
 			}
 		},
 	},
