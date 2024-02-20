@@ -18,6 +18,7 @@ export interface Config {
     globals: {
         privacy_competition: PrivacyCompetition;
         writing_tips: WritingTip;
+        instruction_steps: InstructionStep;
     };
 }
 /**
@@ -48,15 +49,15 @@ export interface Post {
     email: string;
     phone?: string | null;
     age_author: number;
-    agegroup?: {
-        age_start?: number | null;
-        age_end?: number | null;
+    agegroup: {
+        age_start: number;
+        age_end: number;
     };
     permission_publish_forever: boolean;
     approved_by_organizer?: boolean | null;
     content: string;
     winner?: boolean | null;
-    competition?: (string | null) | Competition;
+    competition: string | Competition;
     updatedAt: string;
     createdAt: string;
 }
@@ -74,9 +75,9 @@ export interface Competition {
     sponsor_string?: string | null;
     sponsors?:
     | {
-        name: string;
+        name?: string | null;
         link?: string | null;
-        logo: string | Media;
+        logo?: string | Media | null;
         id?: string | null;
     }[]
     | null;
@@ -225,6 +226,20 @@ export interface WritingTip {
     }[]
     | null;
     last_updated: string;
+    updatedAt?: string | null;
+    createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "instruction_steps".
+ */
+export interface InstructionStep {
+    id: string;
+    steps: {
+        title: string;
+        description: string;
+        id?: string | null;
+    }[];
     updatedAt?: string | null;
     createdAt?: string | null;
 }
