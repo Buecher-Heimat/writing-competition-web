@@ -46,17 +46,18 @@ export interface Post {
   title: string;
   author: string;
   email: string;
+  _verified?: boolean | null;
   phone?: string | null;
   age_author: number;
-  agegroup?: {
-    age_start?: number | null;
-    age_end?: number | null;
+  agegroup: {
+    age_start: number;
+    age_end: number;
   };
   permission_publish_forever: boolean;
   approved_by_organizer?: boolean | null;
   content: string;
   winner?: boolean | null;
-  competition?: (string | null) | Competition;
+  competition: string | Competition;
   updatedAt: string;
   createdAt: string;
 }
