@@ -12,7 +12,6 @@ export function createAgeGroupString(ageGroup: [number | null | undefined, numbe
 }
 
 export function checkIfNumber(value: any): boolean {
-    console.log(value, typeof value === "number")
     return typeof value === "number";
 }
 

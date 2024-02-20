@@ -17,6 +17,7 @@ export interface Config {
     };
     globals: {
         privacy_competition: PrivacyCompetition;
+        privacy_website: PrivacyWebsite;
         writing_tips: WritingTip;
         instruction_steps: InstructionStep;
     };
@@ -193,6 +194,31 @@ export interface PayloadMigration {
  * via the `definition` "privacy_competition".
  */
 export interface PrivacyCompetition {
+    id: string;
+    privacy: {
+        root: {
+            children: {
+                type: string;
+                version: number;
+                [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            type: string;
+            version: number;
+        };
+        [k: string]: unknown;
+    };
+    privacy_html?: string | null;
+    updatedAt?: string | null;
+    createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy_website".
+ */
+export interface PrivacyWebsite {
     id: string;
     privacy: {
         root: {

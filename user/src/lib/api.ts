@@ -1,5 +1,5 @@
 import qs from "qs";
-import type { Competition, InstructionStep, Post } from "../payload";
+import type { Competition, InstructionStep, Post, PrivacyCompetition, PrivacyWebsite, WritingTip } from "../payload";
 import type { PostCreationInput } from "./entryFormStore";
 
 const BASE_URL = import.meta.env.PUBLIC_BACKEND_URL + "/api";
@@ -36,14 +36,21 @@ export async function fetchPrivacyCompetition() {
     const privacyResponse = await fetch(
         BASE_URL + "/globals/privacy_competition",
     );
-    return await privacyResponse.json();
+    return await privacyResponse.json() as PrivacyCompetition;
+}
+
+export async function fetchPrivacyWebsite() {
+    const privacyResponse = await fetch(
+        BASE_URL + "/globals/privacy_website",
+    );
+    return await privacyResponse.json() as PrivacyWebsite;
 }
 
 export async function fetchWritingTips() {
     const writingTipsResponse = await fetch(
         BASE_URL + "/globals/writing_tips",
     );
-    return await writingTipsResponse.json();
+    return await writingTipsResponse.json() as WritingTip;
 }
 
 export async function fetchInstructionSteps() {
