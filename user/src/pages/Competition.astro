@@ -1,4 +1,6 @@
 ---
+import qs from "qs";
+
 type AgeGroup = [number, number?];
 
 const ageGroups: AgeGroup[] = [[16, 21], [22, 28], [29, 40], [41, 60], [61]];
@@ -11,6 +13,68 @@ import PostCard from "../components/PostCard.astro";
 import Layout from "../layouts/Layout.astro";
 
 import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
+
+// ----- FETCH DATA -----
+
+// Get the last part of the path
+const { page } = Astro.params;
+
+const url = Astro.request.url;
+const queryParams = qs.parse(url.split("?")[1]);
+
+// GET COMPETITION DATA
+const competitionsResponse = await fetch(
+  import.meta.env.PUBLIC_BACKEND_URL + "/api/competitions/" + queryParams.id
+);
+
+const competitionData = await competitionsResponse.json();
+
+// GET POSTS
+const query = {
+  "competition.title": {
+    equals: competitionData.title,
+  },
+};
+
+const stringifiedQuery = qs.stringify({
+  where: query,
+});
+
+const postsResponse = await fetch(
+  import.meta.env.PUBLIC_BACKEND_URL + "/api/posts?" + stringifiedQuery
+);
+
+let posts = (await postsResponse.json()).docs;
+
+posts = posts.slice(0, 6);
+
+if (posts.length < 6) {
+  posts = posts.slice(0, 3);
+}
+
+// GET MEDIA
+
+// Get Hero Image
+const heroImageResponse = await fetch(
+  import.meta.env.PUBLIC_BACKEND_URL +
+    "/api/media/" +
+    competitionData.image_hero
+);
+
+const heroImage = await heroImageResponse.json();
+
+console.log("Hero Image:" + competitionData.image_hero.url);
+
+// Get Sponsor Logo(s)
+let sponsorLogos: any[] = [];
+
+console.log("Sponsors:" + competitionData.sponsors);
+
+competitionData.sponsors.forEach(async (sponsor: any) => {
+  sponsorLogos.push(sponsor.logo);
+});
+
+console.log("Logos:" + sponsorLogos);
 ---
 
 <Layout title="Schreibwettbewerbe Bad Harzburg">
@@ -51,13 +115,12 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
         <h1
           class="text-twine-400 font-bold font-serif small-caps text-8xl 2xl:text-center lg:text-6xl leading-[6rem]"
         >
-          Buchstaben im Kopf
+          {competitionData.title}
         </h1>
         <h2
           class="text-3xl lg:text-2xl font-bold small-caps text-bandicoot-400 mt-3 2xl:text-center leading-8"
         >
-          Ein Schreibwettbewerb in Kooperation mit der Öffentlichen Versicherung
-          Braunschweig
+          {competitionData.sponsor_string}
         </h2>
         <div
           class="flex flex-row md:flex-col justify-between 2xl:justify-evenly md:items-center gap-2"
@@ -68,9 +131,12 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
             </h3>
             <ul class="flex flex-wrap md:justify-center gap-1">
               {
-                ageGroups.map(([min, max]) => (
+                competitionData.agegroups.map((agegroup: any) => (
                   <li class="w-24 h-8 border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400 flex justify-center items-center">
-                    {max ? `${min}-${max}` : `${min}+`} Jahre
+                    {agegroup.age_end
+                      ? `${agegroup.age_end}-${agegroup.age_start}`
+                      : `${agegroup.age_start}+`}{" "}
+                    Jahre
                   </li>
                 ))
               }
@@ -83,9 +149,9 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
             <div
               class="h-8 bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50 justify-center items-center"
             >
-              {startDate.toLocaleDateString("de-DE")}
+              {new Date(competitionData.date_start).toLocaleDateString("de-DE")}
               <span class="font-thin">bis</span>
-              {endDate.toLocaleDateString("de-DE")}
+              {new Date(competitionData.date_end).toLocaleDateString("de-DE")}
             </div>
           </div>
         </div>
@@ -133,30 +199,16 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
         </span>
       </h1>
       <div class="grid grid-cols-2 lg:grid-cols-1 gap-8 z-10 relative">
-        <GuideStep
-          title="Such Dir ein Thema aus"
-          number={1}
-          description="Über welches Thema Du schreibst, darfst Du Dir aussuchen. Egal, ob es um eine fantastische Geschichte, eine romantische Liebeserzählung oder ein gesellschaftskritisches Essay geht - es hängt nicht davon ab, ob das gewählte Thema populär ist oder den aktuellen Trends entspricht. Was zählt, ist die Originalität und die Fähigkeit, die Leser zu fesseln."
-          textColor="text-pearl-bush-100"
-        />
-        <GuideStep
-          title="Schreibe den Text"
-          number={2}
-          description="Auch hier hast Du die volle Freiheit. Die einzigen Vorgaben sind, dass der Text natürlich bisher noch nicht veröffentlicht worden sein darf, auf Deutsch verfasst sein muss und die Länge von 3 Seiten A4, Arial 12 Pkt nicht überschreiten sollte."
-          textColor="text-pearl-bush-100"
-        />
-        <GuideStep
-          title="Reiche den Text ein"
-          number={3}
-          description="Bis Du den Text hier auf der Online-Plattform einreichen kannst, dauert es noch ein bisschen. Wenn Du ihn unbedingt loswerden möchtest, kannst Du uns eine E-Mail mit dem Text an info@die-buecher-heimat.de senden. Mit der Einreichung stimmst Du zu, dass Dein Text hier und eventuell in einem Buch veröffentlicht wird. Wenn Du unter 18 Jahre alt bist, müssen das Deine  Eltern noch schriftlich bestätigen."
-          textColor="text-pearl-bush-100"
-        />
-        <GuideStep
-          title="Profit"
-          number={4}
-          description="Jetzt heißt es warten, bis unsere Jury aus Vertreterinnen und Vertretern der Öffentliche Versicherung Braunschweig, der Bad-Harzburg-Stiftung, der Bücher-Heimat gGmbH Bad Harzburg, der Harzburger Aktion und der Stadtbücherei Bad Harzburg die Gewinner kührt. Aus jeder Altersgruppe werden drei Siegerinnen oder Sieger ausgewählt. Die Texte der Gewinner werden in einem Buch veröffentlicht, der oder die Erstplatzierte erhält zusätzlich einen Sachpreis."
-          textColor="text-pearl-bush-100"
-        />
+        {
+          competitionData.instruction_steps.map((step: any, index: number) => (
+            <GuideStep
+              title={step.title}
+              number={index + 1}
+              description={step.description}
+              textColor="text-pearl-bush-100"
+            />
+          ))
+        }
       </div>
     </section>
     <section class="w-screen relative">
@@ -201,60 +253,19 @@ import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
         <div
           class="grid grid-cols-3 2xl:grid-cols-2 lg:grid-cols-1 gap-6 justify-items-center"
         >
-          <PostCard
-            title="Die Geschichte von der kleinen Maus"
-            winner={false}
-            author="Max Mustermann"
-            date={new Date("2024-01-02")}
-            competition="Buchstaben im Kopf"
-            ageGroup={[41, 60]}
-            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden. Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
-          />
-          <PostCard
-            title="Die Geschichte von der kleinen Maus"
-            winner={false}
-            author="Max Mustermann"
-            date={new Date("2024-01-02")}
-            competition="Buchstaben im Kopf"
-            ageGroup={[41, 60]}
-            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
-          />
-          <PostCard
-            title="Die Geschichte von der kleinen Maus"
-            winner={false}
-            author="Max Mustermann"
-            date={new Date("2024-01-02")}
-            competition="Buchstaben im Kopf"
-            ageGroup={[41, 60]}
-            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
-          />
-          <PostCard
-            title="Die Geschichte von der kleinen Maus"
-            winner={false}
-            author="Max Mustermann"
-            date={new Date("2024-01-02")}
-            competition="Buchstaben im Kopf"
-            ageGroup={[41, 60]}
-            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
-          />
-          <PostCard
-            title="Die Geschichte von der kleinen Maus"
-            winner={false}
-            author="Max Mustermann"
-            date={new Date("2024-01-02")}
-            competition="Buchstaben im Kopf"
-            ageGroup={[41, 60]}
-            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
-          />
-          <PostCard
-            title="Die Geschichte von der kleinen Maus"
-            winner={false}
-            author="Max Mustermann"
-            date={new Date("2024-01-02")}
-            competition="Buchstaben im Kopf"
-            ageGroup={[41, 60]}
-            excerpt="Es war einmal eine kleine Maus, die lebte in einem kleinen Loch in einer alten Scheune. Sie war sehr neugierig und wollte immer alles wissen. Eines Tages hörte sie von einem großen Käseberg, der irgendwo in der Nähe sein sollte. Sie machte sich auf den Weg, um ihn zu finden."
-          />
+          {
+            posts.map((post: any) => (
+              <PostCard
+                title={post.title}
+                winner={post.winner}
+                author={post.author}
+                competition={post.competition.title}
+                ageGroup={[post.agegroup.age_start, post.agegroup.age_end]}
+                date={new Date(post.createdAt)}
+                excerpt={post.content}
+              />
+            ))
+          }
         </div>
         <div class="flex justify-end lg:justify-center mt-14">
           <button
