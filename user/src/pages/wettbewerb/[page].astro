@@ -1,47 +1,55 @@
 ---
 import qs from "qs";
 
-type AgeGroup = [number, number?];
-
-const ageGroups: AgeGroup[] = [[16, 21], [22, 28], [29, 40], [41, 60], [61]];
-
-const startDate: Date = new Date("2024-01-02");
-const endDate: Date = new Date("2024-05-30");
-
-import GuideStep from "../components/GuideStep.astro";
-import PostCard from "../components/PostCard.astro";
-import Layout from "../layouts/Layout.astro";
+import GuideStep from "../../components/GuideStep.astro";
+import PostCard from "../../components/PostCard.astro";
+import Layout from "../../layouts/Layout.astro";
 
 import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
+import { Console } from "console";
 
 // ----- FETCH DATA -----
 
 // Get the last part of the path
-const { page } = Astro.params;
-
-const url = Astro.request.url;
-const queryParams = qs.parse(url.split("?")[1]);
+// const { page } = Astro.params;
 
 // GET COMPETITION DATA
+const url = Astro.request.url;
+const competitionTitle = url.split("/").pop().replace(/-/g, " ");
+
+const competitionQuery = {
+  title: {
+    like: competitionTitle,
+  },
+};
+
+const stringifiedCompetitionQuery = qs.stringify({
+  where: competitionQuery,
+});
+
 const competitionsResponse = await fetch(
-  import.meta.env.PUBLIC_BACKEND_URL + "/api/competitions/" + queryParams.id
+  import.meta.env.PUBLIC_BACKEND_URL +
+    "/api/competitions?" +
+    stringifiedCompetitionQuery
 );
 
-const competitionData = await competitionsResponse.json();
+const competitionData = (await competitionsResponse.json()).docs[0];
+
+console.log(competitionData);
 
 // GET POSTS
-const query = {
+const postQuery = {
   "competition.title": {
     equals: competitionData.title,
   },
 };
 
-const stringifiedQuery = qs.stringify({
-  where: query,
+const stringifiedPostQuery = qs.stringify({
+  where: postQuery,
 });
 
 const postsResponse = await fetch(
-  import.meta.env.PUBLIC_BACKEND_URL + "/api/posts?" + stringifiedQuery
+  import.meta.env.PUBLIC_BACKEND_URL + "/api/posts?" + stringifiedPostQuery
 );
 
 let posts = (await postsResponse.json()).docs;
@@ -52,29 +60,14 @@ if (posts.length < 6) {
   posts = posts.slice(0, 3);
 }
 
-// GET MEDIA
+// GET WRITING TIPS
 
-// Get Hero Image
-const heroImageResponse = await fetch(
-  import.meta.env.PUBLIC_BACKEND_URL +
-    "/api/media/" +
-    competitionData.image_hero
+const guideResponse = await fetch(
+  import.meta.env.PUBLIC_BACKEND_URL + "/api/globals/writing_tips"
 );
 
-const heroImage = await heroImageResponse.json();
-
-console.log("Hero Image:" + competitionData.image_hero.url);
-
-// Get Sponsor Logo(s)
-let sponsorLogos: any[] = [];
-
-console.log("Sponsors:" + competitionData.sponsors);
-
-competitionData.sponsors.forEach(async (sponsor: any) => {
-  sponsorLogos.push(sponsor.logo);
-});
-
-console.log("Logos:" + sponsorLogos);
+const tips = (await guideResponse.json()).tips;
+console.log(tips);
 ---
 
 <Layout title="Schreibwettbewerbe Bad Harzburg">
@@ -105,9 +98,10 @@ console.log("Logos:" + sponsorLogos);
         />
       </div>
       <img
-        class="min-w-[36rem] h-[36rem] md:min-w-[24rem] md:h-[24rem] rounded-2xl shadow-2xl object-cover"
-        src="/images/baustelle.png"
-        alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
+        class="w-[36rem] h-[36rem] md:w-[24rem] md:h-[24rem] rounded-2xl shadow-2xl object-cover"
+        src={import.meta.env.PUBLIC_BACKEND_URL +
+          competitionData.image_hero.url}
+        alt={competitionData.image_hero.alt}
       />
       <div
         class="w-[46rem] 2xl:w-full h-[36rem] 2xl:h-full py-4 flex flex-col justify-between 2xl:gap-8"
@@ -158,36 +152,42 @@ console.log("Logos:" + sponsorLogos);
         <div
           class="flex flex-row md:flex-col 2xl:justify-center items-center gap-2"
         >
-          <button
-            class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
-          >
-            Mitmachen
-            <FileUp size="1.5rem" />
-          </button>
-          <button
-            class="w-52 hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 justify-evenly"
-          >
-            Mehr erfahren
-            <ArrowDown size="1.5rem" />
-          </button>
+          <a href="/text-einreichen">
+            <button
+              class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
+            >
+              Mitmachen
+              <FileUp size="1.5rem" />
+            </button>
+          </a>
+          <a href="#so-gehts">
+            <button
+              class="w-52 hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 justify-evenly"
+            >
+              Mehr erfahren
+              <ArrowDown size="1.5rem" />
+            </button>
+          </a>
         </div>
       </div>
     </section>
     <section
-      class="w-screen bg-white flex flex-wrap items-center justify-center py-8 px-8"
+      class="w-screen bg-white flex flex-wrap items-center justify-center py-8 px-8 gap-8"
     >
-      <img
-        class="h-18"
-        src="/images/logos/oeffentliche.png"
-        alt="Das Logo der Öffentlichen Versicherung Braunschweig"
-      />
-      <img
-        class="h-18"
-        src="/images/logos/oeffentliche.png"
-        alt="Das Logo der Öffentlichen Versicherung Braunschweig"
-      />
+      {
+        competitionData.sponsors.map((sponsor: any) => (
+          <a href={sponsor.link}>
+            <img
+              class="h-18"
+              src={import.meta.env.PUBLIC_BACKEND_URL + sponsor.logo.url}
+              alt={sponsor.logo.alt}
+            />
+          </a>
+        ))
+      }
     </section>
     <section
+      id="so-gehts"
       class="w-screen bg-bandicoot-400 pl-36 pr-52 py-20 xl:pl-20 xl:pr-36 md:pl-12 md:pr-28"
     >
       <h1
@@ -268,12 +268,14 @@ console.log("Logos:" + sponsorLogos);
           }
         </div>
         <div class="flex justify-end lg:justify-center mt-14">
-          <button
-            class="w-fit hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 bg-pearl-bush-100 justify-evenly"
-          >
-            Alle Texte
-            <ArrowRight size="1.5rem" />
-          </button>
+          <a href="/alle-texte">
+            <button
+              class="w-fit hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 bg-pearl-bush-100 justify-evenly"
+            >
+              Alle Texte
+              <ArrowRight size="1.5rem" />
+            </button>
+          </a>
         </div>
       </div>
     </section>
@@ -290,29 +292,7 @@ console.log("Logos:" + sponsorLogos);
           </span>
         </h1>
         <div class="flex flex-col gap-6 text-pearl-bush-100">
-          <span
-            >Überlege Dir, in welcher Zeit (Gegenwart oder Vergangenheit) und
-            aus welcher Erzählperspektive (aus der Ich-Perspektive oder lieber
-            in der dritten Person - er, sie -) Du schreiben möchtest. Versuche
-            es ruhig auf unterschiedliche Arten und schau, was Dir mehr liegt.</span
-          >
-          <span
-            >Wähle einen Inhalt, der Dir wirklich am Herzen liegt, man wird
-            Deiner Geschichte anmerken, wenn Du voll hinter ihr stehst. Bedenke
-            bei der Wahl Deiner Überschrift, dass sie neugierig auf Deine
-            Geschichte machen sollte und zum Inhalt passt.</span
-          >
-          <span
-            >Achte darauf, dass Du keine Begriffe verwendest, die Du nicht
-            wirklich kennst. Achte auf die korrekte Verwendung von Zeiten, falls
-            Du unterschiedliche Zeitebenen benutzt.</span
-          >
-          <span
-            >Lass ein Rechtschreibprogramm Deine Geschichte prüfen und dann eine
-            oder besser mehrere Personen aus Deinem Umfeld den Text lesen und
-            auf Verständlichkeit und nochmals Rechtschreibung korrigieren (das
-            macht auch jede*r bekannte Autor*in).</span
-          >
+          {tips.map((tip: any) => <span>{tip.tip}</span>)}
         </div>
       </div>
       <div class="flex items-center justify-center">
@@ -362,11 +342,13 @@ console.log("Logos:" + sponsorLogos);
         >
           Worauf wartest Du noch?!
         </h1>
-        <button
-          class="w-80 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
-        >
-          Mitmachen
-        </button>
+        <a href="/text-einreichen">
+          <button
+            class="w-80 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
+          >
+            Mitmachen
+          </button>
+        </a>
       </div>
     </section>
   </main>
