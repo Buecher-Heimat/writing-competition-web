@@ -32,6 +32,27 @@ export async function fetchRunningCompetitions() {
     return competitionsData.docs as Competition[];
 }
 
+export async function fetchPostByTitle(urlEncodedTitle: string) {
+    const unEncodedTitle = decodeURIComponent(urlEncodedTitle.replaceAll("-", " "));
+    const query = qs.stringify(
+        {
+            where: {
+                title: {
+                    equals: unEncodedTitle,
+                }
+            }
+        },
+        {
+            addQueryPrefix: true,
+        }
+    )
+    const postResponse = await fetch(
+        BASE_URL + "/posts" + query,
+    );
+    const postData = await postResponse.json();
+    return postData.docs[0] as Post;
+}
+
 export async function fetchPrivacyCompetition() {
     const privacyResponse = await fetch(
         BASE_URL + "/globals/privacy_competition",

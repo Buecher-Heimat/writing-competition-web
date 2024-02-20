@@ -1,0 +1,159 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Trophy, Mail } from "lucide-vue-next";
+import { Facebook } from "lucide-vue-next";
+import { Twitter } from "lucide-vue-next";
+import { marked } from "marked";
+import DOMPurify from "isomorphic-dompurify";
+import { fetchPostByTitle } from "../../lib/api";
+import type { Competition } from "../../payload";
+import { createAgeGroupString } from "../../lib/ageGroups";
+
+const { page } = Astro.params;
+
+if (!page || page.length === 0) {
+    return Astro.redirect("/alle-texte/");
+}
+
+const post = await fetchPostByTitle(page);
+
+if (!post) {
+    return Astro.redirect("/404");
+}
+
+const content = DOMPurify.sanitize(await marked(post.content));
+
+//TODO: SLUGs austauschen
+const shareButtons = [
+    {
+        label: "Email",
+        Icon: Mail,
+
+        link: `mailto:?subject=${(post.competition as Competition)?.title}&body=${post.title} - ${post.author} - https://schreiben.die-buecherheimat.de/texte/${post.title}`,
+    },
+    {
+        label: "Facebook",
+        Icon: Facebook,
+        link: `https://www.facebook.com/sharer/sharer.php?u=https://schreiben.die-buecherheimat.de/texte/${post.title}`,
+    },
+    {
+        label: "Twitter",
+        Icon: Twitter,
+        link: `https://twitter.com/intent/tweet?text=${(post.competition as Competition)?.title}&url=https://schreiben.die-buecherheimat.de/texte/${post.title}`,
+    },
+];
+---
+
+<Layout title={post.title}>
+    <div class="absolute w-full h-full z-0 md:hidden">
+        <img
+            class="absolute right-0 top-[50%] lg:w-28"
+            src="/images/shapes/three.svg"
+            alt="Shapes"
+        />
+        <img
+            class="absolute left-[8%] top-[30%] lg:w-16"
+            src="/images/shapes/two1.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute left-[-4%] bottom-0 lg:w-28 -rotate-45"
+            src="/images/shapes/three.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute left-[20%] -bottom-20 lg:w-28 rotate-45"
+            src="/images/shapes/three.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute right-[20%] -bottom-20 lg:w-28 rotate-180"
+            src="/images/shapes/three.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute right-[50%] bottom-5 lg:w-10 rotate-12"
+            src="/images/shapes/one.svg"
+            alt="Some shapes"
+        />
+        <img
+            class="absolute right-0 top-[50%] lg:w-28"
+            src="/images/shapes/three.svg"
+            alt="Shapes"
+        />
+    </div>
+    <section class="pt-32 md:pt-20 w-full flex justify-center z-10">
+        <div
+            class="bg-pearl-bush-50 md:bg-transparent p-8 xs:p-4 rounded-2xl max-w-3xl w-full"
+        >
+            <h3 class="text-bandicoot-400 font-semibold">
+                {(post.competition as Competition)?.title}
+            </h3>
+            <h2 class="text-bandicoot-400 font-bold text-3xl small-caps mb-3">
+                {post.author}
+            </h2>
+            <h1
+                class="text-twine-400 font-bold text-5xl small-caps font-serif xs:text-4xl"
+            >
+                {post.title}
+            </h1>
+            <div class="flex py-8 gap-3">
+                <div
+                    class="bg-bandicoot-400 font-medium text-sm text-pearl-bush-50 rounded-lg px-3 py-1 flex items-center"
+                >
+                    {
+                        new Date(post.createdAt).toLocaleDateString("de-DE", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })
+                    }
+                </div>
+                <div
+                    class="rounded-lg px-3 py-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm"
+                >
+                    {
+                        createAgeGroupString([
+                            post.agegroup.age_start,
+                            post.agegroup.age_end,
+                        ])
+                    } Jahre
+                </div>
+                <div
+                    class="rounded-lg px-3 py-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm"
+                >
+                    <Trophy class="w-4 h-4 text-twine-400" />
+                </div>
+            </div>
+            <div set:html={content} class="prose font-serif" />
+            <div class="flex gap-3 mt-5">
+                {
+                    shareButtons.map(({ label, Icon, link }) => (
+                        <a href={link} title={label}>
+                            <button class="rounded-lg p-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm">
+                                <Icon class="w-5 h-5 text-bandicoot-400" />
+                            </button>
+                        </a>
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+    <section class="z-10 w-full flex justify-center lg:px-8 xs:p-4">
+        <div
+            class="bg-bandicoot-400 p-10 py-14 w-full rounded-2xl max-w-3xl flex flex-col items-center my-10 z-10"
+        >
+            <h2
+                class="max-w-lg text-center font-serif font-semibold text-pearl-bush-100 text-4xl small-caps mb-10"
+            >
+                Dein Text soll auch hier stehen?
+            </h2>
+            <a href="/text-einreichen" class="w-full max-w-xs z-10">
+                <button
+                    class="p-3 font-semibold font-serif text-pearl-bush-50 bg-twine-400 rounded-lg w-full"
+                    >Mitmachen</button
+                >
+            </a>
+        </div>
+    </section>
+</Layout>
