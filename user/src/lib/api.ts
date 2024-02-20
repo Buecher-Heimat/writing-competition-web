@@ -1,8 +1,16 @@
 import qs from "qs";
-import type { Competition } from "../payload";
+import type { Competition, InstructionStep, Post } from "../payload";
 import type { PostCreationInput } from "./entryFormStore";
 
 const BASE_URL = import.meta.env.PUBLIC_BACKEND_URL + "/api";
+
+export async function fetchCompetitions(limit: number = 10) {
+    const competitionsResponse = await fetch(
+        BASE_URL + "/competitions?limit=" + limit + "&depth=3&sort=-date_start",
+    );
+    const competitionsData = await competitionsResponse.json();
+    return competitionsData.docs as Competition[];
+}
 
 export async function fetchRunningCompetitions() {
     const query = qs.stringify(
@@ -36,6 +44,21 @@ export async function fetchWritingTips() {
         BASE_URL + "/globals/writing_tips",
     );
     return await writingTipsResponse.json();
+}
+
+export async function fetchInstructionSteps() {
+    const instructionStepsResponse = await fetch(
+        BASE_URL + "/globals/instruction_steps",
+    );
+    return await instructionStepsResponse.json() as InstructionStep;
+}
+
+export async function fetchRecentPosts(limit: number = 10) {
+    const recentPostsResponse = await fetch(
+        BASE_URL + "/posts?sort=-date_created&limit=" + limit,
+    );
+    const recentPostsData = await recentPostsResponse.json();
+    return recentPostsData.docs as Post[];
 }
 
 export async function createPost(data: PostCreationInput) {

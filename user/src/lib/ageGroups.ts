@@ -1,14 +1,19 @@
 export function createAgeGroupString(ageGroup: [number | null | undefined, number | null | undefined]): string {
-    if (ageGroup[0] && (ageGroup[1] === null || ageGroup[1] === undefined)) {
+    if (checkIfNumber(ageGroup[0]) && !checkIfNumber(ageGroup[1])) {
         return `${ageGroup[0]}+`;
     }
     if (ageGroup[0] === ageGroup[1]) {
         return `${ageGroup[0]}`;
     }
-    if ((ageGroup[0] === null || ageGroup[1] === undefined) && ageGroup[1]) {
+    if (!checkIfNumber(ageGroup[0]) && checkIfNumber(ageGroup[1])) {
         return `bis ${ageGroup[1]}`;
     }
     return `${ageGroup[0]}-${ageGroup[1]}`;
+}
+
+export function checkIfNumber(value: any): boolean {
+    console.log(value, typeof value === "number")
+    return typeof value === "number";
 }
 
 export function checkIfAgeIsInRange(age: number, ageGroup: [number | null | undefined, number | null | undefined]): boolean {
