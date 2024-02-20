@@ -12,6 +12,8 @@ import Media from './collections/Media'
 
 import PrivacyCompetition from './globals/PrivacyCompetition'
 import WritingTips from './globals/WritingTips'
+import InstructionSteps from './globals/InstructionSteps'
+import PrivacyWebsite from './globals/PrivacyWebsite'
 
 export default buildConfig({
   admin: {
@@ -28,7 +30,9 @@ export default buildConfig({
   ],
   globals: [
     PrivacyCompetition,
-    WritingTips
+    PrivacyWebsite,
+    WritingTips,
+    InstructionSteps
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
