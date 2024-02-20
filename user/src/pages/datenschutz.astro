@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { fetchPrivacyWebsite } from "../lib/api";
+
+const privacy = await fetchPrivacyWebsite();
+const html = privacy.privacy_html;
+---
+
+<Layout title="Datenschutzerklärung">
+    <section class="w-full max-w-2xl mx-auto px-4s sm:px-6 lg:px-8 py-12 mt-10">
+        <div>
+            {
+                new Date(privacy.updatedAt || "").toLocaleDateString("de-DE", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                })
+            }
+        </div>
+        <h1 class="font-serif font-bold text-2xl mb-5">Datenschutzerklärung</h1>
+        <div set:html={html} class="prose" />
+    </section>
+</Layout>

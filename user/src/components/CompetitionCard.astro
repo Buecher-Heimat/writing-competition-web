@@ -1,43 +1,55 @@
 ---
-type AgeGroup = [number, number?];
+import { createAgeGroupString } from "../lib/ageGroups";
+
+type AgeGroup = [number | null | undefined, number | null | undefined];
 
 interface Props {
   title: string;
-  subtitle: string;
+  subtitle: string | null | undefined;
   startDate: Date;
   endDate: Date;
   ageGroups: AgeGroup[];
-  imageUri: string;
+  imageUri: string | null | undefined;
 }
 
 const { title, startDate, endDate, ageGroups, imageUri, subtitle } =
   Astro.props;
+
+const competitionString = () => {
+  const now = new Date();
+  if (startDate > now) {
+    return "Nächster Wettbewerb";
+  } else if (endDate < now) {
+    return "Letzter Wettbewerb";
+  } else {
+    return "Aktueller Wettbewerb";
+  }
+};
 ---
 
-<div
-  class="@container flex flex-row w-full bg-pearl-bush-50 p-5 rounded-2xl shadow-xl gap-5"
+<a
+  href={`/wettbewerb/${title.toLowerCase().replace(/\s/g, "-")}`}
+  class="@container flex flex-col w-full bg-pearl-bush-50 p-5 rounded-2xl shadow-xl gap-2 hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out"
 >
-  <!-- <div class="w-1/3 @lg:w-1/4 hidden @md:flex items-center">
+  <div>
     <div
-      class="w-full aspect-square bg-white bg-opacity-60 rounded-full flex items-center justify-center"
+      class="mb-1 flex justify-between items-center flex-wrap-reverse gap-y-2"
     >
+      <h1 class="font-serif text-2xl font-bold text-bandicoot-500 small-caps">
+        {title}
+      </h1>
       <div
-        class="w-[80%] p-2 overflow-hidden aspect-square bg-white rounded-full flex items-center justify-center"
+        class="font-semibold uppercase text-[0.62rem] px-2 text-white bg-twine-400 rounded-full"
       >
-        <img src={imageUri} />
+        {competitionString()}
       </div>
     </div>
-  </div> -->
-  <div>
-    <h1
-      class="font-serif text-2xl font-bold text-bandicoot-500 small-caps mb-1"
-    >
-      {title}
-    </h1>
     <h2 class="text-bandicoot-400 text-sm font-medium font-serif mb-2">
       {subtitle}
     </h2>
-    <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2">Zeitraum</h3>
+  </div>
+  <div class="mb-2">
+    <h3 class="text-bandicoot-400 font-bold text-sm mb-2">Zeitraum</h3>
     <div
       class="bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50"
     >
@@ -45,19 +57,18 @@ const { title, startDate, endDate, ageGroups, imageUri, subtitle } =
       <span class="font-thin">bis</span>
       {endDate.toLocaleDateString("de-DE")}
     </div>
-
-    <h3 class="text-bandicoot-400 font-bold text-sm mt-5 mb-2">
-      Altersgruppen
-    </h3>
+  </div>
+  <div>
+    <h3 class="text-bandicoot-400 font-bold text-sm mb-2">Altersgruppen</h3>
 
     <ul class="flex flex-wrap gap-2">
       {
         ageGroups.map(([min, max]) => (
           <li class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400">
-            {max ? `${min}-${max}` : `${min}+`} Jahre
+            {createAgeGroupString([min, max])} Jahre
           </li>
         ))
       }
     </ul>
   </div>
-</div>
+</a>

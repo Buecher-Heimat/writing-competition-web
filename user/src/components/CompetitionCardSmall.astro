@@ -1,0 +1,80 @@
+---
+import { createAgeGroupString } from "../lib/ageGroups";
+
+type AgeGroup = [number | null | undefined, number | null | undefined];
+
+interface Props {
+  title: string;
+  subtitle: string | null | undefined;
+  startDate: Date;
+  endDate: Date;
+  ageGroups: AgeGroup[];
+  imageUri: string | null | undefined;
+}
+
+const { title, startDate, endDate, ageGroups, imageUri, subtitle } =
+  Astro.props;
+
+const competitionString = () => {
+  const now = new Date();
+  if (startDate > now) {
+    return "Nächster Wettbewerb";
+  } else if (endDate < now) {
+    return "Letzter Wettbewerb";
+  } else {
+    return "Aktueller Wettbewerb";
+  }
+};
+---
+
+<a
+  href={`/wettbewerb/${title.toLowerCase().replace(/\s/g, "-")}`}
+  class="@container flex flex-col w-[21rem] lg:w-80 sm:w-full bg-pearl-bush-50 p-5 rounded-2xl shadow-xl gap-3 hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out"
+>
+  <div class="flex justify-center">
+    <div
+      class="font-semibold uppercase text-[0.62rem] px-2 text-white bg-twine-400 rounded-full"
+    >
+      {competitionString()}
+    </div>
+  </div>
+  <div class="mb-2">
+    <h1
+      class="font-serif text-xl font-semibold text-bandicoot-500 small-caps mb-2 text-center"
+    >
+      {title}
+    </h1>
+    <h2 class="text-bandicoot-400 text-sm font-medium font-serif text-center">
+      {subtitle}
+    </h2>
+  </div>
+  <div class="mb-2">
+    <h3 class="text-bandicoot-400 font-bold text-sm mb-2">Zeitraum</h3>
+    <div
+      class="bg-bandicoot-400 flex gap-2 rounded-md w-[fit-content] px-2 py-1 font-semibold text-pearl-bush-50"
+    >
+      {startDate.toLocaleDateString("de-DE")}
+      <span class="font-thin">bis</span>
+      {endDate.toLocaleDateString("de-DE")}
+    </div>
+  </div>
+  <div>
+    <h3 class="text-bandicoot-400 font-bold text-sm mb-2">Altersgruppen</h3>
+
+    <ul class="flex flex-wrap gap-2">
+      {
+        ageGroups.map(([min, max]) => (
+          <li class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400">
+            {createAgeGroupString([min, max])} Jahre
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <button
+    class="w-full p-2 bg-bandicoot-400 text-white font-serif rounded-lg mt-3 hover:bg-bandicoot-500 transition-colors duration-300 ease-in-out"
+  >
+    Weitere Infos
+  </button>
+</a>
