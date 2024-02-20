@@ -17,7 +17,9 @@ export interface Config {
   };
   globals: {
     privacy_competition: PrivacyCompetition;
+    privacy_website: PrivacyWebsite;
     writing_tips: WritingTip;
+    instruction_steps: InstructionStep;
   };
 }
 /**
@@ -75,9 +77,9 @@ export interface Competition {
   sponsor_string?: string | null;
   sponsors?:
     | {
-        name: string;
+        name?: string | null;
         link?: string | null;
-        logo: string | Media;
+        logo?: string | Media | null;
         id?: string | null;
       }[]
     | null;
@@ -215,6 +217,31 @@ export interface PrivacyCompetition {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy_website".
+ */
+export interface PrivacyWebsite {
+  id: string;
+  privacy: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  privacy_html?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "writing_tips".
  */
 export interface WritingTip {
@@ -226,6 +253,20 @@ export interface WritingTip {
       }[]
     | null;
   last_updated: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "instruction_steps".
+ */
+export interface InstructionStep {
+  id: string;
+  steps: {
+    title: string;
+    description: string;
+    id?: string | null;
+  }[];
   updatedAt?: string | null;
   createdAt?: string | null;
 }

@@ -12,6 +12,8 @@ import Media from './collections/Media'
 
 import PrivacyCompetition from './globals/PrivacyCompetition'
 import WritingTips from './globals/WritingTips'
+import InstructionSteps from './globals/InstructionSteps'
+import PrivacyWebsite from './globals/PrivacyWebsite'
 
 const fullFilePath = path.resolve(__dirname, 'hooks/sendConfirmation.ts')
 const mockModulePath = path.resolve(__dirname, 'mocks/modules.ts')
@@ -43,7 +45,9 @@ export default buildConfig({
   ],
   globals: [
     PrivacyCompetition,
-    WritingTips
+    PrivacyWebsite,
+    WritingTips,
+    InstructionSteps
   ],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),

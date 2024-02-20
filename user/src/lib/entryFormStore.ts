@@ -93,7 +93,6 @@ export const useEntryFormStore = defineStore({
         },
         async submitForm() {
             this.loading = true;
-            console.log(JSON.stringify(this.formData));
             try {
                 const response = await createPost(this.formData);
                 if (response.doc?.id) {

@@ -1,24 +1,28 @@
 ---
 import { Trophy } from "lucide-vue-next";
 import { createAgeGroupString } from "../lib/ageGroups";
+import { marked } from "marked";
+import DOMPurify from "isomorphic-dompurify";
 
 interface Props {
     title: string;
-    winner: boolean;
+    winner: boolean | null | undefined;
     author: string;
     date: Date;
     competition: string;
-    ageGroup: [number, number];
+    ageGroup: [number | null | undefined, number | null | undefined];
     excerpt: string;
 }
 
 const { title, winner, author, date, competition, ageGroup, excerpt }: Props =
     Astro.props;
+
+const excerptHTML = DOMPurify.sanitize(await marked.parse(excerpt));
 ---
 
 <a
     href={"/texte/" + encodeURI(title.toLowerCase().replace(/ /g, "-"))}
-    class="bg-white rounded-xl py-4 max-w-2xl flex flex-col shadow-lg hover:shadow-2xl transition duration-300 ease-in-out hover:scale-105"
+    class="bg-pearl-bush-50 rounded-xl py-4 max-w-2xl flex flex-col shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out hover:ring-2 hover:ring-bandicoot-400 ring-inset"
 >
     <div class="w-full px-6">
         <div class="flex gap-4 items-center">
@@ -41,11 +45,12 @@ const { title, winner, author, date, competition, ageGroup, excerpt }: Props =
         <p>Altersgruppe {createAgeGroupString(ageGroup)}</p>
     </div>
     <div class="px-6 relative h-full min-h-[5rem]">
-        <p class="line-clamp-6 font-serif text-sm text-bandicoot-400 h-full">
-            {excerpt}
-        </p>
         <div
-            class="text-sm font-serif text-bandicoot-400 absolute w-full h-full bg-gradient-to-t from-white from-20% to-transparent bottom-0 left-0 flex items-end justify-center"
+            set:html={excerptHTML}
+            class="line-clamp-6 font-serif text-sm text-bandicoot-400 h-full"
+        />
+        <div
+            class="text-sm font-serif text-bandicoot-400 absolute h-full bg-gradient-to-t from-pearl-bush-50 from-20% to-transparent bottom-0 left-2 right-2 flex items-end justify-center"
         >
             weiterlesen >
         </div>

@@ -37,6 +37,9 @@ const Competitions: CollectionConfig = {
             },
             type: "upload",
             relationTo: "media",
+            filterOptions: {
+                mimeType: { contains: 'image' },
+            },
             required: true
         },
         {
@@ -91,7 +94,6 @@ const Competitions: CollectionConfig = {
                     },
                     label: "Name",
                     type: "text",
-                    required: true
                 },
                 {
                     name: "link",
@@ -109,7 +111,6 @@ const Competitions: CollectionConfig = {
                     },
                     type: "upload",
                     relationTo: "media",
-                    required: true
                 }
             ]
         },
