@@ -13,10 +13,25 @@ import Media from './collections/Media'
 import PrivacyCompetition from './globals/PrivacyCompetition'
 import WritingTips from './globals/WritingTips'
 
+const fullFilePath = path.resolve(__dirname, 'hooks/sendConfirmation.ts')
+const mockModulePath = path.resolve(__dirname, 'mocks/modules.ts')
+
 export default buildConfig({
   admin: {
     user: Users.slug,
     bundler: webpackBundler(),
+    webpack: (config) => {
+      return {
+        ...config,
+        resolve: {
+          ...config.resolve,
+          alias: {
+            ...config.resolve.alias,
+            [fullFilePath]: mockModulePath,
+          },
+        },
+      }
+    },
   },
   editor: lexicalEditor({}),
   cors: '*',
