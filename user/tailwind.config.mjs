@@ -66,7 +66,21 @@ export default {
 					'800': '#633f30',
 					'900': '#56362d',
 					'950': '#311c17',
-				}
+				},
+				'warning': {
+					'50': '#fcf6e6',
+					'100': '#faece9',
+					'200': '#f5d9d6',
+					'300': '#edbab4',
+					'400': '#e2908a',
+					'500': '#d4655f',
+					'600': '#b83e3e', //default
+					'700': '#9f3134',
+					'800': '#862b30',
+					'900': '#73282f',
+					'950': '#3f1215',
+				},
+
 			},
 			fontFamily: {
 				sans: ['Noto Sans', ...defaultTheme.fontFamily.sans],
@@ -79,6 +93,7 @@ export default {
 	},
 	plugins: [
 		require('@tailwindcss/container-queries'),
-		require('@tailwindcss/forms')
+		require('@tailwindcss/forms'),
+		require('@tailwindcss/typography')
 	],
 }

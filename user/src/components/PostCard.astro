@@ -1,5 +1,6 @@
 ---
 import { Trophy } from "lucide-vue-next";
+import { createAgeGroupString } from "../lib/ageGroups";
 
 interface Props {
     title: string;
@@ -13,19 +14,6 @@ interface Props {
 
 const { title, winner, author, date, competition, ageGroup, excerpt }: Props =
     Astro.props;
-
-function createAgeGroupString(ageGroup: [number, number]): string {
-    if (ageGroup[0] && !ageGroup[1]) {
-        return `${ageGroup[0]}+`;
-    }
-    if (ageGroup[0] === ageGroup[1]) {
-        return `${ageGroup[0]}`;
-    }
-    if (!ageGroup[0] && ageGroup[1]) {
-        return `bis ${ageGroup[1]}`;
-    }
-    return `${ageGroup[0]}-${ageGroup[1]}`;
-}
 ---
 
 <a
