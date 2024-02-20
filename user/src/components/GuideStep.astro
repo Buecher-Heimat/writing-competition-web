@@ -3,9 +3,10 @@ interface Props {
     number: number;
     title: string;
     description: string;
+    textColor: string;
 }
 
-const { number, title, description } = Astro.props;
+const { number, title, description, textColor = "text-bandicoot-400" } = Astro.props;
 ---
 
 <div class="flex-row flex gap-5">
@@ -17,9 +18,12 @@ const { number, title, description } = Astro.props;
         </div>
     </div>
     <div class="flex flex-col gap-2">
-        <h1 class="small-caps font-bold text-2xl text-bandicoot-400">
+        <h1 class={`small-caps font-bold text-2xl ${textColor}`}>
             {title}
         </h1>
-        <p class="text-bandicoot-400 font-serif font-medium">{description}</p>
+        <p class={`${textColor} font-serif font-medium`}>
+            {description}
+        </p>
+        
     </div>
 </div>
