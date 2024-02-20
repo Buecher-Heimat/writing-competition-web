@@ -56,11 +56,13 @@ const Posts: CollectionConfig = {
                 {
                     name: "age_start",
                     label: "Start",
+                    required: true,
                     type: "number"
                 },
                 {
                     name: "age_end",
                     label: "End",
+                    required: true,
                     type: "number"
                 }
             ]
@@ -87,11 +89,22 @@ const Posts: CollectionConfig = {
         {
             name: "content",
             label: "Content",
-            type: "richText",
+            type: "textarea",
             required: true,
         },
         {
+            name: "winner",
+            label: "Winner",
+            type: "checkbox",
+            access: {
+                read: () => true,
+                update: isAdmin,
+                create: isAdmin
+            }
+        },
+        {
             name: "competition",
+            required: true,
             label: "Competition",
             type: "relationship",
             relationTo: "competitions",

@@ -1,6 +1,12 @@
 import { CollectionConfig } from "payload/types";
 import { isAdmin } from "../accessControl/isAdmin";
 
+import {
+    HTMLConverterFeature,
+    lexicalEditor,
+    lexicalHTML
+} from '@payloadcms/richtext-lexical'
+
 const Competitions: CollectionConfig = {
     slug: "competitions",
     admin: {
@@ -109,12 +115,12 @@ const Competitions: CollectionConfig = {
         },
         {
             name: "agegroups",
+            label: "Age groups",
             labels: {
                 singular: "Age group",
                 plural: "Age groups"
             },
             type: "array",
-            minRows: 1,
             required: true,
             fields: [
                 {
@@ -131,6 +137,7 @@ const Competitions: CollectionConfig = {
         },
         {
             name: "instruction_steps",
+            label: "Instruction steps",
             labels: {
                 singular: "Instruction step",
                 plural: "Instruction steps"
@@ -151,22 +158,41 @@ const Competitions: CollectionConfig = {
             ]
         },
         {
-            name: "posts",
-            label: "Posts",
-            type: "relationship",
-            relationTo: "posts",
-            hasMany: true
+            name: "text_min_length",
+            label: "Minimum text length",
+            admin: {
+                description: "The minimum length of the text that can be submitted"
+            },
+            type: "number",
+            defaultValue: 280,
+            required: true
         },
         {
-            name: "winners",
-            label: "Winners",
+            name: "text_max_length",
+            label: "Maximum text length",
             admin: {
-                description: "The winners of the competition. Be sure to add one for each age group."
+                description: "The maximum length of the text that can be submitted"
             },
-            type: "relationship",
-            relationTo: "posts",
-            hasMany: true
-        }
+            type: "number",
+            defaultValue: 11000,
+            required: true
+        },
+        {
+            name: "terms_conditions",
+            label: "Terms and conditions",
+            admin: {
+                description: "The terms and conditions of the competition"
+            },
+            type: "richText",
+            required: true,
+            editor: lexicalEditor({
+                features: ({ defaultFeatures }) => [
+                    ...defaultFeatures,
+                    HTMLConverterFeature({}),
+                ],
+            }),
+        },
+        lexicalHTML('terms_conditions', { name: 'terms_conditions_html' }),
     ]
 }
 

@@ -1,0 +1,87 @@
+---
+import Layout from "../layouts/Layout.astro";
+import EntryForm from "../components/entryForm/EntryForm.vue";
+import { fetchRunningCompetitions } from "../lib/api";
+
+const competition = await fetchRunningCompetitions();
+---
+
+<Layout title="Mitmachen">
+    <section
+        class="flex flex-col px-40 lg:px-14 md:px-10 xs:px-5 2xs:px-3 w-full relative box-border"
+    >
+        <div class="pt-16 pb-10 mt-20 z-10">
+            <h1
+                class="font-serif text-6xl font-bold small-caps text-twine-400 sm:text-4xl"
+            >
+                Mitmachen!
+            </h1>
+            {
+                competition[0]?.title && (
+                    <h2 class="max-w-md text-3xl leading-tight lg:text-xl font-bold small-caps text-bandicoot-400 mt-3">
+                        Reiche hier Deinen Beitrag zu '{competition[0].title}'
+                        ein!
+                    </h2>
+                )
+            }
+            {
+                !competition[0]?.title && (
+                    <h2 class="max-w-md text-3xl leading-tight lg:text-xl font-bold small-caps text-bandicoot-400 mt-3">
+                        Hier kannst du an unseren Wettbewerben teilnehmen!
+                    </h2>
+                )
+            }
+        </div>
+        {
+            !competition[0]?.title && (
+                <div class="absolute w-full h-full z-0 md:hidden pointer-events-none">
+                    <img
+                        class="absolute left-[35%] top-16 lg:w-28"
+                        src="/images/shapes/three.svg"
+                        alt="Shapes"
+                    />
+                    <img
+                        class="absolute left-[8%] top-[30%] lg:w-16"
+                        src="/images/shapes/two1.svg"
+                        alt="Some shapes"
+                    />
+                    <img
+                        class="absolute right-[20%] -rotate-90 top-[50%] lg:w-16"
+                        src="/images/shapes/two1.svg"
+                        alt="Some shapes"
+                    />
+                    <img
+                        class="absolute right-[30%] top-[10%] lg:w-28 rotate-12"
+                        src="/images/shapes/one.svg"
+                        alt="Some shapes"
+                    />
+                    <img
+                        class="absolute right-0 top-[30%] rotate-180 lg:w-28"
+                        src="/images/shapes/three.svg"
+                        alt="Shapes"
+                    />
+                </div>
+            )
+        }
+    </section>
+    <section class="w-full px-40 lg:px-14 md:px-10 xs:px-5 2xs:px-3 mb-20">
+        {competition[0]?.title && <EntryForm client:only />}
+        {
+            !competition[0]?.title && (
+                <section class="px-40 md:px-10 xs:px-5 2xs:px-3 pb-10 w-full z-10">
+                    <div class="flex flex-col justify-center items-center">
+                        <img
+                            class="w-64 sm:mt-20 mt-32"
+                            src="/images/illustrations/MeditatingDoodle.svg"
+                            alt="A person meditating"
+                        />
+                        <p class="text-bandicoot-500 font-serif max-w-sm text-center">
+                            Momentan gibt es keine laufenden Wettbewerbe. Schau
+                            doch später nochmal vorbei!
+                        </p>
+                    </div>
+                </section>
+            )
+        }
+    </section>
+</Layout>
