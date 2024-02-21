@@ -8,66 +8,35 @@ import Layout from "../../layouts/Layout.astro";
 import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
 import { Console } from "console";
 
+import {
+  fetchWritingTips,
+  fetchRecentCompetitionPosts,
+  fetchCompetitionData,
+} from "../../lib/api";
+import type { WritingTip, Post, Competition } from "../../payload";
+
 // ----- FETCH DATA -----
 
-// Get the last part of the path
-// const { page } = Astro.params;
-
-// GET COMPETITION DATA
 const url = Astro.request.url;
 const competitionTitle = url.split("/").pop().replace(/-/g, " ");
 
-const competitionQuery = {
-  title: {
-    like: competitionTitle,
-  },
-};
+let competitionData: Competition;
+let recentCompetitionPosts: Post[] = [];
+let writingTips: WritingTip[] = [];
 
-const stringifiedCompetitionQuery = qs.stringify({
-  where: competitionQuery,
-});
-
-const competitionsResponse = await fetch(
-  import.meta.env.PUBLIC_BACKEND_URL +
-    "/api/competitions?" +
-    stringifiedCompetitionQuery
-);
-
-const competitionData = (await competitionsResponse.json()).docs[0];
-
-console.log(competitionData);
-
-// GET POSTS
-const postQuery = {
-  "competition.title": {
-    equals: competitionData.title,
-  },
-};
-
-const stringifiedPostQuery = qs.stringify({
-  where: postQuery,
-});
-
-const postsResponse = await fetch(
-  import.meta.env.PUBLIC_BACKEND_URL + "/api/posts?" + stringifiedPostQuery
-);
-
-let posts = (await postsResponse.json()).docs;
-
-posts = posts.slice(0, 6);
-
-if (posts.length < 6) {
-  posts = posts.slice(0, 3);
+try {
+  competitionData = await fetchCompetitionData(competitionTitle);
+  recentCompetitionPosts = await fetchRecentCompetitionPosts(
+    competitionData.title
+  );
+  writingTips = await fetchWritingTips();
+} catch (error) {
+  console.error(error);
 }
 
-// GET WRITING TIPS
-
-const guideResponse = await fetch(
-  import.meta.env.PUBLIC_BACKEND_URL + "/api/globals/writing_tips"
-);
-
-const tips = (await guideResponse.json()).tips;
-console.log(tips);
+if (!competitionData) {
+  return Astro.redirect("/404");
+}
 ---
 
 <Layout title="Schreibwettbewerbe Bad Harzburg">
@@ -254,7 +223,7 @@ console.log(tips);
           class="grid grid-cols-3 2xl:grid-cols-2 lg:grid-cols-1 gap-6 justify-items-center"
         >
           {
-            posts.map((post: any) => (
+            recentCompetitionPosts.map((post: Post) => (
               <PostCard
                 title={post.title}
                 winner={post.winner}
@@ -292,7 +261,7 @@ console.log(tips);
           </span>
         </h1>
         <div class="flex flex-col gap-6 text-pearl-bush-100">
-          {tips.map((tip: any) => <span>{tip.tip}</span>)}
+          {writingTips.tips.map((tip: any) => <span>{tip.tip}</span>)}
         </div>
       </div>
       <div class="flex items-center justify-center">

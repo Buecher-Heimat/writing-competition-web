@@ -68,6 +68,46 @@ export async function fetchRecentPosts(limit: number = 10) {
     return recentPostsData.docs as Post[];
 }
 
+export async function fetchRecentCompetitionPosts(competitionTitle: string, limit: number = 3) {
+    const query = qs.stringify(
+        {
+            where: {
+                "competition.title": { equals: competitionTitle, },
+            },
+            sort: "-date_created",
+            limit: limit,
+        },
+        {
+            addQueryPrefix: true,
+        }
+    );
+
+    const recentCompetitionPostResponse = await fetch(
+        BASE_URL + "/posts" + query,
+    );
+    const recentCompetitionPostData = await recentCompetitionPostResponse.json();
+    return recentCompetitionPostData.docs as Post[];
+}
+
+export async function fetchCompetitionData(competitionTitle: string) {
+    const query = qs.stringify(
+        {
+            where: {
+                title: { like: competitionTitle, },
+            },
+        },
+        {
+            addQueryPrefix: true,
+        }
+    );
+
+    const competitionResponse = await fetch(
+        BASE_URL + "/competitions" + query,
+    );
+    const competitionData = await competitionResponse.json();
+    return competitionData.docs[0] as Competition;
+}
+
 export async function createPost(data: PostCreationInput) {
     const response = await fetch(
         BASE_URL + "/posts",
