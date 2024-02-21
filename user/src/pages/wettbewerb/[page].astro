@@ -13,9 +13,10 @@ import {
   fetchRecentCompetitionPosts,
   fetchCompetitionData,
 } from "../../lib/api";
+import { createAgeGroupString } from "../../lib/ageGroups";
 import type { WritingTip, Post, Competition } from "../../payload";
 
-// ----- FETCH DATA -----
+// FETCH DATA
 
 const url = Astro.request.url;
 const competitionTitle = url.split("/").pop().replace(/-/g, " ");
@@ -36,6 +37,26 @@ try {
 
 if (!competitionData) {
   return Astro.redirect("/404");
+}
+
+// CHECK COMPETITION STATUS
+
+enum CompetitionStatus {
+  UPCOMING = "upcoming",
+  RUNNING = "running",
+  FINISHED = "finished",
+}
+
+let competitionStatus: CompetitionStatus;
+
+const today = new Date().toISOString();
+
+if (today < competitionData.date_start) {
+  competitionStatus = CompetitionStatus.UPCOMING;
+} else if (today > competitionData.date_end) {
+  competitionStatus = CompetitionStatus.FINISHED;
+} else {
+  competitionStatus = CompetitionStatus.RUNNING;
 }
 ---
 
@@ -80,6 +101,7 @@ if (!competitionData) {
         >
           {competitionData.title}
         </h1>
+        <span>{competitionStatus}</span>
         <h2
           class="text-3xl lg:text-2xl font-bold small-caps text-bandicoot-400 mt-3 2xl:text-center leading-8"
         >
@@ -96,9 +118,10 @@ if (!competitionData) {
               {
                 competitionData.agegroups.map((agegroup: any) => (
                   <li class="w-24 h-8 border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400 flex justify-center items-center">
-                    {agegroup.age_end
-                      ? `${agegroup.age_end}-${agegroup.age_start}`
-                      : `${agegroup.age_start}+`}{" "}
+                    {createAgeGroupString([
+                      agegroup.age_start,
+                      agegroup.age_end,
+                    ])}{" "}
                     Jahre
                   </li>
                 ))
@@ -121,14 +144,16 @@ if (!competitionData) {
         <div
           class="flex flex-row md:flex-col 2xl:justify-center items-center gap-2"
         >
-          <a href="/text-einreichen">
-            <button
-              class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
-            >
-              Mitmachen
-              <FileUp size="1.5rem" />
-            </button>
-          </a>
+          {
+            competitionStatus === CompetitionStatus.RUNNING && (
+              <a href="/text-einreichen">
+                <button class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
+                  Mitmachen
+                  <FileUp size="1.5rem" />
+                </button>
+              </a>
+            )
+          }
           <a href="#so-gehts">
             <button
               class="w-52 hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 justify-evenly"
@@ -272,53 +297,53 @@ if (!competitionData) {
         </div>
       </div>
     </section>
-    <section class="w-screen flex justify-center pt-20 pb-40 relative">
-      <div class="absolute w-full h-full z-[-1] md:hidden">
-        <img
-          class="absolute -right-[1%] top-10 lg:w-28 rotate-45"
-          src="/images/shapes/three.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute right-[18%] bottom-8 lg:w-28 rotate-45"
-          src="/images/shapes/two1.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute left-[0%] top-8 lg:w-16 rotate-180"
-          src="/images/shapes/two1.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute left-[18%] bottom-8 lg:w-28 rotate-12"
-          src="/images/shapes/three.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute left-[45%] bottom-32 lg:w-28 rotate-12"
-          src="/images/shapes/one.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute left-[8%] bottom-12 lg:w-28"
-          src="/images/shapes/one.svg"
-          alt="Some shapes"
-        />
-      </div>
-      <div class="w-[32rem] flex flex-col items-center gap-12">
-        <h1
-          class="text-bandicoot-400 font-bold font-serif small-caps text-5xl text-center md:text-4xl"
-        >
-          Worauf wartest Du noch?!
-        </h1>
-        <a href="/text-einreichen">
-          <button
-            class="w-80 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
-          >
-            Mitmachen
-          </button>
-        </a>
-      </div>
-    </section>
+    {
+      competitionStatus === CompetitionStatus.RUNNING && (
+        <section class="w-screen flex justify-center pt-20 pb-40 relative">
+          <div class="absolute w-full h-full z-[-1] md:hidden">
+            <img
+              class="absolute -right-[1%] top-10 lg:w-28 rotate-45"
+              src="/images/shapes/three.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute right-[18%] bottom-8 lg:w-28 rotate-45"
+              src="/images/shapes/two1.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute left-[0%] top-8 lg:w-16 rotate-180"
+              src="/images/shapes/two1.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute left-[18%] bottom-8 lg:w-28 rotate-12"
+              src="/images/shapes/three.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute left-[45%] bottom-32 lg:w-28 rotate-12"
+              src="/images/shapes/one.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute left-[8%] bottom-12 lg:w-28"
+              src="/images/shapes/one.svg"
+              alt="Some shapes"
+            />
+          </div>
+          <div class="w-[32rem] flex flex-col items-center gap-12">
+            <h1 class="text-bandicoot-400 font-bold font-serif small-caps text-5xl text-center md:text-4xl">
+              Worauf wartest Du noch?!
+            </h1>
+            <a href="/text-einreichen">
+              <button class="w-80 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
+                Mitmachen
+              </button>
+            </a>
+          </div>
+        </section>
+      )
+    }
   </main>
 </Layout>
