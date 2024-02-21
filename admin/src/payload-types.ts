@@ -48,6 +48,7 @@ export interface Post {
   title: string;
   author: string;
   email: string;
+  _verified?: boolean | null;
   phone?: string | null;
   age_author: number;
   agegroup: {

@@ -38,6 +38,16 @@ const Posts: CollectionConfig = {
             required: true,
         },
         {
+            name: "_verified",
+            label: "Verified",
+            type: "checkbox",
+            access: {
+                read: () => true,
+                update: isAdmin,
+                create: isAdmin
+            }
+        },
+        {
             name: "phone",
             label: "Phonenumber",
             type: "text"
