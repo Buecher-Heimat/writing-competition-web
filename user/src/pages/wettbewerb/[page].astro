@@ -171,7 +171,7 @@ if (today < competitionData.date_start) {
         competitionData.sponsors?.map((sponsor: any) => (
           <a href={sponsor.link}>
             <img
-              class="h-18 md:h-15 xs:h-12"
+              class="h-16 object-cover w-fit object-center md:h-14 xs:h-12"
               src={import.meta.env.PUBLIC_BACKEND_URL + sponsor.logo.url}
               alt={sponsor.logo.alt}
             />
