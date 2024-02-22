@@ -101,7 +101,6 @@ if (today < competitionData.date_start) {
         >
           {competitionData.title}
         </h1>
-        <span>{competitionStatus}</span>
         <h2
           class="text-3xl lg:text-2xl font-bold small-caps text-bandicoot-400 mt-3 2xl:text-center leading-8"
         >
@@ -205,98 +204,141 @@ if (today < competitionData.date_start) {
         }
       </div>
     </section>
-    <section class="w-screen relative">
-      <div class="absolute w-full h-full z-[-1] md:hidden">
-        <img
-          class="absolute right-[5%] -top-2 lg:w-28 -rotate-45"
-          src="/images/shapes/two1.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute left-[2%] top-20 lg:w-16 rotate-45"
-          src="/images/shapes/three.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute left-[8%] bottom-12 lg:w-28 rotate-12"
-          src="/images/shapes/two1.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute right-[15%] -bottom-10 lg:w-28 rotate-90"
-          src="/images/shapes/three.svg"
-          alt="Some shapes"
-        />
-        <img
-          class="absolute right-[45%] top-40 lg:w-28 rotate-12"
-          src="/images/shapes/one.svg"
-          alt="Some shapes"
-        />
-      </div>
-      <div class="px-36 py-20 xl:px-20">
-        <div class="mb-14 lg:text-center">
-          <h2
-            class="small-caps font-serif text-4xl font-bold text-pearl-bush-950"
-          >
-            Deine Konkurrenz
-          </h2>
-          <h3 class="font-bold text-basic text-bandicoot-400">
-            Diese Texte haben andere einreicht.
-          </h3>
-        </div>
-        <div
-          class="grid grid-cols-3 2xl:grid-cols-2 lg:grid-cols-1 gap-6 justify-items-center"
-        >
-          {
-            recentCompetitionPosts.map((post: Post) => (
-              <PostCard
-                title={post.title}
-                winner={post.winner}
-                author={post.author}
-                competition={post.competition.title}
-                ageGroup={[post.agegroup.age_start, post.agegroup.age_end]}
-                date={new Date(post.createdAt)}
-                excerpt={post.content}
-              />
-            ))
-          }
-        </div>
-        <div class="flex justify-end lg:justify-center mt-14">
-          <a href="/alle-texte">
-            <button
-              class="w-fit hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 bg-pearl-bush-100 justify-evenly"
-            >
-              Alle Texte
-              <ArrowRight size="1.5rem" />
-            </button>
-          </a>
-        </div>
-      </div>
-    </section>
-    <section
-      class="w-screen bg-bandicoot-400 basis-2/3 flex flex-row 2xl:flex-col justify-around px-52 xl:px-36 md:px-28 py-20 gap-28"
-    >
-      <div class="w-[58rem] 2xl:w-full flex flex-col">
-        <h1
-          class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl mb-14 leading-[5rem] gap-4"
-        >
-          Bevor du loslegst
-          <span class="text-3xl uppercase font-sans font-light italic"
-            >Ein Paar Tipps zum Schreiben deines Textes
-          </span>
-        </h1>
-        <div class="flex flex-col gap-6 text-pearl-bush-100">
-          {writingTips.tips.map((tip: any) => <span>{tip.tip}</span>)}
-        </div>
-      </div>
-      <div class="flex items-center justify-center">
-        <div
-          class="min-w-[20rem] min-h-[20rem] bg-pearl-bush-100 rounded-full flex items-center justify-center"
-        >
-          <PenTool class="text-twine-400" size="150" />
-        </div>
-      </div>
-    </section>
+    {
+      competitionStatus !== CompetitionStatus.UPCOMING && (
+        <section class="w-screen relative">
+          <div class="absolute w-full h-full z-[-1] md:hidden">
+            <img
+              class="absolute right-[5%] -top-2 lg:w-28 -rotate-45"
+              src="/images/shapes/two1.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute left-[2%] top-20 lg:w-16 rotate-45"
+              src="/images/shapes/three.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute left-[8%] bottom-12 lg:w-28 rotate-12"
+              src="/images/shapes/two1.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute right-[15%] -bottom-10 lg:w-28 rotate-90"
+              src="/images/shapes/three.svg"
+              alt="Some shapes"
+            />
+            <img
+              class="absolute right-[45%] top-40 lg:w-28 rotate-12"
+              src="/images/shapes/one.svg"
+              alt="Some shapes"
+            />
+          </div>
+          <div class="px-36 py-20 xl:px-20">
+            {competitionStatus === CompetitionStatus.RUNNING ? (
+              <div class="mb-14 lg:text-center">
+                <h2 class="small-caps font-serif text-4xl font-bold text-pearl-bush-950">
+                  Deine Konkurrenz
+                </h2>
+                <h3 class="font-bold text-basic text-bandicoot-400">
+                  Diese Texte haben andere bereits einreicht.
+                </h3>
+              </div>
+            ) : (
+              <div class="mb-14 lg:text-center">
+                <h2 class="small-caps font-serif text-4xl font-bold text-pearl-bush-950">
+                  Texte des Wettbewerbs
+                </h2>
+                <h3 class="font-bold text-basic text-bandicoot-400">
+                  Diese Texte wurden eingereicht.
+                </h3>
+              </div>
+            )}
+            {(recentCompetitionPosts.length !== 0) ? (<div class="grid grid-cols-3 2xl:grid-cols-2 lg:grid-cols-1 gap-6 justify-items-center">
+              {recentCompetitionPosts.map((post: Post) => (
+                <PostCard
+                  title={post.title}
+                  winner={post.winner}
+                  author={post.author}
+                  competition={post.competition.title}
+                  ageGroup={[post.agegroup.age_start, post.agegroup.age_end]}
+                  date={new Date(post.createdAt)}
+                  excerpt={post.content}
+                />
+              ))}
+            </div>
+            <div class="flex justify-end lg:justify-center mt-14">
+              <a href="/alle-texte">
+                <button class="w-fit hover:bg-bandicoot-400 hover:text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg border-[1px] py-2 px-4 font-semibold border-bandicoot-400 text-bandicoot-400 bg-pearl-bush-100 justify-evenly">
+                  Alle Texte
+                  <ArrowRight size="1.5rem" />
+                </button>
+              </a>
+            </div>) : (
+            <div class="px-40 md:px-10 xs:px-5 2xs:px-3 pb-10 w-full z-10">
+                    <div class="flex flex-col justify-center items-center">
+                        <img
+                            class="w-64"
+                            src="/images/illustrations/MeditatingDoodle.svg"
+                            alt="A person meditating"
+                        />
+                        <p class="text-bandicoot-500 font-serif max-w-sm text-center">
+                            Noch sind keine Texte eingereicht worden. Schau doch
+                            später nochmal vorbei.
+                        </p>
+                    </div>
+                </div>
+            )}
+          </div>
+        </section>
+      )
+    }
+    {
+      competitionStatus !== CompetitionStatus.FINISHED &&
+        (competitionStatus === CompetitionStatus.RUNNING ? (
+          <section class="w-screen bg-bandicoot-400 basis-2/3 flex flex-row 2xl:flex-col justify-around px-52 xl:px-36 md:px-28 py-20 gap-28">
+            <div class="w-[58rem] 2xl:w-full flex flex-col">
+              <h1 class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl mb-14 leading-[5rem] gap-4">
+                Bevor du loslegst
+                <span class="text-3xl uppercase font-sans font-light italic">
+                  Ein Paar Tipps zum Schreiben deines Textes
+                </span>
+              </h1>
+              <div class="flex flex-col gap-6 text-pearl-bush-100">
+                {writingTips.tips.map((tip: any) => (
+                  <span>{tip.tip}</span>
+                ))}
+              </div>
+            </div>
+            <div class="flex items-center justify-center">
+              <div class="min-w-[20rem] min-h-[20rem] bg-pearl-bush-100 rounded-full flex items-center justify-center">
+                <PenTool class="text-twine-400" size="150" />
+              </div>
+            </div>
+          </section>
+        ) : (
+          <section class="w-screen bg-pearl-bush-100 basis-2/3 flex flex-row 2xl:flex-col justify-around px-52 xl:px-36 md:px-28 py-20 gap-28">
+            <div class="w-[58rem] 2xl:w-full flex flex-col">
+              <h1 class="text-twine-400 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl mb-14 leading-[5rem] gap-4">
+                Bevor du loslegst
+                <span class="text-3xl uppercase font-sans font-light italic">
+                  Ein Paar Tipps zum Schreiben deines Textes
+                </span>
+              </h1>
+              <div class="flex flex-col gap-6 text-bandicoot-400">
+                {writingTips.tips.map((tip: any) => (
+                  <span>{tip.tip}</span>
+                ))}
+              </div>
+            </div>
+            <div class="flex items-center justify-center">
+              <div class="min-w-[20rem] min-h-[20rem] bg-twine-400 rounded-full flex items-center justify-center">
+                <PenTool class="text-pearl-bush-100" size="150" />
+              </div>
+            </div>
+          </section>
+        ))
+    }
     {
       competitionStatus === CompetitionStatus.RUNNING && (
         <section class="w-screen flex justify-center pt-20 pb-40 relative">
