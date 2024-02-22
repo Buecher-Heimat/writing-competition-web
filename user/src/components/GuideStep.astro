@@ -3,7 +3,7 @@ interface Props {
     number: number;
     title: string;
     description: string;
-    textColor: string;
+    textColor?: string;
 }
 
 const { number, title, description, textColor = "text-bandicoot-400" } = Astro.props;
