@@ -14,7 +14,7 @@ export interface PostCreationInput {
         age_start: number | null | undefined;
         age_end: number | null | undefined;
     }
-    permission_publish_forever: boolean;
+    delete_after_competition: boolean;
     accept_terms: boolean;
     accept_privacy: boolean;
     content: string;

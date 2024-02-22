@@ -29,9 +29,18 @@ const { title } = Astro.props;
 			<slot />
 		</main>
 		<footer
-			class="bg-bandicoot-400 py-2 text-pearl-bush-50 flex justify-center text-sm"
+			class="bg-bandicoot-400 py-2 text-pearl-bush-50 flex justify-center text-sm px-5"
 		>
-			<div>© Die Bücher-Heimat | 2024</div>
+			<p class="text-center">
+				© Die Bücher-Heimat {new Date().getFullYear()} | <a
+					href="/datenschutz">Datenschutz</a
+				> | <a href="https://die-buecherheimat.de/impressum/"
+					>Impressum</a
+				> | <a
+					href="https://github.com/Buecher-Heimat/writing-competition-web"
+					>GitHub</a
+				>
+			</p>
 		</footer>
 	</body>
 </html>

@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload/types";
 import { isAdmin } from "../accessControl/isAdmin";
 import { isApproved } from "../accessControl/isApproved";
 import { afterChangeHook } from "../hooks/sendConfirmation";
+import { slugField } from "../fields/slug";
 
 const Posts: CollectionConfig = {
     slug: "posts",
@@ -25,6 +26,7 @@ const Posts: CollectionConfig = {
             type: "text",
             required: true,
         },
+        slugField(),
         {
             name: "author",
             label: "Author",
@@ -66,22 +68,20 @@ const Posts: CollectionConfig = {
                 {
                     name: "age_start",
                     label: "Start",
-                    required: true,
                     type: "number"
                 },
                 {
                     name: "age_end",
                     label: "End",
-                    required: true,
                     type: "number"
                 }
             ]
         },
         {
-            name: "permission_publish_forever",
-            label: "Permission to publish forever",
+            name: "delete_after_competition",
+            label: "Delete after competition",
             admin: {
-                description: "Indicates whether the user agrees that the entry will remain public even after the end of the competition"
+                description: "Indicates if the user wants the post to be deleted after the competition is over."
             },
             type: "checkbox",
             required: true

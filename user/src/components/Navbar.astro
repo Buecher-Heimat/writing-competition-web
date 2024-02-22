@@ -1,5 +1,26 @@
 ---
-import { ExternalLink } from "lucide-vue-next";
+import { ExternalLink, Menu, X } from "lucide-vue-next";
+
+let url = new URL(Astro.request.url);
+
+let page = url.pathname;
+
+console.log(page);
+
+const menuItems = [
+    {
+        title: "Startseite",
+        href: "/",
+    },
+    {
+        title: "Alle Texte",
+        href: "/alle-texte/1",
+    },
+    {
+        title: "Die Bücher-Heimat",
+        href: "https://die-buecherheimat.de/",
+    },
+];
 ---
 
 <script>
@@ -15,40 +36,134 @@ import { ExternalLink } from "lucide-vue-next";
     class="px-5 py-5 items-center flex justify-between fixed w-full top-0 z-50 transition-colors ease-out duration-500 bg-opacity-50"
 >
     <div class="max-h-full flex gap-5">
-        <div class="h-10 pr-5 border-r-2 border-bandicoot-400 sm:border-none">
+        <a
+            class="h-10 pr-5 flex-shrink-0 border-bandicoot-400 sm:border-none"
+            href="/"
+        >
             <img
-                class="h-10 object-cover object-center"
+                class="h-10 object-cover w-fit object-center"
                 src="/images/logos/buecher-heimat.png"
                 alt="Das Logo der Bücher-Heimat"
             />
-        </div>
-
-        <div class="flex flex-row gap-2 items-center sm:hidden">
-            <img
-                class="h-6 object-cover object-center"
-                src="/images/logos/oeffentliche.png"
-                alt="Das Logo der Öffentlichen Versicherung Braunschweig"
-            />
-            <img
-                class="h-6 object-cover object-center"
-                src="/images/logos/bad-harzburg-stiftung.png"
-                alt="Das Logo der Bad Harzburg Stiftung"
-            />
-            <img
-                class="h-6 object-cover object-center"
-                src="/images/logos/stadtbuecherei.png"
-                alt="Das Logo der Stadtbücherei Bad Harzburg"
-            />
-        </div>
-    </div>
-    <div>
-        <a href="https://die-buecherheimat.de/" target="_blank">
-            <button
-                class="bg-bandicoot-400 backdrop-blur-md bg-opacity-50 text-pearl-bush-50 transition-colors ease-out duration-500 sm:text-sm font-serif font flex flex-row gap-2 items-center rounded-lg w-[fit-content] py-2 px-4 font-semibold"
-            >
-                Die Bücher-Heimat
-                <ExternalLink size="1rem" />
-            </button>
         </a>
     </div>
+    <div class="flex items-center gap-5 md:hidden">
+        <div class="flex gap-3 rounded-lg bg-pearl-bush-50/50 px-3">
+            {
+                menuItems.map((item) => (
+                    <a
+                        href={item.href}
+                        target={
+                            item.href.startsWith("http") ? "_blank" : "_self"
+                        }
+                        class={`text-bandicoot-400 hover:text-bandicoot-500 transition-colors ease-out duration-500 font-serif font-bold py-2 px-1 flex items-center gap-1 ${
+                            page === item.href ? "underline" : ""
+                        }`}
+                    >
+                        {item.title}{" "}
+                        {item.href.startsWith("http") && (
+                            <ExternalLink class="h-4 w-4" />
+                        )}
+                    </a>
+                ))
+            }
+        </div>
+        <a
+            href="/text-einreichen"
+            class="bg-twine-400 py-2 px-4 text-pearl-bush-50 font-serif font-bold rounded-lg cursor-pointer hover:bg-twine-500 transition-colors ease-out duration-500"
+        >
+            Mitmachen
+        </a>
+    </div>
+    <div class="md:block hidden relative">
+        <button class="toggle-drawer">
+            <Menu class="h-8 w-8 text-bandicoot-400" />
+        </button>
+        <div
+            id="drawer-menu"
+            class="fixed hidden top-0 right-0 h-screen w-screen bg-twine-400 transition-all ease-out duration-500 z-50 flex-col items-center justify-center gap-6"
+        >
+            <button class="toggle-drawer absolute top-5 right-5">
+                <X class="h-8 w-8 text-pearl-bush-50" />
+            </button>
+
+            <div class="flex flex-col gap-2 items-center text-xl">
+                {
+                    menuItems.map((item) => (
+                        <a
+                            href={item.href}
+                            target={
+                                item.href.startsWith("http")
+                                    ? "_blank"
+                                    : "_self"
+                            }
+                            class={`text-pearl-bush-50 hover:text-pearl-bush-100 transition-colors ease-out duration-500 font-serif font-bold py-2 px-1 flex items-center gap-1 ${
+                                page === item.href ? "underline" : ""
+                            }`}
+                        >
+                            {item.title}{" "}
+                            {item.href.startsWith("http") && (
+                                <ExternalLink class="h-4 w-4" />
+                            )}
+                        </a>
+                    ))
+                }
+            </div>
+            <a
+                href="/text-einreichen"
+                class="bg-pearl-bush-50 py-2 px-4 text-twine-400 font-serif font-bold rounded-lg cursor-pointer hover:bg-pearl-bush-100 transition-colors ease-out duration-500"
+            >
+                Mitmachen
+            </a>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Side drawer menu
+    const toggleDrawer = document.getElementsByClassName("toggle-drawer");
+    const drawerMenu = document.getElementById("drawer-menu");
+
+    function toggleDrawerMenu() {
+        if (!drawerMenu) return;
+
+        if (drawerMenu.classList.contains("hidden")) {
+            drawerMenu.classList.remove("hidden");
+            drawerMenu.classList.add("flex");
+            document.body.style.overflow = "hidden";
+            // Animate the drawer from the right
+            drawerMenu.animate(
+                [
+                    { transform: "translateX(50%)", opacity: 0 },
+                    { transform: "translateX(0)", opacity: 1 },
+                ],
+                {
+                    duration: 300,
+                    easing: "ease-out",
+                },
+            );
+        } else {
+            // Animate the drawer to the right
+            drawerMenu.animate(
+                [
+                    { transform: "translateX(0)", opacity: 1 },
+                    { transform: "translateX(50%)", opacity: 0 },
+                ],
+                {
+                    duration: 300,
+                    easing: "ease-out",
+                },
+            ).onfinish = () => {
+                document.body.style.overflow = "scroll";
+                drawerMenu.classList.add("hidden");
+                drawerMenu.classList.remove("flex");
+            };
+        }
+    }
+
+    if (toggleDrawer && drawerMenu) {
+        for (let i = 0; i < toggleDrawer.length; i++) {
+            toggleDrawer[i].addEventListener("click", toggleDrawerMenu);
+        }
+    }
+</script>

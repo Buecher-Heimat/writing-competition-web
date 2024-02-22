@@ -32,13 +32,12 @@ export async function fetchRunningCompetitions() {
     return competitionsData.docs as Competition[];
 }
 
-export async function fetchPostByTitle(urlEncodedTitle: string) {
-    const unEncodedTitle = decodeURIComponent(urlEncodedTitle.replaceAll("-", " "));
+export async function fetchPostBySlug(slug: string) {
     const query = qs.stringify(
         {
             where: {
-                title: {
-                    equals: unEncodedTitle,
+                slug: {
+                    equals: slug,
                 }
             }
         },
@@ -89,11 +88,11 @@ export async function fetchRecentPosts(limit: number = 10) {
     return recentPostsData.docs as Post[];
 }
 
-export async function fetchRecentCompetitionPosts(competitionTitle: string, limit: number = 3) {
+export async function fetchRecentCompetitionPosts(competitionId: string, limit: number = 3) {
     const query = qs.stringify(
         {
             where: {
-                "competition.title": { equals: competitionTitle, },
+                "competition": { equals: competitionId, },
             },
             sort: "-date_created",
             limit: limit,
@@ -107,14 +106,15 @@ export async function fetchRecentCompetitionPosts(competitionTitle: string, limi
         BASE_URL + "/posts" + query,
     );
     const recentCompetitionPostData = await recentCompetitionPostResponse.json();
+    console.log(recentCompetitionPostData);
     return recentCompetitionPostData.docs as Post[];
 }
 
-export async function fetchCompetitionData(competitionTitle: string) {
+export async function fetchCompetitionData(competitionSlug: string) {
     const query = qs.stringify(
         {
             where: {
-                title: { like: competitionTitle, },
+                slug: { equals: competitionSlug, },
             },
         },
         {
@@ -143,6 +143,18 @@ export async function createPost(data: PostCreationInput) {
 
     if (!response.ok) {
         throw new Error("Failed to create post");
+    }
+
+    return await response.json();
+}
+
+export async function validateEmail(token: string) {
+    const response = await fetch(
+        import.meta.env.PUBLIC_BACKEND_URL + "/verify/" + token,
+    );
+
+    if (!response.ok) {
+        throw new Error(response.status.toString());
     }
 
     return await response.json();

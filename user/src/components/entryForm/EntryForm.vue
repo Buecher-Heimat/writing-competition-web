@@ -5,9 +5,8 @@ import FormStep2 from './components/FormStep2.vue';
 import FormStep3 from './components/FormStep3.vue';
 import { pinia, useEntryFormStore } from '../../lib/entryFormStore';
 import { checkIfAgeIsInRange } from '../../lib/ageGroups';
-import { CheckCircle, X } from 'lucide-vue-next';
+import { CheckCircle, X, ExternalLink } from 'lucide-vue-next';
 import FormStep4 from './components/FormStep4.vue';
-import { Vue3Lottie } from 'vue3-lottie';
 import { Loader2 } from 'lucide-vue-next';
 
 const store = useEntryFormStore(pinia);
@@ -191,6 +190,19 @@ function getShowHints() {
         showHints.value = false;
     }
 }
+
+function openMailWebsite() {
+    const mailProvider = store.formData.email?.split('@')[1];
+    if (mailProvider === 'gmail.com') {
+        window.open('https://mail.google.com/', '_blank');
+    } else if (mailProvider === 'outlook.com' || mailProvider === 'hotmail.com') {
+        window.open('https://outlook.live.com/', '_blank');
+    } else if (mailProvider === 'yahoo.com') {
+        window.open('https://mail.yahoo.com/', '_blank');
+    } else {
+        window.open('https://' + mailProvider, '_blank');
+    }
+}
 </script>
 
 <template>
@@ -207,18 +219,19 @@ function getShowHints() {
                 <div v-if="store.finished || store.loading"
                     class="absolute h-full w-full bottom-0 top-0 left-0 right-0 flex justify-center items-center bg-grey/30 backdrop-blur-sm z-[41]">
                     <Loader2 v-if="store.loading" class="loader text-twine-400 h-10 w-10" />
-                    <Vue3Lottie v-if="store.finished" class="absolute z-0" animation-link="/images/animations/party.json"
-                        :loop="0" />
                     <div v-if="store.finished"
                         class="bg-white rounded-lg shadow-lg border-bandicoot-400 border-2 relative max-w-sm z-10">
-
                         <div class="p-5 flex flex-col gap-3">
                             <h3 class="font-bold text-bandicoot-400 text-lg">E-Mail bestätigen</h3>
                             <p class="font-medium text-bandicoot-400">Dein Beitrag zu {{ store.competition?.title }} wurde
                                 gesendet. Jetzt musst du nur noch Deine E-Mail Adresse bestätigen, indem Du auf den Link
                                 klickst,
                                 den wir dir gerade an '{{ store.formData.email }}' geschickt haben.</p>
-                            <button class="w-full p-3 bg-twine-400 rounded text-white">Zur Startseite</button>
+                            <button @click="openMailWebsite"
+                                class="w-full p-3 bg-twine-400 rounded text-white flex justify-center items-center">Öffne
+                                Mails
+                                <ExternalLink class="ml-2 h-4 w-4" />
+                            </button>
                         </div>
                     </div>
                 </div>

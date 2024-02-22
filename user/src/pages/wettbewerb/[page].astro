@@ -1,12 +1,9 @@
 ---
-import qs from "qs";
-
 import GuideStep from "../../components/GuideStep.astro";
 import PostCard from "../../components/PostCard.astro";
 import Layout from "../../layouts/Layout.astro";
 
 import { ArrowDown, ArrowRight, FileUp, PenTool } from "lucide-vue-next";
-import { Console } from "console";
 
 import {
   fetchWritingTips,
@@ -14,22 +11,25 @@ import {
   fetchCompetitionData,
 } from "../../lib/api";
 import { createAgeGroupString } from "../../lib/ageGroups";
-import type { WritingTip, Post, Competition } from "../../payload";
+import type { WritingTip, Post, Competition, Media } from "../../payload";
 
 // FETCH DATA
 
-const url = Astro.request.url;
-const competitionTitle = url.split("/").pop().replace(/-/g, " ");
+const { page } = Astro.params;
+if (!page || page.length === 0) {
+    return Astro.redirect("/404");
+}
 
-let competitionData: Competition;
+let competitionData: Competition | null = null;
 let recentCompetitionPosts: Post[] = [];
-let writingTips: WritingTip[] = [];
+let writingTips: WritingTip | null = null;
 
 try {
-  competitionData = await fetchCompetitionData(competitionTitle);
+  competitionData = await fetchCompetitionData(page);
   recentCompetitionPosts = await fetchRecentCompetitionPosts(
-    competitionData.title
+    competitionData.id
   );
+  console.log(recentCompetitionPosts);
   writingTips = await fetchWritingTips();
 } catch (error) {
   console.error(error);
@@ -90,8 +90,8 @@ if (today < competitionData.date_start) {
       <img
         class="min-w-[36rem] md:min-w-0 w-[36rem] h-[36rem] md:w-[24rem] md:h-[24rem] xs:w-[20rem] xs:h-[20rem] 2xs:w-[12rem] 2xs:h-[12rem] rounded-2xl shadow-2xl object-cover"
         src={import.meta.env.PUBLIC_BACKEND_URL +
-          competitionData.image_hero.url}
-        alt={competitionData.image_hero.alt}
+          (competitionData.image_hero as Media).url}
+        alt={(competitionData.image_hero as Media).alt}
       />
       <div
         class="w-[46rem] 2xl:w-full h-[36rem] 2xl:h-full py-4 flex flex-col justify-between 2xl:gap-8 md:gap-6"
@@ -107,7 +107,7 @@ if (today < competitionData.date_start) {
           {competitionData.sponsor_string}
         </h2>
         <div
-          class="flex flex-row md:flex-col justify-between 2xl:justify-evenly md:items-center gap-2"
+          class="flex flex-row md:flex-col xl:justify-center gap-10 w-full"
         >
           <div class="md:flex md:flex-col md:items-center">
             <h3 class="text-bandicoot-400 font-bold text-basic mt-5 mb-2">
@@ -168,7 +168,7 @@ if (today < competitionData.date_start) {
       class="w-screen bg-white flex flex-wrap items-center justify-center py-8 px-8 gap-8"
     >
       {
-        competitionData.sponsors.map((sponsor: any) => (
+        competitionData.sponsors?.map((sponsor: any) => (
           <a href={sponsor.link}>
             <img
               class="h-18 md:h-15 xs:h-12"
@@ -257,13 +257,7 @@ if (today < competitionData.date_start) {
             {(recentCompetitionPosts.length !== 0) ? (<div class="grid grid-cols-3 2xl:grid-cols-2 lg:grid-cols-1 gap-6 justify-items-center">
               {recentCompetitionPosts.map((post: Post) => (
                 <PostCard
-                  title={post.title}
-                  winner={post.winner}
-                  author={post.author}
-                  competition={post.competition.title}
-                  ageGroup={[post.agegroup.age_start, post.agegroup.age_end]}
-                  date={new Date(post.createdAt)}
-                  excerpt={post.content}
+                  post={post}
                 />
               ))}
             </div>
@@ -305,7 +299,7 @@ if (today < competitionData.date_start) {
                 </span>
               </h1>
               <div class="flex flex-col gap-6 text-pearl-bush-100">
-                {writingTips.tips.map((tip: any) => (
+                {writingTips?.tips?.map((tip: any) => (
                   <span>{tip.tip}</span>
                   ))}
                   </div>
@@ -350,7 +344,7 @@ if (today < competitionData.date_start) {
                 </span>
               </h1>
               <div class="flex flex-col gap-6 text-bandicoot-400">
-                {writingTips.tips.map((tip: any) => (
+                {writingTips?.tips?.map((tip: any) => (
                   <span>{tip.tip}</span>
                 ))}
               </div>
