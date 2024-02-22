@@ -201,7 +201,7 @@ function focusEditor() {
 
       <div @click="focusEditor" class="h-full overflow-y-scroll overflow-x-hidden w-full flex justify-center py-10">
         <div
-          class="prose prose-amber px-5 font-serif w-full border-none focus:border-none border-transparent outline-none whitespace-pre-wrap h-full">
+          class="prose prose-amber px-5 font-serif w-full max-w-3xl border-none focus:border-none border-transparent outline-none whitespace-pre-wrap h-full">
           <h1 class="-mb-0">
             {{ store.formData.title }}
           </h1>

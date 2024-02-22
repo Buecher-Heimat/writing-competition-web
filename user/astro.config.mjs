@@ -22,6 +22,7 @@ export default defineConfig({
     '/beiträge': '/alle-texte/1',
     '/alle-beiträge': '/alle-texte/1',
     '/mitmachen': '/text-einreichen',
+    '/texte': '/alle-texte/1',
   },
   output: "server",
   adapter: node({
