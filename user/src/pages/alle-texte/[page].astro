@@ -254,18 +254,7 @@ if (page && !isNaN(parseInt(page)) && Number(page) > data.totalPages) {
                 {posts.length > 0 && (
                     <div class="grid lg:grid-cols-1 xl:grid-cols-2 grid-cols-3 gap-10">
                         {posts.map((post: any) => (
-                            <PostCard
-                                title={post.title}
-                                winner={post.winner}
-                                author={post.author}
-                                competition={post.competition.title}
-                                ageGroup={[
-                                    post.agegroup.age_start,
-                                    post.agegroup.age_end,
-                                ]}
-                                date={new Date(post.createdAt)}
-                                excerpt={post.content}
-                            />
+                            <PostCard post={post} />
                         ))}
                     </div>
                 )}

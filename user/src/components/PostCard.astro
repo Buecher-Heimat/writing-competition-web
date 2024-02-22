@@ -3,25 +3,32 @@ import { Trophy } from "lucide-vue-next";
 import { createAgeGroupString } from "../lib/ageGroups";
 import { marked } from "marked";
 import DOMPurify from "isomorphic-dompurify";
+import type { Competition, Post } from "../payload";
 
-interface Props {
-    title: string;
-    winner: boolean | null | undefined;
-    author: string;
-    date: Date;
-    competition: string;
-    ageGroup: [number | null | undefined, number | null | undefined];
-    excerpt: string;
-}
+type Props = {
+    post: Post;
+};
 
-const { title, winner, author, date, competition, ageGroup, excerpt }: Props =
-    Astro.props;
+const { post } = Astro.props as Props;
 
-const excerptHTML = DOMPurify.sanitize(await marked.parse(excerpt));
+const {
+    title,
+    slug,
+    winner,
+    author,
+    createdAt,
+    competition,
+    agegroup,
+    content,
+} = post;
+
+const excerptHTML = DOMPurify.sanitize(
+    await marked.parse(content.slice(0, 500)),
+);
 ---
 
 <a
-    href={"/texte/" + encodeURI(title.replace(/ /g, "-"))}
+    href={"/texte/" + slug}
     class="bg-pearl-bush-50 rounded-xl py-4 max-w-2xl flex flex-col shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out hover:ring-2 hover:ring-bandicoot-400 ring-inset"
 >
     <div class="w-full px-6">
@@ -40,9 +47,13 @@ const excerptHTML = DOMPurify.sanitize(await marked.parse(excerpt));
     <div
         class="px-6 py-2 my-4 flex gap-x-3 italic text-sm font-semibold flex-wrap border-t-2 border-b-2 border-bandicoot-400"
     >
-        <p>{date.toLocaleDateString("de-DE")}</p>
-        <p>{competition}</p>
-        <p>Altersgruppe {createAgeGroupString(ageGroup)}</p>
+        <p>{new Date(createdAt).toLocaleDateString("de-DE")}</p>
+        <p>{(competition as Competition).title}</p>
+        <p>
+            Altersgruppe {
+                createAgeGroupString([agegroup?.age_start, agegroup?.age_end])
+            }
+        </p>
     </div>
     <div class="px-6 relative h-full min-h-[5rem]">
         <div
