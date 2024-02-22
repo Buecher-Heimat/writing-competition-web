@@ -63,7 +63,7 @@ if (today < competitionData.date_start) {
 <Layout title="Schreibwettbewerbe Bad Harzburg">
   <main>
     <section
-      class="min-h-[90vh] w-screen flex flex-row 2xl:flex-col items-center justify-center relative px-52 xl:px-36 md:px-28 sm:px-4 py-20 gap-14"
+      class="min-h-[90vh] w-screen flex flex-row 2xl:flex-col items-center justify-center relative px-52 xl:px-36 md:px-28 sm:px-4 py-20 gap-14 md:gap-6"
     >
       <div class="absolute w-full h-full z-[-1] md:hidden">
         <img
@@ -88,21 +88,21 @@ if (today < competitionData.date_start) {
         />
       </div>
       <img
-        class="w-[36rem] h-[36rem] md:w-[24rem] md:h-[24rem] rounded-2xl shadow-2xl object-cover"
+        class="min-w-[36rem] md:min-w-0 w-[36rem] h-[36rem] md:w-[24rem] md:h-[24rem] xs:w-[20rem] xs:h-[20rem] 2xs:w-[12rem] 2xs:h-[12rem] rounded-2xl shadow-2xl object-cover"
         src={import.meta.env.PUBLIC_BACKEND_URL +
           competitionData.image_hero.url}
         alt={competitionData.image_hero.alt}
       />
       <div
-        class="w-[46rem] 2xl:w-full h-[36rem] 2xl:h-full py-4 flex flex-col justify-between 2xl:gap-8"
+        class="w-[46rem] 2xl:w-full h-[36rem] 2xl:h-full py-4 flex flex-col justify-between 2xl:gap-8 md:gap-6"
       >
         <h1
-          class="text-twine-400 font-bold font-serif small-caps text-8xl 2xl:text-center lg:text-6xl leading-[6rem]"
+          class="text-twine-400 font-bold font-serif small-caps text-8xl 2xl:text-center lg:text-6xl xs:text-5xl 2xs:text-4xl leading-[6rem]"
         >
           {competitionData.title}
         </h1>
         <h2
-          class="text-3xl lg:text-2xl font-bold small-caps text-bandicoot-400 mt-3 2xl:text-center leading-8"
+          class="text-3xl lg:text-2xl xs:text-xl font-bold small-caps text-bandicoot-400 mt-3 2xl:text-center leading-8"
         >
           {competitionData.sponsor_string}
         </h2>
@@ -171,7 +171,7 @@ if (today < competitionData.date_start) {
         competitionData.sponsors.map((sponsor: any) => (
           <a href={sponsor.link}>
             <img
-              class="h-18"
+              class="h-18 md:h-15 xs:h-12"
               src={import.meta.env.PUBLIC_BACKEND_URL + sponsor.logo.url}
               alt={sponsor.logo.alt}
             />
@@ -181,13 +181,13 @@ if (today < competitionData.date_start) {
     </section>
     <section
       id="so-gehts"
-      class="w-screen bg-bandicoot-400 pl-36 pr-52 py-20 xl:pl-20 xl:pr-36 md:pl-12 md:pr-28"
+      class="w-screen bg-bandicoot-400 pl-36 pr-52 py-20 xl:pl-20 xl:pr-36 md:pl-12 md:pr-28 sm:pl-4 sm:pr-20 xs:px-12"
     >
       <h1
-        class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl mb-14 ml-16 leading-[5rem] gap-4"
+        class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl xs:text-5xl 2xs:text-4xl mb-14 ml-16 2xs:mx-0 leading-[5rem] gap-4"
       >
         So geht's
-        <span class="text-3xl uppercase font-sans font-light italic">
+        <span class="text-3xl xs:text-2xl uppercase font-sans font-light italic">
           Es ist eigentlich ganz einfach
         </span>
       </h1>
@@ -234,22 +234,22 @@ if (today < competitionData.date_start) {
               alt="Some shapes"
             />
           </div>
-          <div class="px-36 py-20 xl:px-20">
+          <div class="px-36 py-20 xl:px-20 xs:px-8">
             {competitionStatus === CompetitionStatus.RUNNING ? (
               <div class="mb-14 lg:text-center">
-                <h2 class="small-caps font-serif text-4xl font-bold text-pearl-bush-950">
+                <h2 class="small-caps font-serif text-4xl 2xs:text-2xl font-bold text-pearl-bush-950">
                   Deine Konkurrenz
                 </h2>
-                <h3 class="font-bold text-basic text-bandicoot-400">
+                <h3 class="font-bold text-base 2xs:text-sm  text-bandicoot-400">
                   Diese Texte haben andere bereits einreicht.
                 </h3>
               </div>
             ) : (
               <div class="mb-14 lg:text-center">
-                <h2 class="small-caps font-serif text-4xl font-bold text-pearl-bush-950">
+                <h2 class="small-caps font-serif text-4xl 2xs:text-2xl font-bold text-pearl-bush-950">
                   Texte des Wettbewerbs
                 </h2>
-                <h3 class="font-bold text-basic text-bandicoot-400">
+                <h3 class="font-bold text-base 2xs:text-sm  text-bandicoot-400">
                   Diese Texte wurden eingereicht.
                 </h3>
               </div>
@@ -296,32 +296,56 @@ if (today < competitionData.date_start) {
     {
       competitionStatus !== CompetitionStatus.FINISHED &&
         (competitionStatus === CompetitionStatus.RUNNING ? (
-          <section class="w-screen bg-bandicoot-400 basis-2/3 flex flex-row 2xl:flex-col justify-around px-52 xl:px-36 md:px-28 py-20 gap-28">
+          <section class="w-screen bg-bandicoot-400 basis-2/3 flex flex-row 2xl:flex-col justify-around px-52 xl:px-36 md:px-28 sm:px-20 xs:px-12 py-20 gap-28">
             <div class="w-[58rem] 2xl:w-full flex flex-col">
-              <h1 class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl mb-14 leading-[5rem] gap-4">
+              <h1 class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl xs:text-5xl 2xs:text-4xl mb-14 leading-[5rem] gap-4">
                 Bevor du loslegst
-                <span class="text-3xl uppercase font-sans font-light italic">
+                <span class="text-3xl xs:text-2xl uppercase font-sans font-light italic">
                   Ein Paar Tipps zum Schreiben deines Textes
                 </span>
               </h1>
               <div class="flex flex-col gap-6 text-pearl-bush-100">
                 {writingTips.tips.map((tip: any) => (
                   <span>{tip.tip}</span>
-                ))}
-              </div>
-            </div>
-            <div class="flex items-center justify-center">
-              <div class="min-w-[20rem] min-h-[20rem] bg-pearl-bush-100 rounded-full flex items-center justify-center">
-                <PenTool class="text-twine-400" size="150" />
-              </div>
+                  ))}
+                  </div>
+                  </div>
+                  <div class="flex items-center justify-center">
+                    <div class="min-w-[20rem] min-h-[20rem] xs:min-w-[16rem] xs:min-h-[16rem] 2xs:min-w-[12rem] 2xs:min-h-[12rem] bg-pearl-bush-100 rounded-full flex items-center justify-center">
+                      <PenTool id="penTool" class="text-twine-400"/>
+                    </div>
+                    <script>
+      
+        const penTool = document.getElementById('penTool');
+        
+        function resizePenTool() {
+          const viewportWidth = window.innerWidth;
+          if (penTool) {
+            if (viewportWidth < 383) {
+              penTool.setAttribute('width', '120');
+              penTool.setAttribute('height', '120');
+            } else if (viewportWidth < 512) {
+              penTool.setAttribute('width', '135');
+              penTool.setAttribute('height', '135')
+            } else {
+              penTool.setAttribute('width', '150');
+              penTool.setAttribute('height', '150')
+            }
+          }
+        }
+        
+        window.addEventListener('resize', resizePenTool);
+        resizePenTool();
+      
+    </script>
             </div>
           </section>
         ) : (
-          <section class="w-screen bg-pearl-bush-100 basis-2/3 flex flex-row 2xl:flex-col justify-around px-52 xl:px-36 md:px-28 py-20 gap-28">
+          <section class="w-screen bg-pearl-bush-100 basis-2/3 flex flex-row 2xl:flex-col justify-around px-52 xl:px-36 md:px-28 sm:px-20 xs:px-12 py-20 gap-28">
             <div class="w-[58rem] 2xl:w-full flex flex-col">
-              <h1 class="text-twine-400 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl mb-14 leading-[5rem] gap-4">
+              <h1 class="text-twine-400 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl xs:text-5xl 2xs:text-4xl mb-14 leading-[5rem] gap-4">
                 Bevor du loslegst
-                <span class="text-3xl uppercase font-sans font-light italic">
+                <span class="text-3xl xs:text-2xl uppercase font-sans font-light italic">
                   Ein Paar Tipps zum Schreiben deines Textes
                 </span>
               </h1>
@@ -332,16 +356,36 @@ if (today < competitionData.date_start) {
               </div>
             </div>
             <div class="flex items-center justify-center">
-              <div class="min-w-[20rem] min-h-[20rem] bg-twine-400 rounded-full flex items-center justify-center">
-                <PenTool class="text-pearl-bush-100" size="150" />
+              <div class="min-w-[20rem] min-h-[20rem] xs:min-w-[16rem] xs:min-h-[16rem] 2xs:min-w-[12rem] 2xs:min-h-[12rem] bg-twine-400 rounded-full flex items-center justify-center">
+                <PenTool id="penTool" class="text-pearl-bush-100" size="150" />
               </div>
+              <script>
+        const penTool = document.getElementById('penTool');
+        
+        function resizePenTool() {
+          const viewportWidth = window.innerWidth;
+          if (penTool) {
+            if (viewportWidth < 383) {
+              penTool.setAttribute('size', '120');
+            } else if (viewportWidth < 512) {
+              penTool.setAttribute('size', '135');
+            } else {
+              penTool.setAttribute('size', '150');
+            }
+          }
+        }
+        
+        window.addEventListener('resize', resizePenTool);
+        resizePenTool();
+      
+    </script>
             </div>
           </section>
         ))
     }
     {
       competitionStatus === CompetitionStatus.RUNNING && (
-        <section class="w-screen flex justify-center pt-20 pb-40 relative">
+        <section class="w-screen flex justify-center pt-20 pb-40 px-12 relative">
           <div class="absolute w-full h-full z-[-1] md:hidden">
             <img
               class="absolute -right-[1%] top-10 lg:w-28 rotate-45"
@@ -375,11 +419,11 @@ if (today < competitionData.date_start) {
             />
           </div>
           <div class="w-[32rem] flex flex-col items-center gap-12">
-            <h1 class="text-bandicoot-400 font-bold font-serif small-caps text-5xl text-center md:text-4xl">
+            <h1 class="text-bandicoot-400 font-bold font-serif small-caps text-5xl xs:text-4xl 2xs:text-3xl text-center md:text-4xl">
               Worauf wartest Du noch?!
             </h1>
             <a href="/text-einreichen">
-              <button class="w-80 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
+              <button class="w-80 2xs:w-60 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
                 Mitmachen
               </button>
             </a>
