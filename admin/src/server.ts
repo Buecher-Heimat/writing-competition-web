@@ -16,7 +16,9 @@ app.get("/verify/:token", async (req, res) => {
     const decoded: { id: string } = jwt.verify(token, process.env.PAYLOAD_SECRET) as { id: string };
 
     if (!decoded || !decoded.id) {
-      res.send("Der Token ist ungültig. Bitte überprüfe den Link und versuche es erneut.")
+      res.status(400).json({
+        error: "Invalid token"
+      })
       return
     };
 
@@ -28,12 +30,15 @@ app.get("/verify/:token", async (req, res) => {
       }
     })
 
-    // TODO: Make this response nicer (Think about if you want to redirect to a static success page or if that would open an attack vector)
-    res.send("Du hast den Post erfolgreich verifiziert! Du kannst die Seite jetzt schließen.")
+    res.status(200).json({
+      message: "Success"
+    })
   }
   catch (error) {
     console.error("Error verifying token", error);
-    res.send("Es gab einen Fehler beim Verifizieren deines Posts. Bitte versuche es später erneut.")
+    res.status(500).json({
+      error: "Internal error"
+    })
   }
 })
 

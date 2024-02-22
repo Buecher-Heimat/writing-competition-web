@@ -78,10 +78,10 @@ const Posts: CollectionConfig = {
             ]
         },
         {
-            name: "permission_publish_forever",
-            label: "Permission to publish forever",
+            name: "delete_after_competition",
+            label: "Delete after competition",
             admin: {
-                description: "Indicates whether the user agrees that the entry will remain public even after the end of the competition"
+                description: "Indicates if the user wants the post to be deleted after the competition is over."
             },
             type: "checkbox",
             required: true
