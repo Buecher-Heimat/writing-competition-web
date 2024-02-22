@@ -56,7 +56,7 @@ export interface Post {
     age_start?: number | null;
     age_end?: number | null;
   };
-  permission_publish_forever: boolean;
+  delete_after_competition: boolean;
   approved_by_organizer?: boolean | null;
   content: string;
   winner?: boolean | null;
