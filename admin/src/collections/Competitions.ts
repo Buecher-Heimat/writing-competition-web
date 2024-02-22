@@ -6,6 +6,7 @@ import {
     lexicalEditor,
     lexicalHTML
 } from '@payloadcms/richtext-lexical'
+import { slugField } from "../fields/slug";
 
 const Competitions: CollectionConfig = {
     slug: "competitions",
@@ -29,6 +30,7 @@ const Competitions: CollectionConfig = {
             type: "text",
             required: true
         },
+        slugField(),
         {
             name: "image_hero",
             label: "Hero image",
