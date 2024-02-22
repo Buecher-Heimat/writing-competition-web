@@ -46,13 +46,15 @@ export interface User {
 export interface Post {
     id: string;
     title: string;
+    slug: string;
     author: string;
     email: string;
+    _verified?: boolean | null;
     phone?: string | null;
     age_author: number;
-    agegroup: {
-        age_start: number;
-        age_end: number;
+    agegroup?: {
+        age_start?: number | null;
+        age_end?: number | null;
     };
     permission_publish_forever: boolean;
     approved_by_organizer?: boolean | null;
@@ -69,6 +71,7 @@ export interface Post {
 export interface Competition {
     id: string;
     title: string;
+    slug: string;
     image_hero: string | Media;
     date_start: string;
     date_end: string;
