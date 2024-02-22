@@ -147,3 +147,15 @@ export async function createPost(data: PostCreationInput) {
 
     return await response.json();
 }
+
+export async function validateEmail(token: string) {
+    const response = await fetch(
+        import.meta.env.PUBLIC_BACKEND_URL + "/verify/" + token,
+    );
+
+    if (!response.ok) {
+        throw new Error(response.status.toString());
+    }
+
+    return await response.json();
+}

@@ -1,0 +1,75 @@
+---
+import qs from "qs";
+import { validateEmail } from "../lib/api";
+import Layout from "../layouts/Layout.astro";
+import LottieAnimation from "astro-integration-lottie/Lottie.astro";
+
+const url = Astro.request.url;
+const query = qs.parse(url.split("?")[1]);
+
+const token = query.token;
+let success = false;
+let errorMessage =
+    "Dein Token ist leider ungültig. Bitte überprüfe den Link in Deiner E-Mail und versuche es erneut.";
+
+if (token) {
+    try {
+        await validateEmail(token as string);
+        success = true;
+    } catch (e) {
+        console.error(e);
+        if (e == 500) {
+            errorMessage =
+                "Uh, oh! Da ist bei uns etwas schief gelaufen. Bitte versuche es später erneut oder kontaktiere uns unter info@die-buecherheimat.de";
+        }
+    }
+}
+---
+
+<Layout title={success ? "E-Mail bestätigt" : "Fehler"}>
+    <div class="w-full min-h-screen flex items-center justify-center px-5">
+        {
+            success ? (
+                <>
+                    <div class="h-screen max-w-xl w-full absolute top-0 bottom-0">
+                        <LottieAnimation
+                            src="/images/animations/party.json"
+                            autoplay="visible"
+                            loop={false}
+                        />
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg border-bandicoot-400 border-2 relative max-w-sm z-10">
+                        <div class="p-5 flex flex-col gap-3">
+                            <h3 class="font-bold text-bandicoot-400 text-lg">
+                                E-Mail erfolgreich bestätigt
+                            </h3>
+                            <p class="font-medium text-bandicoot-400">
+                                Du hast Deine E-Mail Adresse erfolgreich
+                                bestätigt! Das heißt, wir werden Deinen Text als
+                                nächstes prüfen und Dich benachrichtigen, wenn
+                                wir ihn annehmen!
+                            </p>
+                            <a
+                                href="/"
+                                class="w-full p-3 bg-twine-400 rounded text-white flex justify-center"
+                            >
+                                Zur Startseite
+                            </a>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div class="bg-white rounded-lg shadow-lg border-warning-600 border-2 relative max-w-sm z-10">
+                    <div class="p-5 flex flex-col gap-3">
+                        <h3 class="font-bold text-warning-500 text-lg">
+                            Fehler
+                        </h3>
+                        <p class="font-medium text-warning-500">
+                            {errorMessage}
+                        </p>
+                    </div>
+                </div>
+            )
+        }
+    </div>
+</Layout>
