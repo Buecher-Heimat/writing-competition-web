@@ -33,10 +33,9 @@ Hallo ${post.author},
 
 Dein Beitrag zum Schreibwettbewerb "${competition.title}" der Bücher-Heimat ist schon bei uns eingegangen. Jetzt musst Du nur noch in einem letzten Schritt Deine E-Mail-Adresse bestätigen, damit wir auch wissen, dass wir mit der richtigen Person schreiben.
 
-Klick zum Bestätigen deiner E-Mail-Adresse einfach auf den folgenden Link: ${process.env.PUBLIC_USER_URL}/email-bestaetigung?token=${token}
+Klick zum Bestätigen Deiner E-Mail-Adresse einfach auf den folgenden Link: ${process.env.PUBLIC_USER_URL}/email-bestaetigung?token=${token}
 
 Vielen Dank für Deine Teilnahme und viel Erfolg 
-
 Dein Bücher-Heimat Team!
 
 
@@ -58,13 +57,12 @@ nachdem Du Deine E-Mail-Adresse bestätigt hast, jetzt nochmal ein offzielles, h
 Wir werden im nächsten Schritt Deinen Text prüfen. Das kann einige Zeit dauern. Wir werden Dir eine weitere E-Mail schicken, sobald die Überprüfung abgeschlossen ist und Du Deinen Text auf unserer Online-Plattform finden kannst. 
 
 Mit fleißig prüfenden Grüßen
-
 Dein Bücher-Heimat Team!
                 `,
                 from
             })
         }
-        else if (operation === 'update' && !previousPost.approved_by_organizer && post.approved_by_organizer) {
+        else if ((operation === 'update' && !previousPost.approved_by_organizer && post.approved_by_organizer) || (operation === 'create' && post.approved_by_organizer)) {
             console.log("Sending email")
             payload.sendEmail({
                 to: post.email,
@@ -92,12 +90,12 @@ Herzlichen Glückwunsch ${post.author}!
 
 Du hast den Schreibwettbewerb "${competition.title}" in Deiner Altersgruppe gewonnen! Dein Text war wirklich sehr gut. 
 
-Wegen des weiteren Ablaufs werden wir uns nochmal mit Dir in Verbindung setzen. 
+Zum weiteren Ablauf werden wir uns nochmal mit Dir in Verbindung setzen. 
 
 Bis dahin
 Dein Bücher-Heimat Team!
 
-P.S.: Zur Erinnerung; Deinen und alle anderen Texte kannst Du unter folgendem Link abrufen: ${link}
+P.S.: Zur Erinnerung: Deinen und alle anderen Texte kannst Du unter folgendem Link abrufen: ${link}
                 `,
                 from
             })
