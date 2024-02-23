@@ -26,6 +26,9 @@ let writingTips: WritingTip | null = null;
 
 try {
   competitionData = await fetchCompetitionData(page);
+  if (!competitionData) {
+    return Astro.redirect("/404");
+  }
   recentCompetitionPosts = await fetchRecentCompetitionPosts(
     competitionData.id
   );
@@ -33,10 +36,6 @@ try {
   writingTips = await fetchWritingTips();
 } catch (error) {
   console.error(error);
-}
-
-if (!competitionData) {
-  return Astro.redirect("/404");
 }
 
 // CHECK COMPETITION STATUS
@@ -171,7 +170,7 @@ if (today < competitionData.date_start) {
         competitionData.sponsors?.map((sponsor: any) => (
           <a href={sponsor.link}>
             <img
-              class="h-16 object-cover w-fit object-center md:h-14 xs:h-12"
+              class="h-16 object-cover object-center md:h-14 xs:h-12"
               src={import.meta.env.PUBLIC_BACKEND_URL + sponsor.logo.url}
               alt={sponsor.logo.alt}
             />
@@ -188,7 +187,7 @@ if (today < competitionData.date_start) {
       >
         So geht's
         <span class="text-3xl xs:text-2xl uppercase font-sans font-light italic">
-          Es ist eigentlich ganz einfach
+          Es ist ganz einfach!
         </span>
       </h1>
       <div class="grid grid-cols-2 lg:grid-cols-1 gap-8 z-10 relative">
@@ -295,7 +294,7 @@ if (today < competitionData.date_start) {
               <h1 class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl xs:text-5xl 2xs:text-4xl mb-14 leading-[5rem] gap-4">
                 Bevor du loslegst
                 <span class="text-3xl xs:text-2xl uppercase font-sans font-light italic">
-                  Ein Paar Tipps zum Schreiben deines Textes
+                  Ein Paar Tipps zum Schreiben deines Textes!
                 </span>
               </h1>
               <div class="flex flex-col gap-6 text-pearl-bush-100">

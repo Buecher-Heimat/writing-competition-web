@@ -144,7 +144,7 @@ const pastCompetitions = getPastCompetitions(competitions);
             >
           </h1>
           <h2
-            class="text-3xl lg:text-xl font-black small-caps text-bandicoot-400 mt-3"
+            class="text-3xl lg:text-xl font-bold small-caps text-bandicoot-400 mt-3"
           >
             Bad Harzburg
           </h2>
@@ -406,7 +406,7 @@ const pastCompetitions = getPastCompetitions(competitions);
   const postContainer = document.getElementById("post-container");
   if (postContainer) {
     const grid = document.querySelector(
-      "#post-container > .grid",
+      "#post-container > .grid"
     ) as HTMLElement;
     if (grid) {
       grid.style.gridTemplateColumns = `repeat(${grid.children.length}, ${window.innerWidth > 540 ? 500 : window.innerWidth - 40}px)`;
