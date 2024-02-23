@@ -249,17 +249,25 @@ const pastCompetitions = getPastCompetitions(competitions);
         </div>
       )
     }
-    {
-      instructionstep.steps.length > 0 && (
         <div class="pr-32 lg:pr-16 pt-32 pl-16 pb-16 sm:px-5 relative">
-          <div class="pl-16 mb-6 z-10 relative">
-            <h2 class="font-serif text-7xl font-black small-caps text-twine-400 sm:text-4xl">
+          <!-- <div class="pl-16 mb-6 z-10 relative">
+            <h2 class="font-serif text-7xl font-bold small-caps text-twine-400 sm:text-4xl">
               So geht's
             </h2>
-            <h3 class="font-light italic text-bandicoot-400 text-2xl sm:text-lg">
-              Es ist eigentlich ganz einfach
+            <h3 class="font-light italic text-bandicoot-400 uppercase text-2xl sm:text-lg">
+              Es ist ganz einfach!
             </h3>
-          </div>
+          </div> -->
+          <h1
+        class="text-twine-400 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl xs:text-5xl 2xs:text-4xl mb-14 ml-16 2xs:mx-0 leading-[5rem] gap-4"
+      >
+        So geht's
+        <span class="text-3xl xs:text-2xl uppercase font-sans font-light italic">
+          Es ist ganz einfach!
+        </span>
+      </h1>
+    {
+      instructionstep.steps.length > 0 && (
           <div class="flex flex-col gap-8 z-10 relative">
             {instructionstep.steps.map((step, index) => (
               <GuideStep
@@ -349,10 +357,10 @@ const pastCompetitions = getPastCompetitions(competitions);
     )
   }
   <section
-    class="flex flex-col items-center justify-center h-[fit-content] bg-bandicoot-400 pt-16 pb-44 w-full relative px-5"
+    class="flex flex-col items-center justify-center h-[fit-content] bg-bandicoot-400 pt-16 pb-44 w-full relative px-5 gap-10"
   >
     <h2
-      class="max-w-lg text-center font-serif font-semibold text-pearl-bush-100 text-4xl small-caps mb-10"
+      class="max-w-lg text-center font-serif font-semibold text-pearl-bush-100 text-4xl small-caps"
     >
       {
         recentPosts.length > 2
@@ -360,11 +368,12 @@ const pastCompetitions = getPastCompetitions(competitions);
           : "Du hast eine Geschichte zu erzählen?"
       }
     </h2>
-    <a href="/text-einreichen" class="w-full max-w-sm z-10">
+    <a href="/text-einreichen">
       <button
-        class="p-3 font-semibold font-serif text-pearl-bush-50 bg-twine-400 rounded-lg w-full"
-        >Mitmachen</button
+        class="w-80 2xs:w-60 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
       >
+        Mitmachen
+      </button>
     </a>
     <div class="absolute w-full h-full z-0 md:hidden">
       <img
