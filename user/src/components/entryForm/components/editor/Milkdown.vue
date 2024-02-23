@@ -15,6 +15,8 @@ import { onMounted, ref, watch, onBeforeUnmount } from 'vue';
 
 const store = useEntryFormStore(pinia)
 
+const editorFocus = ref(false);
+
 const editor = useEditor((root) => {
   return Editor.make()
     .config((ctx) => {
@@ -23,10 +25,16 @@ const editor = useEditor((root) => {
         attributes: { class: 'outline-none', spellcheck: 'true' },
       }))
       ctx.set(rootCtx, root)
-      ctx.set(defaultValueCtx, store.formData.content)
+      // ctx.set(defaultValueCtx, store.formData.content)
       ctx.get(listenerCtx).markdownUpdated((ctx, markdown) => {
         store.formData.content = markdown;
         store.formData.content_length = document.getElementById('milkdown')?.innerText.replaceAll("\n", "").length || 0;
+      });
+      ctx.get(listenerCtx).focus((ctx) => {
+        editorFocus.value = true;
+      });
+      ctx.get(listenerCtx).blur((ctx) => {
+        editorFocus.value = false;
       });
     })
     .use(commonmark)
@@ -206,6 +214,7 @@ function focusEditor() {
             {{ store.formData.title }}
           </h1>
           <hr class="m-0">
+          <p v-if="store.formData.content_length === 0 && editorFocus === false" class="mt-4">Schreibe hier Deinen Text. Vielleicht hast Du ihn auch schon in einem anderen Programm geschrieben und kannst ihn hier einfügen. Alles, was Du hier schreibst, wird jederzeit automatisch lokal gespeichert. Viel Erfolg... 🚀</p>
           <Milkdown id="milkdown" class="h-full" />
           <div :class="{ 'h-40': fullscreen, 'h-20': !fullscreen }"></div>
         </div>
