@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { pinia, useEntryFormStore } from '../../../lib/entryFormStore';
+import { checkIfAgeIsInRange } from '../../../lib/ageGroups';
+import { watch } from 'vue';
 import AgeGroup from './AgeGroup.vue';
 
 const props = defineProps<{
@@ -9,6 +11,16 @@ const props = defineProps<{
 }>();
 
 const store = useEntryFormStore(pinia);
+
+let ageGroupMatch: boolean = false;
+
+watch(() => store.formData.age_author, () => {
+    ageGroupMatch = store.competition.agegroups?.some((agegroup) => {
+                        return checkIfAgeIsInRange(store.formData.age_author, [agegroup.age_start, agegroup.age_end]);
+                    });
+    }
+);
+
 </script>
 
 <template>
@@ -31,10 +43,11 @@ const store = useEntryFormStore(pinia);
                     </div>
                 </div>
                 <div class="w-full flex justify-center">
-                    <ul class="flex flex-wrap items-center justify-center gap-2 max-w-xs">
+                    <ul v-if="ageGroupMatch" class="flex flex-wrap items-center justify-center gap-2 max-w-xs">
                         <AgeGroup v-for="(agegroup, index) in store.competition.agegroups"
                             :ageGroup="{ age_start: agegroup.age_start, age_end: agegroup.age_end }" :key="index" />
                     </ul>
+                    <p v-else class="text-bandicoot-400">Keine passende Altersgruppe gefunden</p>
                 </div>
             </div>
             <div class="max-w-md h-80 w-full p-2 border-[3px] border-bandicoot-400 rounded-xl bg-white">
