@@ -82,7 +82,7 @@ export async function fetchInstructionSteps() {
 
 export async function fetchRecentPosts(limit: number = 10) {
     const recentPostsResponse = await fetch(
-        BASE_URL + "/posts?sort=-date_created&limit=" + limit,
+        BASE_URL + "/posts?sort=-createdAt&limit=" + limit,
     );
     const recentPostsData = await recentPostsResponse.json();
     return recentPostsData.docs as Post[];
@@ -94,7 +94,7 @@ export async function fetchRecentCompetitionPosts(competitionId: string, limit: 
             where: {
                 "competition": { equals: competitionId, },
             },
-            sort: "-date_created",
+            sort: "-createdAt",
             limit: limit,
         },
         {
