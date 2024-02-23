@@ -208,10 +208,7 @@ function openMailWebsite() {
 <template>
     <div>
         <div class="bg-white rounded-lg p-5 mb-5 border-2 border-warning-600 font-medium text-warning-600 hidden sm:block">
-            Wir empfehlen
-            Dir, deinen Beitrag an einem PC
-            mit einem großen
-            Bildschirm und einer Tastatur einzureichen!
+            Wir empfehlen dir, deinen Beitrag auf dem Gerät einzureichen, auf dem du ihn verfasst hast, vorzugsweise auf einem PC mit einem großen Bildschirm und einer Tastatur!
         </div>
         <div
             class="w-full min-h-[85vh] bg-white rounded-3xl overflow-hidden shadow-lg relative flex flex-col transition-all duration-300 ease-out">
@@ -226,7 +223,7 @@ function openMailWebsite() {
                             <p class="font-medium text-bandicoot-400">Dein Beitrag zu {{ store.competition?.title }} wurde
                                 gesendet. Jetzt musst du nur noch Deine E-Mail Adresse bestätigen, indem Du auf den Link
                                 klickst,
-                                den wir dir gerade an '{{ store.formData.email }}' geschickt haben.</p>
+                                den wir dir gerade an '{{ store.formData.email }}' geschickt haben. Schaue sicherheitshalber auch im Spamordner deines E-Mail-Programmes nach.</p>
                             <button @click="openMailWebsite"
                                 class="w-full p-3 bg-twine-400 rounded text-white flex justify-center items-center">Öffne
                                 Mails
