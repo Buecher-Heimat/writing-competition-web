@@ -5,15 +5,11 @@ import { useCompetitionStore } from '@/stores/competition';
 import { useRoute } from 'vue-router';
 import { ArrowLeft } from 'lucide-vue-next';
 import type { Media } from '@/payload';
-import { onMounted } from 'vue';
 
 const route = useRoute();
 
 const store = useCompetitionStore();
-
-onMounted(() => {
-    store.loadCompetition(route.params.competitionId as string);
-})
+store.loadCompetition(route.params.competitionId as string);
 
 const menuItems = [
     {
@@ -25,7 +21,8 @@ const menuItems = [
             },
             {
                 name: "Gewinner auswählen",
-                path: "/wettbewerb/" + route.params.competitionId + "/gewinner"
+                path: "/wettbewerb/" + route.params.competitionId + "/gewinner",
+                alternativePathEndings: ["gewinner-auswaehlen"]
             }
         ]
     },
@@ -34,11 +31,13 @@ const menuItems = [
         items: [
             {
                 name: "Texte annehmen",
-                path: "/wettbewerb/" + route.params.competitionId + "/texte/inbox"
+                path: "/wettbewerb/" + route.params.competitionId + "/texte/inbox",
+                alternativePathEndings: ["annehmen"]
             },
             {
                 name: "Angenommene Texte",
-                path: "/wettbewerb/" + route.params.competitionId + "/texte/angenommen"
+                path: "/wettbewerb/" + route.params.competitionId + "/texte/angenommen",
+                alternativePathEndings: ["angenommen"]
             }
         ]
     },
@@ -47,7 +46,7 @@ const menuItems = [
         items: [
             {
                 name: "Text einreichen",
-                path: "/wettbewerb/" + route.params.competitionId + "/texte/erstellen"
+                path: "/wettbewerb/" + route.params.competitionId + "/texte/hinzufuegen"
             }
         ]
     }
@@ -55,6 +54,10 @@ const menuItems = [
 
 function removeTrailingSlash(path: string) {
     return path.replace(/\/$/, '');
+}
+
+function isPathActive(menuPath: string, routePath: string, alternativePathEndings: string[] = []) {
+    return alternativePathEndings.some((ending) => removeTrailingSlash(routePath).endsWith(removeTrailingSlash(ending))) || removeTrailingSlash(menuPath) === removeTrailingSlash(routePath);
 }
 </script>
 
@@ -86,8 +89,8 @@ function removeTrailingSlash(path: string) {
                             <h4 class="font-bold text-xs small-caps px-5 mb-2">{{ item.title }}</h4>
                             <router-link v-for="subItem in item.items" :to="subItem.path"
                                 class=" bg-pearl-bush-50 flex flex-col gap-2 px-5 font-bold small-caps py-2" :class="{
-                                    'bg-twine-400 text-pearl-bush-50 ': removeTrailingSlash(subItem.path) === removeTrailingSlash($route.path),
-                                    'hover:bg-pearl-bush-100 ': removeTrailingSlash(subItem.path) !== removeTrailingSlash($route.path)
+                                    'bg-twine-400 text-pearl-bush-50 ': isPathActive(subItem.path, $route.path, subItem.alternativePathEndings),
+                                    'hover:bg-pearl-bush-100 ': !isPathActive(subItem.path, $route.path, subItem.alternativePathEndings)
                                 }">
                                 {{ subItem.name }}
                             </router-link>
