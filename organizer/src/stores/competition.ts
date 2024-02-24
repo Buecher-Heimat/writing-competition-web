@@ -2,12 +2,30 @@ import { defineStore } from "pinia";
 import axios from "@/axios";
 import qs from "qs";
 import type { Competition, Post } from "@/payload";
+import type { ComputedRef } from "vue";
 
 export enum StoreStatus {
     IDLE = "idle",
     LOADING = "loading",
     SUCCESS = "success",
     ERROR = "error",
+}
+
+export interface CreatePostInput {
+    title: string;
+    author: string;
+    email: string;
+    _verified?: boolean | null;
+    phone?: string | null;
+    age_author: number;
+    agegroup?: {
+        age_start?: number | null;
+        age_end?: number | null;
+    };
+    delete_after_competition: boolean;
+    approved_by_organizer?: boolean | null;
+    content: string;
+    competition: Competition;
 }
 
 export const useCompetitionStore = defineStore({
@@ -90,8 +108,24 @@ export const useCompetitionStore = defineStore({
             await axios.patch(`/posts/${postId}`, { winner: winner });
             this.status = StoreStatus.SUCCESS;
         },
+        async createPost(post: CreatePostInput) {
+            this.status = StoreStatus.LOADING;
+            try {
+                const response = await axios.post("/posts", {
+                    ...post,
+                    competition: this.competition.id,
+                });
+                this.posts.push(response.data.doc);
+            } catch (error) {
+                return error;
+            }
+            this.status = StoreStatus.SUCCESS;
+        },
         getPostsByAgeGroup(age_start: number, age_end: number): Post[] {
             return this.posts.filter((post) => post.age_author >= age_start && post.age_author <= age_end);
+        },
+        getPostBySlug(slug: string): Post | undefined {
+            return this.posts.find((post) => post.slug === slug);
         }
     },
     getters: {
