@@ -69,7 +69,6 @@ const emit = defineEmits(['save']);
 <template>
     <div class="max-w-2xl w-full">
         <form @submit.prevent="() => {
-            console.log(model);
             emit('save');
         }">
             <InputWrapper title="Autor *" description="Der Name des/der Autor*in">
