@@ -16,7 +16,8 @@ const store = useCompetitionStore();
                 <div class="w-1/12">Datum</div>
             </div>
             <div class="flex flex-col gap-2">
-                <PostTableItem v-for="post in store.pendingPosts" :post="post" :key="post.id" />
+                <PostTableItem v-for="post in store.pendingPosts" :post="post"
+                    :link="`/wettbewerb/${$route.params.competitionId}/texte/${post.slug}/annehmen`" :key="post.id" />
             </div>
         </div>
         <div v-else>
