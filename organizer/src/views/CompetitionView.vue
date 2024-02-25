@@ -5,6 +5,7 @@ import { useCompetitionStore } from '@/stores/competition';
 import { useRoute } from 'vue-router';
 import { ArrowLeft } from 'lucide-vue-next';
 import type { Media } from '@/payload';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 const route = useRoute();
 
@@ -63,6 +64,7 @@ function isPathActive(menuPath: string, routePath: string, alternativePathEnding
 
 <template>
     <BaseLayout>
+        <LoadingSpinner v-if="store.isLoading" />
         <div class="w-screen h-screen flex">
             <div class="h-full w-96 bg-pearl-bush-50 shadow-lg flex-shrink-0">
                 <router-link to="/" class="p-5 flex gap-3 items-center">
@@ -85,9 +87,9 @@ function isPathActive(menuPath: string, routePath: string, alternativePathEnding
                 </div>
                 <div class="mt-5">
                     <div class="flex flex-col gap-10">
-                        <div v-for="item in menuItems">
+                        <div v-for="(item, index) in menuItems" :key="index">
                             <h4 class="font-bold text-xs small-caps px-5 mb-2">{{ item.title }}</h4>
-                            <router-link v-for="subItem in item.items" :to="subItem.path"
+                            <router-link v-for="(subItem, index) in item.items" :to="subItem.path" :key="index"
                                 class=" bg-pearl-bush-50 flex flex-col gap-2 px-5 font-bold small-caps py-2" :class="{
                                     'bg-twine-400 text-pearl-bush-50 ': isPathActive(subItem.path, $route.path, subItem.alternativePathEndings),
                                     'hover:bg-pearl-bush-100 ': !isPathActive(subItem.path, $route.path, subItem.alternativePathEndings)
