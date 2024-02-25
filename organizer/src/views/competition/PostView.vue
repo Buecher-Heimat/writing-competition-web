@@ -2,11 +2,10 @@
 import { useCompetitionStore } from '@/stores/competition';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { Trophy, Trash, Check, ChevronLeft, ArrowLeft } from 'lucide-vue-next';
+import { Trash, Check, ChevronLeft, ArrowLeft } from 'lucide-vue-next';
 import { createAgeGroupString } from '@/lib/ageGroups';
 import Modal from '@/components/Modal.vue';
 import router from '@/router';
-import { marked } from "marked";
 import DOMPurify from "isomorphic-dompurify";
 
 const store = useCompetitionStore();
