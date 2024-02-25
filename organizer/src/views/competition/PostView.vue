@@ -143,7 +143,7 @@ function getPreviousPostSlug() {
                     <h1 class="text-twine-400 font-bold text-5xl small-caps font-serif xs:text-4xl pb-5">
                         {{ post?.title }}
                     </h1>
-                    <div v-html="DOMPurify.sanitize(marked(post?.content || '') as string)" class="prose font-serif" />
+                    <div v-html="DOMPurify.sanitize(post?.content || '')" class="prose font-serif" />
                 </div>
             </div>
         </div>
