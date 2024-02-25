@@ -147,5 +147,8 @@ export const useCompetitionStore = defineStore({
         pendingPosts(): Post[] {
             return this.posts.filter((post) => !post.approved_by_organizer);
         },
+        isLoading(): boolean {
+            return this.status === StoreStatus.LOADING;
+        }
     }
 })
