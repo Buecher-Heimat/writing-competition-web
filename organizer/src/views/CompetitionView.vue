@@ -65,14 +65,14 @@ function isPathActive(menuPath: string, routePath: string, alternativePathEnding
 <template>
     <BaseLayout>
         <LoadingSpinner v-if="store.isLoading" />
-        <div class="w-screen h-screen flex">
+        <div v-if="store.competition" class="w-screen h-screen flex">
             <div class="h-full w-96 bg-pearl-bush-50 shadow-lg flex-shrink-0">
                 <router-link to="/" class="p-5 flex gap-3 items-center">
                     <ArrowLeft class="w-6 h-6" />
                     <h1 class="font-serif font-bold text-lg">Zurück zur Startseite</h1>
                 </router-link>
                 <div class="p-5 flex gap-3">
-                    <img v-if="store.competition.image_hero"
+                    <img v-if="store.competition.image_hero && (store.competition.image_hero as Media).url"
                         :src="environment.backendUrl + (store.competition.image_hero as Media).url!"
                         alt="Bild des Wettbewerbs" class="h-16 w-16 object-cover rounded-lg">
                     <div>
