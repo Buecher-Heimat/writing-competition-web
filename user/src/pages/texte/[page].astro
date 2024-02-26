@@ -4,7 +4,6 @@ import { Trophy, Mail } from "lucide-vue-next";
 import { Facebook } from "lucide-vue-next";
 import { Twitter } from "lucide-vue-next";
 import { ExternalLink } from "lucide-vue-next";
-import { marked } from "marked";
 import DOMPurify from "isomorphic-dompurify";
 import { fetchPostBySlug, fetchRunningCompetitions } from "../../lib/api";
 import type { Competition } from "../../payload";
@@ -14,12 +13,15 @@ const { page } = Astro.params;
 
 if (!page || page.length === 0) {
   return Astro.redirect("/alle-texte/");
+  return Astro.redirect("/alle-texte/");
 }
 
 let post;
 let runningCompetition;
 
 try {
+  post = await fetchPostBySlug(page);
+  runningCompetition = await fetchRunningCompetitions();
   post = await fetchPostBySlug(page);
   runningCompetition = await fetchRunningCompetitions();
 } catch (error) {
@@ -29,9 +31,10 @@ try {
 
 if (!post) {
   return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
-const content = DOMPurify.sanitize(await marked(post.content));
+const content = DOMPurify.sanitize(post.content);
 
 const shareButtons = [
   {
