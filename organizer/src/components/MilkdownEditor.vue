@@ -29,9 +29,8 @@ const editor = useEditor((root) => {
         attributes: { class: 'outline-none', spellcheck: 'true' },
       }))
       ctx.set(rootCtx, root)
-      ctx.set(defaultValueCtx, content.value)
-      ctx.get(listenerCtx).markdownUpdated((_, markdown) => {
-        content.value = markdown;
+      ctx.get(listenerCtx).updated(() => {
+        content.value = document.getElementsByClassName('ProseMirror')[0]?.innerHTML || '';
         contentLength.value = document.getElementById('milkdown')?.innerText.length || 0;
         emit('update:contentLength', contentLength.value);
       });

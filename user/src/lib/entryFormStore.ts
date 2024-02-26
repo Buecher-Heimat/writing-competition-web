@@ -18,6 +18,7 @@ export interface PostCreationInput {
     accept_terms: boolean;
     accept_privacy: boolean;
     content: string;
+    content_tree: string;
     content_length: number;
     competition: string;
 }
@@ -94,7 +95,10 @@ export const useEntryFormStore = defineStore({
         async submitForm() {
             this.loading = true;
             try {
-                const response = await createPost(this.formData);
+                const response = await createPost({
+                    ...this.formData,
+                    content_tree: ''
+                });
                 if (response.doc?.id) {
                     setTimeout(() => {
                         this.loading = false;
