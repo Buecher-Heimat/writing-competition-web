@@ -15,6 +15,7 @@ export interface CreatePostInput {
     title: string;
     author: string;
     email: string;
+    location: string;
     _verified?: boolean | null;
     phone?: string | null;
     age_author: number;
@@ -145,7 +146,7 @@ export const useCompetitionStore = defineStore({
             return this.posts.filter((post) => post.approved_by_organizer);
         },
         pendingPosts(): Post[] {
-            return this.posts.filter((post) => !post.approved_by_organizer);
+            return this.posts.filter((post) => !post.approved_by_organizer && !post.winner && post._verified);
         },
         isLoading(): boolean {
             return this.status === StoreStatus.LOADING;

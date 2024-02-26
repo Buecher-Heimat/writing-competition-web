@@ -13,6 +13,7 @@ const defaultPost = {
     title: '',
     author: '',
     email: '',
+    location: '',
     _verified: true,
     phone: '',
     age_author: 0,
