@@ -1,24 +1,43 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { environment } from '@/lib/environment'
 import type { Competition, Media } from '@/payload'
 import { FileUp, PlusCircle } from 'lucide-vue-next'
 import InputWrapper from './InputWrapper.vue'
 import GroupedInputWrapper from './GroupedInputWrapper.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { createMedia } from '@/lib/utilities'
+
+const props = defineProps<{
+  action: 'create' | 'update'
+}>()
 
 const model = defineModel<Competition>({ required: true, type: Object })
+
+const dateStart = computed({
+  get: () => new Date(model?.value.date_start || '').toISOString().slice(0, 10),
+  set: (value: string) => {
+    model.value.date_start = value
+  }
+})
+
+const dateEnd = computed({
+  get: () => new Date(model?.value.date_end || '').toISOString().slice(0, 10),
+  set: (value: string) => {
+    model.value.date_end = value
+  }
+})
 
 const validation = [
   {
     message: () => 'Der Titel des Wettbewerbs ist ungültig.',
     validate: () => {
-      return model.value.title.length > 0
+      return model.value.title && model.value.title.length > 0
     }
   },
   {
     message: () => 'Der Untertitel des Wettbewerbs ist ungültig.',
     validate: () => {
-      return model.value.sponsor_string.length > 0
+      return model.value.sponsor_string && model.value.sponsor_string.length > 0
     }
   },
   {
@@ -43,21 +62,21 @@ const validation = [
     message: () => 'Die Altersgruppe(n) ist/sind ungültig.',
     validate: () => {
       return model.value.agegroups?.some((agegroup) => {
-        return agegroup.age_start > 0
+        return agegroup.age_start && agegroup.age_start > 0
       })
     }
   },
   {
     message: () => 'Es wird mindestens ein Sponsor benötigt.',
     validate: () => {
-      return model.value.sponsors?.length > 0
+      return model.value.sponsors && model.value.sponsors?.length > 0
     }
   },
   {
     message: () => 'Der Name eines oder mehreren Sponsoren ist ungültig.',
     validate: () => {
       return model.value.sponsors?.some((sponsor) => {
-        return sponsor.name.length > 0
+        return sponsor.name && sponsor.name.length > 0
       })
     }
   },
@@ -66,7 +85,7 @@ const validation = [
     validate: () => {
       return model.value.sponsors?.some((sponsor) => {
         // TODO: Add a regex to check if the link is valid
-        return sponsor.link.length > 0
+        return sponsor.link && sponsor.link.length > 0
       })
     }
   },
@@ -74,7 +93,9 @@ const validation = [
     message: () => 'Das Logo eines oder mehreren Sponsoren ist ungültig.',
     validate: () => {
       return model.value.sponsors?.some((sponsor) => {
-        return sponsor.logo?.url.length > 0
+        return (
+          sponsor.logo && (sponsor.logo as Media).url && (sponsor.logo as Media).url!.length > 0
+        )
       })
     }
   },
@@ -88,7 +109,7 @@ const validation = [
     message: () => 'Der Titel eines oder mehreren Anleitungsschritten ist ungültig.',
     validate: () => {
       return model.value.instruction_steps?.some((step) => {
-        return step.title.length > 0
+        return step.title && step.title.length > 0
       })
     }
   },
@@ -96,11 +117,20 @@ const validation = [
     message: () => 'Die Beschreibung eines oder mehreren Anleitungsschritten ist ungültig.',
     validate: () => {
       return model.value.instruction_steps?.some((step) => {
-        return step.description.length > 0
+        return step.description && step.description.length > 0
       })
     }
   }
 ]
+
+async function fileUpload(e: SubmitEvent) {
+  const form = e.target as HTMLFormElement
+  const formData = new FormData(form)
+
+  const media = await createMedia(formData)
+
+  model.value.image_hero = media
+}
 
 const showHints = ref(false)
 const emit = defineEmits(['save'])
@@ -117,12 +147,15 @@ const emit = defineEmits(['save'])
     >
       <div class="flex flex-col gap-4">
         <h1 class="text-2xl font-bold small-caps">Allgemein</h1>
+        <!-- :class="{ "border border-bandicoot-400": model?.image_hero}" -->
         <div class="flex flex-row gap-8">
           <img
+            v-if="model?.image_hero"
             :src="environment.backendUrl + (model?.image_hero as Media).url"
-            :alt="(model?.image_hero as Media).alt"
+            :alt="(model?.image_hero as Media).alt || 'Titelbild'"
             class="h-[15rem] w-[15rem] rounded-lg shadow-lg object-cover"
           />
+          <p v-else class="text-bandicoot-400 text-lg"></p>
           <div class="flex flex-col justify-between py-3">
             <div>
               <h2 class="font-bold small-caps mb-1">Titelbild</h2>
@@ -134,12 +167,16 @@ const emit = defineEmits(['save'])
                 den Rändern sollte also nichts Wichtiges zu sehen sein.
               </p>
             </div>
-            <button
-              class="w-fit flex gap-2 items-center text-pearl-bush-50 hover:text-twine-400 bg-twine-400 hover:bg-transparent border-twine-400 border rounded-lg px-3 py-2 shadow"
-            >
-              <FileUp class="w-5 h-5" />
-              Hochladen
-            </button>
+            <form id="upload_form" @submit.prevent="(e) => fileUpload(e as SubmitEvent)">
+              <input type="file" name="file" id="image_upload" />
+              <button
+                type="submit"
+                class="w-fit flex gap-2 items-center text-pearl-bush-50 hover:text-twine-400 bg-twine-400 hover:bg-transparent border-twine-400 border rounded-lg px-3 py-2 shadow"
+              >
+                <FileUp class="w-5 h-5" />
+                Hochladen
+              </button>
+            </form>
           </div>
         </div>
         <InputWrapper title="Titel *" description="Der Titel des Wettbewerbs">
@@ -168,14 +205,14 @@ const emit = defineEmits(['save'])
           <div class="flex flex-row gap-4 items-center">
             <p class="font-bold small-caps mb-1">Von</p>
             <input
-              :value="model?.date_start"
+              :value="dateStart"
               type="date"
               required
               class="w-full bg-transparent border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400"
             />
             <p class="font-bold small-caps mb-1">Bis</p>
             <input
-              :value="model?.date_end"
+              :value="dateEnd"
               type="date"
               required
               class="w-full bg-transparent border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400"
@@ -191,7 +228,7 @@ const emit = defineEmits(['save'])
             genannt.
           </p>
         </div>
-        <div v-for="(sponsor, index) in model?.sponsors">
+        <div v-for="(sponsor, index) in model?.sponsors" :key="index">
           <GroupedInputWrapper title="Sponsor" :index="index + 1">
             <InputWrapper title="Name des Sponsors *">
               <input
@@ -225,12 +262,16 @@ const emit = defineEmits(['save'])
                     hochgeladen werden.
                   </p>
                 </div>
-                <button
-                  class="w-fit flex gap-2 items-center text-pearl-bush-50 hover:text-twine-400 bg-twine-400 hover:bg-transparent border-twine-400 border rounded-lg px-3 py-2 shadow"
-                >
-                  <FileUp class="w-5 h-5" />
-                  Hochladen
-                </button>
+                <form id="upload_form" @submit.prevent="(e) => fileUpload(e as SubmitEvent)">
+                  <input type="file" name="file" id="image_upload" />
+                  <button
+                    type="submit"
+                    class="w-fit flex gap-2 items-center text-pearl-bush-50 hover:text-twine-400 bg-twine-400 hover:bg-transparent border-twine-400 border rounded-lg px-3 py-2 shadow"
+                  >
+                    <FileUp class="w-5 h-5" />
+                    Hochladen
+                  </button>
+                </form>
               </div>
             </div>
           </GroupedInputWrapper>
@@ -248,7 +289,7 @@ const emit = defineEmits(['save'])
           <p class="text-sm">Die Altersgruppen, die am Wettbewerb teilnehmen können.</p>
         </div>
         <div>
-          <div v-for="(ageGroup, index) in model?.agegroups" class="mb-4">
+          <div v-for="(ageGroup, index) in model?.agegroups" class="mb-4" :key="index">
             <GroupedInputWrapper title="Altersgruppe" :index="index + 1">
               <div class="flex flex-col gap-4 mb-4">
                 <p class="text-sm">
@@ -300,7 +341,7 @@ const emit = defineEmits(['save'])
             Teilnehmer*innen durch den Prozess der Teilnahme leiten.
           </p>
         </div>
-        <div v-for="(step, index) in model?.instruction_steps">
+        <div v-for="(step, index) in model?.instruction_steps" :key="index">
           <GroupedInputWrapper title="Schritt" :index="index + 1">
             <InputWrapper title="Titel *">
               <input
@@ -327,10 +368,44 @@ const emit = defineEmits(['save'])
           Sponsor hinzufügen
         </button>
       </div>
+      <div>
+        <div>
+          <h1 class="text-2xl font-bold small-caps mb-1">Texte</h1>
+          <p class="text-sm">---</p>
+        </div>
+        <InputWrapper title="Mindestlänge des Textes *">
+          <input
+            :value="model?.text_min_length"
+            type="number"
+            required
+            class="w-full bg-transparent border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400"
+          />
+        </InputWrapper>
+        <InputWrapper title="Maximallänge des Textes *">
+          <input
+            :value="model?.text_max_length"
+            type="number"
+            required
+            class="w-full bg-transparent border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400"
+          />
+        </InputWrapper>
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold small-caps mb-1">Teilnahmebedingungen</h1>
+        <p class="text-sm">---</p>
+        <InputWrapper title="Teilnahmebedingungen *">
+          <textarea
+            :value="model?.terms_conditions"
+            required
+            class="w-full bg-transparent border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400"
+          ></textarea>
+        </InputWrapper>
+      </div>
       <div class="relative mt-5 mb-20">
         <div class="absolute bottom-16 w-full z-20 flex flex-col gap-1" v-if="showHints">
           <p
-            v-for="v in validation.filter((v) => !v.validate())"
+            v-for="(v, index) in validation.filter((v) => !v.validate())"
+            :key="index"
             class="rounded text-pearl-bush-50 bg-warning-600 p-3 font-semibold"
           >
             {{ v.message() }}
@@ -347,9 +422,9 @@ const emit = defineEmits(['save'])
           @mouseenter="showHints = true"
           @mouseleave="showHints = false"
         >
-          Speichern
+          {{ props.action === 'create' ? 'Erstellen' : 'Aktualisieren' }}
         </button>
       </div>
     </form>
   </div>
-</template>
+</template> -->

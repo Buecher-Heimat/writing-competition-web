@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import CompetitionForm from '@/components/CompetitionForm.vue'
 import { useCompetitionStore } from '@/stores/competition'
 
@@ -15,7 +15,7 @@ function updateCompetition() {
       Wettbewerb bearbeiten
     </h1>
     <div class="w-full flex justify-center mb-44">
-      <CompetitionForm v-model="store.competition" @save="updateCompetition" />
+      <CompetitionForm v-model="store.competition" @save="updateCompetition" action="update" />
     </div>
   </div>
-</template>
+</template> -->
