@@ -26,17 +26,20 @@ let writingTips: WritingTip | null = null;
 
 try {
   competitionData = await fetchCompetitionData(page);
-  if (!competitionData) {
-    return Astro.redirect("/404");
+  if(competitionData) {
+    recentCompetitionPosts = await fetchRecentCompetitionPosts(
+      competitionData.id
+    );
   }
-  recentCompetitionPosts = await fetchRecentCompetitionPosts(
-    competitionData.id
-  );
   console.log(recentCompetitionPosts);
   writingTips = await fetchWritingTips();
 } catch (error) {
   console.error(error);
 }
+
+if (!competitionData) {
+    return Astro.redirect("/404");
+  }
 
 // CHECK COMPETITION STATUS
 
@@ -146,7 +149,7 @@ if (today < competitionData.date_start) {
             competitionStatus === CompetitionStatus.RUNNING && (
               <a href="/text-einreichen">
                 <button class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
-                  Mitmachen
+                  Deinen Text einreichen
                   <FileUp size="1.5rem" />
                 </button>
               </a>
@@ -417,7 +420,7 @@ if (today < competitionData.date_start) {
             </h2>
             <a href="/text-einreichen">
               <button class="w-80 2xs:w-60 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
-                Mitmachen
+                Deinen Text einreichen
               </button>
             </a>
           </div>
