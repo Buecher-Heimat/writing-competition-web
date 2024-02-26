@@ -1,7 +1,6 @@
 ---
 import { Trophy } from "lucide-vue-next";
 import { createAgeGroupString } from "../lib/ageGroups";
-import { marked } from "marked";
 import DOMPurify from "isomorphic-dompurify";
 import type { Competition, Post } from "../payload";
 
@@ -22,9 +21,7 @@ const {
     content,
 } = post;
 
-const excerptHTML = DOMPurify.sanitize(
-    await marked.parse(content.slice(0, 500)),
-);
+const excerptHTML = DOMPurify.sanitize(content.slice(0, 500));
 ---
 
 <a
