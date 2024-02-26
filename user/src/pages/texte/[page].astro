@@ -54,7 +54,7 @@ const shareButtons = [
 ---
 
 <Layout title={post.title}>
-  <div class="relative overflow-hidden w-full">
+  <div class="relative overflow-hidden w-full min-h-screen">
     <div class="absolute w-full h-full z-0 md:hidden">
       <img
         class="absolute right-0 top-[50%] lg:w-28"
@@ -95,25 +95,23 @@ const shareButtons = [
     <section
       class="pt-32 md:pt-20 w-full flex flex-col items-center gap-2 relative z-10 lg:px-8 xs:px-4"
     >
-      <div class="w-full flex justify-center">
-        <div
+      <a class="w-full flex justify-center">
+        <a
+          href={`/wettbewerb/${(post.competition as Competition)?.slug}`}
           class="bg-pearl-bush-50 py-3 xs:py-2 px-8 xs:px-4 rounded-2xl max-w-3xl w-full flex flex-row justify-between items-center"
         >
           <h3 class="text-bandicoot-400 font-serif text-lg font-semibold">
             {(post.competition as Competition)?.title}
           </h3>
-          <a
-            href={`/wettbewerb/${(post.competition as Competition)?.slug}`}
-            class="flex flex-row gap-2 items-center"
-          >
+          <div class="flex flex-row gap-2 items-center">
             <span
               class="font-serif font-regular hover:underline transition-all ease-out duration-500 text-bandicoot-400 text-base"
               >zum Wettbewerb</span
             >
             <ExternalLink class="h-4 w-4 text-bandicoot-400" />
-          </a>
-        </div>
-      </div>
+          </div>
+        </a>
+      </a>
       <div
         class="bg-pearl-bush-50 md:bg-transparent p-8 xs:py-4 xs:px-0 rounded-2xl max-w-3xl w-full"
       >
