@@ -1,23 +1,45 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { fetchPrivacyWebsite } from "../lib/api";
+import { fetchPrivacyCompetition, fetchPrivacyWebsite } from "../lib/api";
 
-const privacy = await fetchPrivacyWebsite();
-const html = privacy.privacy_html;
+const privacyWebsite = await fetchPrivacyWebsite();
+const html = privacyWebsite.privacy_html;
+
+const privacyCompetition = await fetchPrivacyCompetition();
+const htmlCompetition = privacyCompetition.privacy_html;
 ---
 
 <Layout title="Datenschutzerklärung">
-    <section class="w-full max-w-2xl mx-auto px-4s sm:px-6 lg:px-8 py-12 mt-10">
-        <div>
-            {
-                new Date(privacy.updatedAt || "").toLocaleDateString("de-DE", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                })
-            }
-        </div>
-        <h1 class="font-serif font-bold text-2xl mb-5">Datenschutzerklärung</h1>
-        <div set:html={html} class="prose" />
-    </section>
+  <section class="w-full max-w-2xl mx-auto px-4s sm:px-6 lg:px-8 py-12 mt-10">
+    <h1 class="font-serif font-bold text-2xl mb-5">Datenschutzerklärung</h1>
+    <h2 class="font-serif font-bold text-xl">Für Besucher der Seite</h2>
+    <div class="mb-5">
+      Zuletzt aktualisiert am{" "}
+      {
+        new Date(privacyWebsite.updatedAt || "").toLocaleDateString("de-DE", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      }
+    </div>
+    <div set:html={html} class="prose mb-10" />
+    <h2 class="font-serif font-bold text-xl">
+      Für Teilnehmende an Wettbewerben
+    </h2>
+    <div class="mb-5">
+      Zuletzt aktualisiert am{" "}
+      {
+        new Date(privacyCompetition.updatedAt || "").toLocaleDateString(
+          "de-DE",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }
+        )
+      }
+    </div>
+    <div set:html={htmlCompetition} class="prose" />
+  </section>
 </Layout>
