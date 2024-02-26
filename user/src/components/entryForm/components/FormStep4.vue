@@ -44,8 +44,12 @@ const store = useEntryFormStore(pinia);
                     title="Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten zu.*" />
                 <CheckboxElement v-model="store.formData.accept_terms"
                     title="Ich habe die Teilnahmebedingungen gelesen und akzeptiere sie.*" />
+                <hr class="my-2">
                 <CheckboxElement v-model="store.formData.delete_after_competition"
                     title="Meinen Text nach Ende des Wettbewerbs löschen." />
+                <CheckboxElement v-model="store.formData.keep_if_winner"
+                    :class="{ 'opacity-50 pointer-events-none': !store.formData.delete_after_competition }"
+                    title="Sollte mein Text zu den Gewinnern gehören/für eine Buchveröffentlichung ausgewählt werden, ziehe ich meinen „Löschwunsch“ zurück." />
 
             </div>
         </div>

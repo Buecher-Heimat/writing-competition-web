@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { Trophy, Mail } from "lucide-vue-next";
 import { Facebook } from "lucide-vue-next";
 import { Twitter } from "lucide-vue-next";
+import { ExternalLink } from "lucide-vue-next";
 import DOMPurify from "isomorphic-dompurify";
 import { fetchPostBySlug, fetchRunningCompetitions } from "../../lib/api";
 import type { Competition } from "../../payload";
@@ -12,6 +13,7 @@ const { page } = Astro.params;
 
 if (!page || page.length === 0) {
   return Astro.redirect("/alle-texte/");
+  return Astro.redirect("/alle-texte/");
 }
 
 let post;
@@ -20,12 +22,15 @@ let runningCompetition;
 try {
   post = await fetchPostBySlug(page);
   runningCompetition = await fetchRunningCompetitions();
+  post = await fetchPostBySlug(page);
+  runningCompetition = await fetchRunningCompetitions();
 } catch (error) {
   console.error(error);
   return Astro.redirect("/404");
 }
 
 if (!post) {
+  return Astro.redirect("/404");
   return Astro.redirect("/404");
 }
 
@@ -52,7 +57,7 @@ const shareButtons = [
 ---
 
 <Layout title={post.title}>
-  <div class="relative overflow-hidden w-full">
+  <div class="relative overflow-hidden w-full min-h-screen">
     <div class="absolute w-full h-full z-0 md:hidden">
       <img
         class="absolute right-0 top-[50%] lg:w-28"
@@ -90,13 +95,29 @@ const shareButtons = [
         alt="Shapes"
       />
     </div>
-    <section class="pt-32 md:pt-20 w-full flex justify-center relative z-10">
+    <section
+      class="pt-32 md:pt-20 w-full flex flex-col items-center gap-2 relative z-10 lg:px-8 xs:px-4"
+    >
+      <a class="w-full flex justify-center">
+        <a
+          href={`/wettbewerb/${(post.competition as Competition)?.slug}`}
+          class="bg-pearl-bush-50 py-3 xs:py-2 px-8 xs:px-4 rounded-2xl max-w-3xl w-full flex flex-row justify-between items-center"
+        >
+          <h3 class="text-bandicoot-400 font-serif text-lg font-semibold">
+            {(post.competition as Competition)?.title}
+          </h3>
+          <div class="flex flex-row gap-2 items-center">
+            <span
+              class="font-serif font-regular hover:underline transition-all ease-out duration-500 text-bandicoot-400 text-base"
+              >zum Wettbewerb</span
+            >
+            <ExternalLink class="h-4 w-4 text-bandicoot-400" />
+          </div>
+        </a>
+      </a>
       <div
-        class="bg-pearl-bush-50 md:bg-transparent p-8 xs:p-4 rounded-2xl max-w-3xl w-full"
+        class="bg-pearl-bush-50 md:bg-transparent p-8 xs:py-4 xs:px-0 rounded-2xl max-w-3xl w-full"
       >
-        <h3 class="text-bandicoot-400 font-semibold">
-          {(post.competition as Competition)?.title}
-        </h3>
         <h2 class="text-bandicoot-400 font-bold text-3xl small-caps mb-3">
           {post.author}
         </h2>
@@ -127,13 +148,11 @@ const shareButtons = [
               ])
             } Jahre
           </div>
-          {
-            post.winner === true && (
-              <div class="rounded-lg px-3 py-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm">
-                <Trophy class="w-4 h-4 text-twine-400" />
-              </div>
-            )
-          }
+          <div
+            class="rounded-lg px-3 py-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm"
+          >
+            <Trophy class="w-4 h-4 text-twine-400" />
+          </div>
         </div>
         <div set:html={content} class="prose font-serif" />
         <div class="flex gap-3 mt-5">
@@ -152,13 +171,13 @@ const shareButtons = [
     <section class="z-10 w-full flex justify-center lg:px-8 xs:p-4 my-10">
       {
         runningCompetition.length > 0 && (
-          <div class="bg-bandicoot-400 p-10 py-14 w-full rounded-2xl max-w-3xl flex flex-col items-center z-10">
-            <h2 class="max-w-lg text-center font-serif font-semibold text-pearl-bush-100 text-4xl small-caps mb-10">
+          <div class="bg-bandicoot-400 p-10 py-14 w-full rounded-2xl max-w-3xl flex flex-col items-center z-10 gap-10">
+            <h2 class="max-w-lg text-center font-serif font-semibold text-pearl-bush-100 text-4xl small-caps">
               Dein Text soll auch hier stehen?
             </h2>
-            <a href="/text-einreichen" class="w-full max-w-xs z-10">
-              <button class="p-3 font-semibold font-serif text-pearl-bush-50 bg-twine-400 rounded-lg w-full">
-                Mitmachen
+            <a href="/text-einreichen">
+              <button class="w-80 2xs:w-60 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
+                Deinen Text einreichen
               </button>
             </a>
           </div>

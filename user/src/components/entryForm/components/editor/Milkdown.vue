@@ -16,6 +16,8 @@ import type { JSONRecord } from '@milkdown/transformer';
 
 const store = useEntryFormStore(pinia)
 
+const editorFocus = ref(false);
+
 const editor = useEditor((root) => {
   return Editor.make()
     .config((ctx) => {
@@ -34,6 +36,12 @@ const editor = useEditor((root) => {
         store.formData.content_tree = doc.toJSON();
         store.formData.content = document.getElementsByClassName('ProseMirror')[0]?.innerHTML || '';
         store.formData.content_length = document.getElementById('milkdown')?.innerText.replaceAll('/n', "").length || 0;
+      });
+      ctx.get(listenerCtx).focus((ctx) => {
+        editorFocus.value = true;
+      });
+      ctx.get(listenerCtx).blur((ctx) => {
+        editorFocus.value = false;
       });
     })
     .use(commonmark)
@@ -213,6 +221,9 @@ function focusEditor() {
             {{ store.formData.title }}
           </h1>
           <hr class="m-0">
+          <p v-if="store.formData.content_length === 0 && editorFocus === false" class="mt-4">Schreibe hier Deinen Text.
+            Vielleicht hast Du ihn auch schon in einem anderen Programm geschrieben und kannst ihn hier einfügen. Alles,
+            was Du hier schreibst, wird jederzeit automatisch lokal gespeichert. Viel Erfolg... 🚀</p>
           <Milkdown id="milkdown" class="h-full" />
           <div :class="{ 'h-40': fullscreen, 'h-20': !fullscreen }"></div>
         </div>
