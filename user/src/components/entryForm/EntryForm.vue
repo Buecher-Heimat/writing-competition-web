@@ -177,8 +177,23 @@ watch(store, () => {
     }, 1);
 }, { deep: true });
 
+onMounted(() => {
+    // Push the current step to the history state
+    window.history.pushState({ step: store.currentStep || 0 }, "step");
+});
+
 watch(() => store.currentStep, (_, oldVal) => {
+    if (store.currentStep !== oldVal && window.history.state.step !== store.currentStep) {
+        // Push the current step to the history state
+        window.history.pushState({ step: store.currentStep }, "step");
+    }
     store.lastStep = oldVal;
+});
+
+window.addEventListener("popstate", function (event) {
+    if (event.state && event.state.step !== undefined) {
+        store.currentStep = event.state.step;
+    }
 });
 
 function getAnimation() {
