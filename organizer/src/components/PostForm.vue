@@ -25,6 +25,12 @@ const validation = [
         }
     },
     {
+        message: () => 'Bitte gib den Wohnort an.',
+        validate: () => {
+            return model.value.location.length > 0;
+        }
+    },
+    {
         message: () => 'Der Text ist zu lang.',
         validate: () => {
             return model.value.content.length <= model.value.competition.text_max_length;
@@ -82,6 +88,11 @@ const emit = defineEmits(['save']);
             <InputWrapper title="Telefonnummer"
                 description="Die Telefonnummer des/der Autor*in. Sie anzugeben ist nicht verpflichtend">
                 <input v-model="model.phone" type="tel"
+                    class="w-full bg-transparent border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400" />
+            </InputWrapper>
+            <InputWrapper title="Wohnort *"
+                description="Der Wohnohrt des/der Autor*in. Ist die Person berechtigt am Wettbewerb teilzunehmen?">
+                <input v-model="model.location" type="text" required
                     class="w-full bg-transparent border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400" />
             </InputWrapper>
             <InputWrapper title="Alter *"

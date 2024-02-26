@@ -203,7 +203,7 @@ function getPreviousPostSlug() {
                         <Trash class="w-5 h-5 text-warning-600" />
                         Löschen
                     </button>
-                    <button @click="showApproveModal = true" v-if="isApproving && post?.approved_by_organizer === false"
+                    <button @click="showApproveModal = true" v-if="isApproving && !post?.approved_by_organizer"
                         class="flex gap-2 items-center text-pearl-bush-50 bg-bandicoot-400 rounded-lg px-3 py-2 shadow">
                         <Check class="w-5 h-5 " />
                         Freischalten
