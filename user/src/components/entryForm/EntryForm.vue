@@ -46,6 +46,13 @@ const form: FormStep[] = [
         validation: [
             {
                 field: 'age_author',
+                message: () => 'Bitte gib Dein Alter an!',
+                validate: () => {
+                    return store.formData.age_author !== undefined && store.formData.age_author > 0 && store.formData.age_author.toString().length > 0;
+                }
+            },
+            {
+                field: 'age_author',
                 message: () => 'Es gibt keine passende Altersgruppe für Dich! An diesem Wettbewerb kannst Du leider nicht teilnehmen.',
                 validate: () => {
                     return store.competition.agegroups?.some((agegroup) => {
@@ -72,6 +79,13 @@ const form: FormStep[] = [
                 message: () => 'Deine E-Mail-Adresse ist ungültig!',
                 validate: () => {
                     return /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(store.formData.email) && store.formData.email?.length <= 250;
+                }
+            },
+            {
+                field: 'location',
+                message: () => 'Bitte gib Deinen Wohnort an!',
+                validate: () => {
+                    return store.formData.location?.length > 1;
                 }
             }
         ],
@@ -177,8 +191,23 @@ watch(store, () => {
     }, 1);
 }, { deep: true });
 
+onMounted(() => {
+    // Push the current step to the history state
+    window.history.pushState({ step: store.currentStep || 0 }, "step");
+});
+
 watch(() => store.currentStep, (_, oldVal) => {
+    if (store.currentStep !== oldVal && window.history.state.step !== store.currentStep) {
+        // Push the current step to the history state
+        window.history.pushState({ step: store.currentStep }, "step");
+    }
     store.lastStep = oldVal;
+});
+
+window.addEventListener("popstate", function (event) {
+    if (event.state && event.state.step !== undefined) {
+        store.currentStep = event.state.step;
+    }
 });
 
 function getAnimation() {
@@ -203,15 +232,17 @@ function openMailWebsite() {
         window.open('https://' + mailProvider, '_blank');
     }
 }
+
+function navigateHome() {
+    window.location.href = '/';
+}
 </script>
 
 <template>
     <div>
         <div class="bg-white rounded-lg p-5 mb-5 border-2 border-warning-600 font-medium text-warning-600 hidden sm:block">
-            Wir empfehlen
-            Dir, deinen Beitrag an einem PC
-            mit einem großen
-            Bildschirm und einer Tastatur einzureichen!
+            Wir empfehlen dir, deinen Beitrag auf dem Gerät einzureichen, auf dem du ihn verfasst hast, vorzugsweise auf
+            einem PC mit einem großen Bildschirm und einer Tastatur!
         </div>
         <div
             class="w-full min-h-[85vh] bg-white rounded-3xl overflow-hidden shadow-lg relative flex flex-col transition-all duration-300 ease-out">
@@ -223,11 +254,18 @@ function openMailWebsite() {
                         class="bg-white rounded-lg shadow-lg border-bandicoot-400 border-2 relative max-w-sm z-10">
                         <div class="p-5 flex flex-col gap-3">
                             <h3 class="font-bold text-bandicoot-400 text-lg">E-Mail bestätigen</h3>
-                            <p class="font-medium text-bandicoot-400">Dein Beitrag zu {{ store.competition?.title }} wurde
-                                gesendet. Jetzt musst du nur noch Deine E-Mail Adresse bestätigen, indem Du auf den Link
+                            <p class="font-medium text-bandicoot-400">Dein Beitrag zu "{{ store.competition?.title }}"
+                                wurde
+                                gesendet. Jetzt musst du nur noch Deine E-Mail-Adresse bestätigen, indem Du auf den Link
                                 klickst,
-                                den wir dir gerade an '{{ store.formData.email }}' geschickt haben.</p>
-                            <button @click="openMailWebsite"
+                                den wir dir gerade an "{{ store.formData.email }}" geschickt haben. </p>
+                            <p class="font-medium text-bandicoot-400">Solltest Du selbst im
+                                Spamordner keine E-Mail, wende Dich bitte an <a
+                                    href="mailto://info@die-buecherheimat.de">info@die-buecherheimat.de</a>.</p>
+                            <button @click="() => {
+                                openMailWebsite();
+                                navigateHome();
+                            }"
                                 class="w-full p-3 bg-twine-400 rounded text-white flex justify-center items-center">Öffne
                                 Mails
                                 <ExternalLink class="ml-2 h-4 w-4" />

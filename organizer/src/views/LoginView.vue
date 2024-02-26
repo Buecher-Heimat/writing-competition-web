@@ -12,7 +12,12 @@ const store = useAuthStore()
 
 async function login() {
     error.value = ''
-    await store.login(email.value, password.value)
+    try {
+        await store.login(email.value, password.value)
+    }
+    catch (e) {
+        error.value = 'Login fehlgeschlagen'
+    }
     if (store.isLoggedIn) {
         // If a query parameter "redirect" is set, redirect to this URL
         const redirect = new URLSearchParams(window.location.search).get('redirect')

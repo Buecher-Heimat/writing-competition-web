@@ -18,8 +18,11 @@ watch(() => store.formData.age_author, () => {
 </script>
 
 <template>
-    <li class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400"
+    <!-- <li class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 text-bandicoot-400"
         :class="{ 'bg-bandicoot-400 text-white': checkIfAgeIsInRange(store.formData.age_author, [props.ageGroup.age_start, props.ageGroup.age_end]) }">
+        {{ createAgeGroupString([props.ageGroup.age_start, props.ageGroup.age_end]) }} Jahre
+    </li> -->
+    <li v-if="checkIfAgeIsInRange(store.formData.age_author, [props.ageGroup.age_start, props.ageGroup.age_end])" class="border-[1px] text-sm border-bandicoot-400 rounded-lg px-2 py-1 bg-bandicoot-400 text-white">
         {{ createAgeGroupString([props.ageGroup.age_start, props.ageGroup.age_end]) }} Jahre
     </li>
 </template>

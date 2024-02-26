@@ -9,22 +9,24 @@ export interface PostCreationInput {
     author: string;
     email: string;
     phone: string | undefined;
+    location: string;
     age_author: number;
     agegroup: {
         age_start: number | null | undefined;
         age_end: number | null | undefined;
     }
     delete_after_competition: boolean;
+    keep_if_winner: boolean;
     accept_terms: boolean;
     accept_privacy: boolean;
     content: string;
+    content_tree: string;
     content_length: number;
     competition: string;
 }
 
 const defaultFormData: PostCreationInput = {
     title: "Beispieltitel",
-    content: "Schreibe hier Deinen Text. Vielleicht hast Du ihn auch schon in einem anderen Programm geschrieben und kannst ihn hier einfügen. Alles, was Du hier schreibst, wird jederzeit automatisch lokal gespeichert. Viel Erfolg... 🚀"
 } as PostCreationInput;
 
 export const useEntryFormStore = defineStore({
@@ -94,7 +96,10 @@ export const useEntryFormStore = defineStore({
         async submitForm() {
             this.loading = true;
             try {
-                const response = await createPost(this.formData);
+                const response = await createPost({
+                    ...this.formData,
+                    content_tree: ''
+                });
                 if (response.doc?.id) {
                     setTimeout(() => {
                         this.loading = false;

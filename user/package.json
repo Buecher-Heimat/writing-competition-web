@@ -32,7 +32,6 @@
     "isomorphic-dompurify": "^2.3.0",
     "lottie-web": "^5.12.2",
     "lucide-vue-next": "^0.294.0",
-    "marked": "^12.0.0",
     "pinia": "^2.1.7",
     "qs": "^6.11.2",
     "tailwind-scrollbar-hide": "^1.1.7",

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MilkdownProvider } from "@milkdown/vue";
-import Editor from "@/components/Milkdown.vue";
+import Editor from "@/components/MilkdownEditor.vue";
 import type { CreatePostInput } from "@/stores/competition";
 import InputWrapper from "./InputWrapper.vue";
 import { checkIfAgeIsInRange } from "@/lib/ageGroups";
@@ -39,7 +39,7 @@ const validation = [
     {
         message: () => 'Die E-Mail-Adresse des Autors ist ungültig.',
         validate: () => {
-            return /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(model.value.email) && model.value.email?.length <= 250;
+            return /^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(model.value.email) && model.value.email?.length <= 250;
         }
     },
     {
@@ -129,7 +129,7 @@ const emit = defineEmits(['save']);
                 ist minderjährig! Wurde die Teilnahmeerlaubnis der Erziehungsberechtigten bereits abgegeben?</p>
             <div class="relative mt-5 mb-20">
                 <div class="absolute bottom-16 w-full z-20 flex flex-col gap-1" v-if="showHints">
-                    <p v-for="v in validation.filter(v => !v.validate())"
+                    <p v-for="(v, index) in validation.filter(v => !v.validate())" :key="index"
                         class="rounded text-pearl-bush-50 bg-warning-600 p-3 font-semibold">
                         {{ v.message() }}
                     </p>

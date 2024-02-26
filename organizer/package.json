@@ -26,7 +26,6 @@
     "axios": "^1.6.7",
     "isomorphic-dompurify": "^2.4.0",
     "lucide-vue-next": "^0.323.0",
-    "marked": "^12.0.0",
     "pinia": "^2.1.7",
     "qs": "^6.11.2",
     "vue": "^3.4.15",

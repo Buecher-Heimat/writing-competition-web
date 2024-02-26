@@ -2,11 +2,10 @@
 import { useCompetitionStore } from '@/stores/competition';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { Trophy, Trash, Check, ChevronLeft, ArrowLeft } from 'lucide-vue-next';
+import { Trash, Check, ChevronLeft, ArrowLeft } from 'lucide-vue-next';
 import { createAgeGroupString } from '@/lib/ageGroups';
 import Modal from '@/components/Modal.vue';
 import router from '@/router';
-import { marked } from "marked";
 import DOMPurify from "isomorphic-dompurify";
 
 const store = useCompetitionStore();
@@ -42,6 +41,7 @@ function getBackLink() {
 function acceptPost() {
     store.approvePost(post.value?.id as string);
     showApproveModal.value = false;
+    navigateToBackLink();
 }
 
 function deletePost() {
@@ -82,17 +82,11 @@ function getNextPostSlug() {
     if (index === -1) {
         return null;
     }
-    if (isApproving) {
-        if (index === posts.length - 1) {
-            return null;
-        }
-        return posts[index + 1].slug;
-    } else {
-        if (index === 0) {
-            return null;
-        }
-        return posts[index - 1].slug;
+    if (index === posts.length - 1) {
+        return null;
     }
+    return posts[index + 1].slug;
+
 }
 
 function getPreviousPostSlug() {
@@ -102,17 +96,11 @@ function getPreviousPostSlug() {
     if (index === -1) {
         return null;
     }
-    if (isApproving) {
-        if (index === 0) {
-            return null;
-        }
-        return posts[index - 1].slug;
-    } else {
-        if (index === posts.length - 1) {
-            return null;
-        }
-        return posts[index + 1].slug;
+    if (index === 0) {
+        return null;
     }
+    return posts[index - 1].slug;
+
 }
 </script>
 
@@ -123,47 +111,49 @@ function getPreviousPostSlug() {
             Zurück zur Übersicht
         </div>
         <div class="h-full overflow-y-scroll flex-1 relative pb-96">
-            <div class="pt-10 md:pt-20 w-full flex justify-center relative z-10">
+            <div class="pt-10 md:pt-20 w-full flex flex-col items-center justify-center relative z-10">
+                <div class="bg-pearl-bush-50 rounded-lg max-w-3xl w-full p-8 mb-5">
+                    <ul>
+                        <li><span class="font-bold">Autor:</span> {{ post?.author }}</li>
+                        <li><span class="font-bold">Email:</span> {{ post?.email }}</li>
+                        <li><span class="font-bold">Telefon:</span> {{ post?.phone ? post?.phone : "Nicht angegeben" }}</li>
+                        <li><span class="font-bold">Altersgruppe:</span> {{ createAgeGroupString([post?.agegroup?.age_start,
+                        post?.agegroup?.age_end]) }}
+                            Jahre </li>
+                        <li><span class="font-bold">Erstellt am:</span> {{
+                            new Date(post?.createdAt as string).toLocaleDateString(
+                                "de-DE",
+                                {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                },
+                            )
+                        }}</li>
+                        <hr class="my-2">
+                        <li>{{ post?.winner ? '✅' : '❌ Kein' }} Gewinner</li>
+                        <li>{{ post?.approved_by_organizer ? '✅' : '❌ Nicht' }} Freigeschaltet</li>
+                        <li>{{ post?.delete_after_competition ? '❌' : '✅' }} Muss{{ post?.delete_after_competition ? '' :
+                            ' nicht' }} nach Ende des Wettbewerbs gelöscht werden
+                        </li>
+                        <li>{{ post?.keep_if_winner ||
+                            !post?.delete_after_competition ? '✅' : '❌' }}
+                            {{ post?.keep_if_winner ||
+                                !post?.delete_after_competition ?
+                                'Darf veröffentlicht werden, falls der Text gewinnt' :
+                                'Muss selbst im Falle eines Gewinns gelöscht werden' }}
+                        </li>
+                    </ul>
+                </div>
                 <div class="bg-pearl-bush-50 md:bg-transparent p-8 xs:p-4 rounded-2xl max-w-3xl w-full">
-                    <h2 class="text-bandicoot-400 font-bold text-3xl small-caps mb-3">
-                        {{ post?.author }}
-                    </h2>
-                    <h1 class="text-twine-400 font-bold text-5xl small-caps font-serif xs:text-4xl">
+                    <h1 class="text-twine-400 font-bold text-5xl small-caps font-serif xs:text-4xl pb-5">
                         {{ post?.title }}
                     </h1>
-                    <div class="flex py-8 gap-3">
-                        <div
-                            class="bg-bandicoot-400 font-medium text-sm text-pearl-bush-50 rounded-lg px-3 py-1 flex items-center">
-                            {{
-                                new Date(post?.createdAt as string).toLocaleDateString(
-                                    "de-DE",
-                                    {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    },
-                                )
-                            }}
-                        </div>
-                        <div
-                            class="rounded-lg px-3 py-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm">
-                            {{
-                                createAgeGroupString([
-                                    post?.agegroup?.age_start,
-                                    post?.agegroup?.age_end,
-                                ])
-                            }} Jahre
-                        </div>
-                        <div v-if="post?.winner"
-                            class="rounded-lg px-3 py-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm">
-                            <Trophy class="w-4 h-4 text-twine-400" />
-                        </div>
-                    </div>
-                    <div v-html="DOMPurify.sanitize(marked(post?.content || '') as string)" class="prose font-serif" />
+                    <div v-html="DOMPurify.sanitize(post?.content || '')" class="prose font-serif" />
                 </div>
             </div>
         </div>
-        <div class="absolute bottom-10 left-0 right-0 z-10 flex justify-center">
+        <div class="absolute bottom-10 left-0 right-0 z-10 flex justify-center" v-if="action !== 'gewinner-auswaehlen'">
             <Modal :visible="showApproveModal">
                 <h3 class="font-sans small-caps font-bold text-2xl mb-4">Post freischalten</h3>
                 <p v-if="post?.age_author && post?.age_author < 18"
@@ -213,7 +203,7 @@ function getPreviousPostSlug() {
                         <Trash class="w-5 h-5 text-warning-600" />
                         Löschen
                     </button>
-                    <button @click="showApproveModal = true" v-if="isApproving"
+                    <button @click="showApproveModal = true" v-if="isApproving && post?.approved_by_organizer === false"
                         class="flex gap-2 items-center text-pearl-bush-50 bg-bandicoot-400 rounded-lg px-3 py-2 shadow">
                         <Check class="w-5 h-5 " />
                         Freischalten

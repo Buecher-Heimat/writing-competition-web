@@ -8,11 +8,21 @@ const props = defineProps<{
 
 const open = ref(false);
 
+window.addEventListener("popstate", function (event) {
+    if (event.state && open.value) {
+        open.value = false;
+    }
+});
+
 watch(() => open.value, (value) => {
     if (value) {
+        window.history.pushState({ modalOpen: true }, "");
+
+        // Prevent scrolling
         document.body.style.overflow = 'hidden'
         document.getElementById('navbar')?.style.setProperty('display', 'none', 'important')
     } else {
+        // Allow scrolling
         document.body.style.overflow = 'auto'
         document.getElementById('navbar')?.style.removeProperty('display')
     }

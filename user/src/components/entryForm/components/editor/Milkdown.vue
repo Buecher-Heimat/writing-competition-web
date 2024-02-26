@@ -12,8 +12,11 @@ import type { Ctx } from '@milkdown/ctx';
 
 import { Undo2, Redo2, Bold, Italic, Quote, Code, Maximize2, Minimize2, Download } from 'lucide-vue-next';
 import { onMounted, ref, watch, onBeforeUnmount } from 'vue';
+import type { JSONRecord } from '@milkdown/transformer';
 
 const store = useEntryFormStore(pinia)
+
+const editorFocus = ref(false);
 
 const editor = useEditor((root) => {
   return Editor.make()
@@ -23,10 +26,22 @@ const editor = useEditor((root) => {
         attributes: { class: 'outline-none', spellcheck: 'true' },
       }))
       ctx.set(rootCtx, root)
-      ctx.set(defaultValueCtx, store.formData.content)
-      ctx.get(listenerCtx).markdownUpdated((ctx, markdown) => {
-        store.formData.content = markdown;
-        store.formData.content_length = document.getElementById('milkdown')?.innerText.replaceAll("\n", "").length || 0;
+      if (store.formData.content_tree) {
+        ctx.set(defaultValueCtx, {
+          type: 'json',
+          value: store.formData.content_tree as any as JSONRecord,
+        })
+      }
+      ctx.get(listenerCtx).updated((_, doc) => {
+        store.formData.content_tree = doc.toJSON();
+        store.formData.content = document.getElementsByClassName('ProseMirror')[0]?.innerHTML || '';
+        store.formData.content_length = document.getElementById('milkdown')?.innerText.replaceAll('/n', "").length || 0;
+      });
+      ctx.get(listenerCtx).focus((ctx) => {
+        editorFocus.value = true;
+      });
+      ctx.get(listenerCtx).blur((ctx) => {
+        editorFocus.value = false;
       });
     })
     .use(commonmark)
@@ -169,7 +184,7 @@ function focusEditor() {
     <div class="bg-white border-bandicoot-400 w-full flex items-center flex-col overflow-hidden"
       :class="{ 'fixed top-0 left-0 bottom-0 w-screen z-50': fullscreen, 'relative h-full border-2 rounded-xl z-10': !fullscreen }">
       <div class="absolute bottom-2 left-2 bg-bandicoot-400 text-white shadow-lg p-2 rounded-md" title="Zeichenanzahl"
-        :class="{ 'bg-red-400': store.formData.content?.length > store.competition?.text_max_length || store.formData.content?.length < store.competition?.text_min_length }">
+        :class="{ 'bg-red-400': store.formData.content_length > store.competition?.text_max_length || store.formData.content_length < store.competition?.text_min_length }">
         {{ numberWithPoints(store.formData.content_length || 0) }} / {{
           numberWithPoints(store.competition?.text_max_length)
         }}
@@ -206,6 +221,9 @@ function focusEditor() {
             {{ store.formData.title }}
           </h1>
           <hr class="m-0">
+          <p v-if="store.formData.content_length === 0 && editorFocus === false" class="mt-4">Schreibe hier Deinen Text.
+            Vielleicht hast Du ihn auch schon in einem anderen Programm geschrieben und kannst ihn hier einfügen. Alles,
+            was Du hier schreibst, wird jederzeit automatisch lokal gespeichert. Viel Erfolg... 🚀</p>
           <Milkdown id="milkdown" class="h-full" />
           <div :class="{ 'h-40': fullscreen, 'h-20': !fullscreen }"></div>
         </div>

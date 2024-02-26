@@ -2,7 +2,7 @@
 import { Milkdown, useEditor } from '@milkdown/vue';
 import { defaultValueCtx, Editor, rootCtx, editorViewOptionsCtx, commandsCtx, editorViewCtx } from '@milkdown/core';
 import { listener, listenerCtx } from '@milkdown/plugin-listener';
-import { commonmark, toggleEmphasisCommand, toggleStrongCommand, toggleInlineCodeCommand, wrapInBlockquoteCommand, insertHrCommand } from '@milkdown/preset-commonmark'
+import { commonmark, toggleEmphasisCommand, toggleStrongCommand, toggleInlineCodeCommand, wrapInBlockquoteCommand } from '@milkdown/preset-commonmark'
 import { history, redoCommand, undoCommand } from '@milkdown/plugin-history';
 import { clipboard } from '@milkdown/plugin-clipboard';
 import { trailing } from '@milkdown/plugin-trailing';
@@ -29,9 +29,8 @@ const editor = useEditor((root) => {
         attributes: { class: 'outline-none', spellcheck: 'true' },
       }))
       ctx.set(rootCtx, root)
-      ctx.set(defaultValueCtx, content.value)
-      ctx.get(listenerCtx).markdownUpdated((ctx, markdown) => {
-        content.value = markdown;
+      ctx.get(listenerCtx).updated(() => {
+        content.value = document.getElementsByClassName('ProseMirror')[0]?.innerHTML || '';
         contentLength.value = document.getElementById('milkdown')?.innerText.length || 0;
         emit('update:contentLength', contentLength.value);
       });

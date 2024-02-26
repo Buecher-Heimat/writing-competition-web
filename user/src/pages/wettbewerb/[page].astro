@@ -26,9 +26,11 @@ let writingTips: WritingTip | null = null;
 
 try {
   competitionData = await fetchCompetitionData(page);
-  recentCompetitionPosts = await fetchRecentCompetitionPosts(
-    competitionData.id
-  );
+  if(competitionData) {
+    recentCompetitionPosts = await fetchRecentCompetitionPosts(
+      competitionData.id
+    );
+  }
   console.log(recentCompetitionPosts);
   writingTips = await fetchWritingTips();
 } catch (error) {
@@ -36,8 +38,8 @@ try {
 }
 
 if (!competitionData) {
-  return Astro.redirect("/404");
-}
+    return Astro.redirect("/404");
+  }
 
 // CHECK COMPETITION STATUS
 
@@ -147,7 +149,7 @@ if (today < competitionData.date_start) {
             competitionStatus === CompetitionStatus.RUNNING && (
               <a href="/text-einreichen">
                 <button class="w-52 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
-                  Mitmachen
+                  Deinen Text einreichen
                   <FileUp size="1.5rem" />
                 </button>
               </a>
@@ -171,7 +173,7 @@ if (today < competitionData.date_start) {
         competitionData.sponsors?.map((sponsor: any) => (
           <a href={sponsor.link}>
             <img
-              class="h-16 object-cover w-fit object-center md:h-14 xs:h-12"
+              class="h-16 object-cover object-center md:h-14 xs:h-12"
               src={import.meta.env.PUBLIC_BACKEND_URL + sponsor.logo.url}
               alt={sponsor.logo.alt}
             />
@@ -188,7 +190,7 @@ if (today < competitionData.date_start) {
       >
         So geht's
         <span class="text-3xl xs:text-2xl uppercase font-sans font-light italic">
-          Es ist eigentlich ganz einfach
+          Es ist ganz einfach!
         </span>
       </h1>
       <div class="grid grid-cols-2 lg:grid-cols-1 gap-8 z-10 relative">
@@ -295,7 +297,7 @@ if (today < competitionData.date_start) {
               <h1 class="text-pearl-bush-100 font-bold flex flex-col font-serif small-caps text-8xl lg:text-6xl xs:text-5xl 2xs:text-4xl mb-14 leading-[5rem] gap-4">
                 Bevor du loslegst
                 <span class="text-3xl xs:text-2xl uppercase font-sans font-light italic">
-                  Ein Paar Tipps zum Schreiben deines Textes
+                  Ein Paar Tipps zum Schreiben deines Textes!
                 </span>
               </h1>
               <div class="flex flex-col gap-6 text-pearl-bush-100">
@@ -412,13 +414,13 @@ if (today < competitionData.date_start) {
               alt="Some shapes"
             />
           </div>
-          <div class="w-[32rem] flex flex-col items-center gap-12">
-            <h1 class="text-bandicoot-400 font-bold font-serif small-caps text-5xl xs:text-4xl 2xs:text-3xl text-center md:text-4xl">
+          <div class="w-[28rem] flex flex-col items-center gap-10">
+            <h2 class="max-w-lg text-center font-serif font-semibold text-bandicoot-400 text-4xl small-caps">
               Worauf wartest Du noch?!
-            </h1>
+            </h2>
             <a href="/text-einreichen">
               <button class="w-80 2xs:w-60 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly">
-                Mitmachen
+                Deinen Text einreichen
               </button>
             </a>
           </div>
