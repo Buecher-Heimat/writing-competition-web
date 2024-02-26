@@ -46,6 +46,13 @@ const form: FormStep[] = [
         validation: [
             {
                 field: 'age_author',
+                message: () => 'Bitte gib Dein Alter an!',
+                validate: () => {
+                    return store.formData.age_author !== undefined && store.formData.age_author > 0 && store.formData.age_author.toString().length > 0;
+                }
+            },
+            {
+                field: 'age_author',
                 message: () => 'Es gibt keine passende Altersgruppe für Dich! An diesem Wettbewerb kannst Du leider nicht teilnehmen.',
                 validate: () => {
                     return store.competition.agegroups?.some((agegroup) => {
@@ -72,6 +79,13 @@ const form: FormStep[] = [
                 message: () => 'Deine E-Mail-Adresse ist ungültig!',
                 validate: () => {
                     return /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/gm.test(store.formData.email) && store.formData.email?.length <= 250;
+                }
+            },
+            {
+                field: 'location',
+                message: () => 'Bitte gib Deinen Wohnort an!',
+                validate: () => {
+                    return store.formData.location?.length > 1;
                 }
             }
         ],

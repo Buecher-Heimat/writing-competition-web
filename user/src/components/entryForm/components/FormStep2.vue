@@ -12,15 +12,11 @@ const props = defineProps<{
 
 const store = useEntryFormStore(pinia);
 
-let ageGroupMatch: boolean = false;
-
-watch(() => store.formData.age_author, () => {
-    ageGroupMatch = store.competition.agegroups?.some((agegroup) => {
-                        return checkIfAgeIsInRange(store.formData.age_author, [agegroup.age_start, agegroup.age_end]);
-                    });
-    }
-);
-
+function ageGroupMatch() {
+    return store.competition.agegroups?.some((agegroup) => {
+        return checkIfAgeIsInRange(store.formData.age_author, [agegroup.age_start, agegroup.age_end]);
+    });
+}
 </script>
 
 <template>
@@ -32,25 +28,28 @@ watch(() => store.formData.age_author, () => {
             </div>
         </div>
         <div class="w-full flex gap-x-16 gap-y-5 items-center justify-center mt-16 flex-wrap">
-            <div class="max-w-md h-80 w-full p-2 border-[3px] border-bandicoot-400 rounded-xl bg-white">
+            <div class="max-w-md h-96 w-full p-2 border-[3px] border-bandicoot-400 rounded-xl bg-white flex flex-col">
                 <h3 class="text-bandicoot-400 text-lg font-bold">Deine Altersgruppe *</h3>
-                <div class="w-full my-8 flex flex-col justify-center items-center font-sans text-bandicoot-400 font-medium">
-                    Dein Alter
-                    <div id="age_author" class="border-[3px] border-bandicoot-400 py-3 px-7 rounded-lg">
-                        <input
-                            class="w-20 bg-transparent text-center text-lg p-1 outline-none focus:outline-none focus:ring-0 accent-bandicoot-400 focus:border-bandicoot-400 border-x-0 border-t-0 border-b-2 border-bandicoot-400"
-                            type="number" name="age" v-model="store.formData.age_author">
+                <div class="h-full flex-col flex items-center justify-center">
+                    <div
+                        class="w-full mb-8 flex flex-col justify-center items-center font-sans text-bandicoot-400 font-medium">
+                        Dein Alter
+                        <div id="age_author" class="border-[3px] border-bandicoot-400 py-3 px-7 rounded-lg">
+                            <input
+                                class="w-20 bg-transparent text-center text-lg p-1 outline-none focus:outline-none focus:ring-0 accent-bandicoot-400 focus:border-bandicoot-400 border-x-0 border-t-0 border-b-2 border-bandicoot-400"
+                                type="number" name="age" v-model="store.formData.age_author">
+                        </div>
+                    </div>
+                    <div class="w-full flex justify-center">
+                        <ul v-if="ageGroupMatch()" class="flex flex-wrap items-center justify-center gap-2 max-w-xs">
+                            <AgeGroup v-for="(agegroup, index) in store.competition.agegroups"
+                                :ageGroup="{ age_start: agegroup.age_start, age_end: agegroup.age_end }" :key="index" />
+                        </ul>
+                        <p v-else class="text-bandicoot-400">Keine passende Altersgruppe gefunden</p>
                     </div>
                 </div>
-                <div class="w-full flex justify-center">
-                    <ul v-if="ageGroupMatch" class="flex flex-wrap items-center justify-center gap-2 max-w-xs">
-                        <AgeGroup v-for="(agegroup, index) in store.competition.agegroups"
-                            :ageGroup="{ age_start: agegroup.age_start, age_end: agegroup.age_end }" :key="index" />
-                    </ul>
-                    <p v-else class="text-bandicoot-400">Keine passende Altersgruppe gefunden</p>
-                </div>
             </div>
-            <div class="max-w-md h-80 w-full p-2 border-[3px] border-bandicoot-400 rounded-xl bg-white">
+            <div class="max-w-md h-96 w-full p-2 border-[3px] border-bandicoot-400 rounded-xl bg-white">
                 <h3 class="text-bandicoot-400 text-lg font-bold">Deine Kontaktdaten</h3>
                 <div
                     class="w-full gap-2 mt-2 flex flex-col justify-center items-center font-sans text-bandicoot-400 font-medium">
@@ -65,6 +64,13 @@ watch(() => store.formData.age_author, () => {
                         <input
                             class="w-full border-2 rounded-lg border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400"
                             type="email" id="email" name="email" v-model="store.formData.email">
+                    </div>
+                    <div class="w-full flex flex-col gap-2">
+                        <label for="location" class="text-bandicoot-400">Dein Wohnort *</label>
+                        <input
+                            class="w-full border-2 rounded-lg border-bandicoot-400 focus:border-bandicoot-400 focus:ring-twine-400 placeholder:text-bandicoot-200 placeholder:font-regular"
+                            type="text" id="location" name="location" v-model="store.formData.location"
+                            placeholder="Bad Harzburg">
                     </div>
                     <div class="w-full flex flex-col gap-2">
                         <label for="phone" class="text-bandicoot-400">Deine Telefonnummer</label>

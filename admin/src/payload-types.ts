@@ -49,6 +49,7 @@ export interface Post {
   slug: string;
   author: string;
   email: string;
+  location: string;
   _verified?: boolean | null;
   phone?: string | null;
   age_author: number;
@@ -57,6 +58,7 @@ export interface Post {
     age_end?: number | null;
   };
   delete_after_competition: boolean;
+  keep_if_winner: boolean;
   approved_by_organizer?: boolean | null;
   content: string;
   winner?: boolean | null;

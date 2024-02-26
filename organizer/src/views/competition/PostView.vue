@@ -136,6 +136,13 @@ function getPreviousPostSlug() {
                         <li>{{ post?.delete_after_competition ? '❌' : '✅' }} Muss{{ post?.delete_after_competition ? '' :
                             ' nicht' }} nach Ende des Wettbewerbs gelöscht werden
                         </li>
+                        <li>{{ post?.keep_if_winner ||
+                            !post?.delete_after_competition ? '✅' : '❌' }}
+                            {{ post?.keep_if_winner ||
+                                !post?.delete_after_competition ?
+                                'Darf veröffentlicht werden, falls der Text gewinnt' :
+                                'Muss selbst im Falle eines Gewinns gelöscht werden' }}
+                        </li>
                     </ul>
                 </div>
                 <div class="bg-pearl-bush-50 md:bg-transparent p-8 xs:p-4 rounded-2xl max-w-3xl w-full">
