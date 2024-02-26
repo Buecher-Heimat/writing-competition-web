@@ -38,13 +38,16 @@ const Posts: CollectionConfig = {
             label: "Email",
             type: "email",
             required: true,
+            access: {
+                read: isAdmin
+            }
         },
         {
             name: "_verified",
             label: "Verified",
             type: "checkbox",
             access: {
-                read: () => true,
+                read: isAdmin,
                 update: isAdmin,
                 create: isAdmin
             }
@@ -52,12 +55,18 @@ const Posts: CollectionConfig = {
         {
             name: "phone",
             label: "Phonenumber",
-            type: "text"
+            type: "text",
+            access: {
+                read: isAdmin
+            }
         },
         {
             name: "age_author",
             label: "Author Age",
             type: "number",
+            access: {
+                read: isAdmin
+            },
             required: true,
         },
         {
@@ -82,6 +91,9 @@ const Posts: CollectionConfig = {
             label: "Delete after competition",
             admin: {
                 description: "Indicates if the user wants the post to be deleted after the competition is over."
+            },
+            access: {
+                read: isAdmin
             },
             type: "checkbox",
             required: true
