@@ -15,7 +15,7 @@ const store = useCompetitionStore();
                 <div class="w-1/12">Altersgruppe</div>
                 <div class="w-1/12">Datum</div>
             </div>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2 mb-20">
                 <PostTableItem v-for="post in store.approvedPosts" :post="post"
                     :link="`/wettbewerb/${$route.params.competitionId}/texte/${post.slug}/angenommen`" :key="post.id" />
             </div>
