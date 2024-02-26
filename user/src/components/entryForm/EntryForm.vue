@@ -203,12 +203,17 @@ function openMailWebsite() {
         window.open('https://' + mailProvider, '_blank');
     }
 }
+
+function navigateHome() {
+    window.location.href = '/';
+}
 </script>
 
 <template>
     <div>
         <div class="bg-white rounded-lg p-5 mb-5 border-2 border-warning-600 font-medium text-warning-600 hidden sm:block">
-            Wir empfehlen dir, deinen Beitrag auf dem Gerät einzureichen, auf dem du ihn verfasst hast, vorzugsweise auf einem PC mit einem großen Bildschirm und einer Tastatur!
+            Wir empfehlen dir, deinen Beitrag auf dem Gerät einzureichen, auf dem du ihn verfasst hast, vorzugsweise auf
+            einem PC mit einem großen Bildschirm und einer Tastatur!
         </div>
         <div
             class="w-full min-h-[85vh] bg-white rounded-3xl overflow-hidden shadow-lg relative flex flex-col transition-all duration-300 ease-out">
@@ -220,11 +225,18 @@ function openMailWebsite() {
                         class="bg-white rounded-lg shadow-lg border-bandicoot-400 border-2 relative max-w-sm z-10">
                         <div class="p-5 flex flex-col gap-3">
                             <h3 class="font-bold text-bandicoot-400 text-lg">E-Mail bestätigen</h3>
-                            <p class="font-medium text-bandicoot-400">Dein Beitrag zu {{ store.competition?.title }} wurde
-                                gesendet. Jetzt musst du nur noch Deine E-Mail Adresse bestätigen, indem Du auf den Link
+                            <p class="font-medium text-bandicoot-400">Dein Beitrag zu "{{ store.competition?.title }}"
+                                wurde
+                                gesendet. Jetzt musst du nur noch Deine E-Mail-Adresse bestätigen, indem Du auf den Link
                                 klickst,
-                                den wir dir gerade an '{{ store.formData.email }}' geschickt haben. Schaue sicherheitshalber auch im Spamordner deines E-Mail-Programmes nach.</p>
-                            <button @click="openMailWebsite"
+                                den wir dir gerade an "{{ store.formData.email }}" geschickt haben. </p>
+                            <p class="font-medium text-bandicoot-400">Solltest Du selbst im
+                                Spamordner keine E-Mail, wende Dich bitte an <a
+                                    href="mailto://info@die-buecherheimat.de">info@die-buecherheimat.de</a>.</p>
+                            <button @click="() => {
+                                openMailWebsite();
+                                navigateHome();
+                            }"
                                 class="w-full p-3 bg-twine-400 rounded text-white flex justify-center items-center">Öffne
                                 Mails
                                 <ExternalLink class="ml-2 h-4 w-4" />
