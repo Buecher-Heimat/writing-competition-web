@@ -236,6 +236,14 @@ function openMailWebsite() {
 function navigateHome() {
     window.location.href = '/';
 }
+
+watch(() => store.formData.age_author, () => {
+    store.competition.agegroups?.forEach((agegroup) => {
+        if (checkIfAgeIsInRange(store.formData.age_author, [agegroup.age_start, agegroup.age_end])) {
+            store.formData.agegroup = { age_start: agegroup.age_start, age_end: agegroup.age_end };
+        }
+    });
+});
 </script>
 
 <template>
