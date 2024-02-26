@@ -5,13 +5,12 @@ import { Post } from "payload/generated-types"
 
 export const afterChangeHook: CollectionAfterChangeHook = async ({
     doc, // full document data
-    req, // full express request
     previousDoc, // document data before updating the collection
     operation, // name of the operation ie. 'create', 'update'
 }) => {
     console.log("After change hook fired")
     const from = `"Bücher-Heimat Schreibwettbewerb" ${process.env.SMTP_EMAIL || process.env.SMTP_USER}`
-    const post = doc as Post
+    const post = await payload.findByID({ collection: "posts", id: doc.id }) as Post
     const previousPost = previousDoc as Post
 
     try {
