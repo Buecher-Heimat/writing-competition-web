@@ -1,10 +1,11 @@
 import type { FieldHook } from 'payload/types'
 
-const format = (val: string): string =>
-    val
+const format = (val: string): string => {
+    return (val
         .replace(/ /g, '-')
         .replace(/[^\w-]+/g, '')
-        .toLowerCase()
+        .toLowerCase()) + '-' + randomNumber()
+}
 
 const formatSlug =
     (fallback: string): FieldHook =>
@@ -23,5 +24,9 @@ const formatSlug =
 
             return value
         }
+
+const randomNumber = (): number => {
+    return Math.floor(Math.random() * 1000)
+}
 
 export default formatSlug
