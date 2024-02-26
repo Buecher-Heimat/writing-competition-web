@@ -63,14 +63,6 @@ const Competitions: CollectionConfig = {
             required: true
         },
         {
-            name: "date_winner_announcement",
-            label: "Date of announcement of the winners",
-            admin: {
-                description: "As soon as it is known, enter the date of the winner announcement or award ceremony here"
-            },
-            type: "date"
-        },
-        {
             name: "sponsor_string",
             label: "All sponsors sentence",
             admin: {
