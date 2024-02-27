@@ -1,12 +1,6 @@
 import { GlobalConfig } from "payload/types";
 import { isAdmin } from "../accessControl/isAdmin";
 
-import {
-    HTMLConverterFeature,
-    lexicalEditor,
-    lexicalHTML
-} from '@payloadcms/richtext-lexical'
-
 const PrivacyWebsite: GlobalConfig = {
     slug: "privacy_website",
     label: "Privacy statement for the website",
@@ -16,18 +10,14 @@ const PrivacyWebsite: GlobalConfig = {
     },
     fields: [
         {
-            name: "privacy",
-            type: "richText",
-            label: "Privacy statement",
+            name: "privacy_url",
+            label: "Privacy URL",
+            type: "text",
             required: true,
-            editor: lexicalEditor({
-                features: ({ defaultFeatures }) => [
-                    ...defaultFeatures,
-                    HTMLConverterFeature({}),
-                ],
-            }),
+            admin: {
+                description: "The URL of the privacy statement",
+            },
         },
-        lexicalHTML('privacy', { name: 'privacy_html' }),
     ],
 };
 
