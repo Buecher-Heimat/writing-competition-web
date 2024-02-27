@@ -46,7 +46,7 @@ export interface User {
 export interface Post {
     id: string;
     title: string;
-    slug: string;
+    slug?: string | null;
     author: string;
     email: string;
     location: string;
@@ -73,11 +73,10 @@ export interface Post {
 export interface Competition {
     id: string;
     title: string;
-    slug: string;
+    slug?: string | null;
     image_hero: string | Media;
     date_start: string;
     date_end: string;
-    date_winner_announcement?: string | null;
     sponsor_string?: string | null;
     sponsors?:
     | {
@@ -225,22 +224,7 @@ export interface PrivacyCompetition {
  */
 export interface PrivacyWebsite {
     id: string;
-    privacy: {
-        root: {
-            children: {
-                type: string;
-                version: number;
-                [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            type: string;
-            version: number;
-        };
-        [k: string]: unknown;
-    };
-    privacy_html?: string | null;
+    privacy_url: string;
     updatedAt?: string | null;
     createdAt?: string | null;
 }
@@ -256,7 +240,6 @@ export interface WritingTip {
         id?: string | null;
     }[]
     | null;
-    last_updated: string;
     updatedAt?: string | null;
     createdAt?: string | null;
 }
