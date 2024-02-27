@@ -370,7 +370,7 @@ const pastCompetitions = getPastCompetitions(competitions);
           : "Du hast eine Geschichte zu erzählen?"
       }
     </h2>
-    <a href="/text-einreichen">
+    <a href="/text-einreichen" class="relative z-10">
       <button
         class="w-80 2xs:w-60 hover:bg-transparent bg-twine-400 hover:text-twine-400 border-[1px] border-twine-400 text-pearl-bush-50 transition-colors ease-out duration-500 text-lg sm:text-sm font-serif font-semibold flex flex-row gap-2 items-center rounded-lg py-2 px-4 justify-evenly"
       >
@@ -417,7 +417,7 @@ const pastCompetitions = getPastCompetitions(competitions);
   const postContainer = document.getElementById("post-container");
   if (postContainer) {
     const grid = document.querySelector(
-      "#post-container > .grid"
+      "#post-container > .grid",
     ) as HTMLElement;
     if (grid) {
       grid.style.gridTemplateColumns = `repeat(${grid.children.length}, ${window.innerWidth > 540 ? 500 : window.innerWidth - 40}px)`;

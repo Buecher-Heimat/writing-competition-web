@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { fetchPrivacyCompetition, fetchPrivacyWebsite } from "../lib/api";
 
 const privacyWebsite = await fetchPrivacyWebsite();
-const html = privacyWebsite.privacy_html;
+const url = privacyWebsite.privacy_url;
 
 const privacyCompetition = await fetchPrivacyCompetition();
 const htmlCompetition = privacyCompetition.privacy_html;
@@ -13,17 +13,13 @@ const htmlCompetition = privacyCompetition.privacy_html;
   <section class="w-full max-w-2xl mx-auto px-4s sm:px-6 lg:px-8 py-12 mt-10">
     <h1 class="font-serif font-bold text-2xl mb-5">Datenschutzerklärung</h1>
     <h2 class="font-serif font-bold text-xl">Für Besucher der Seite</h2>
-    <div class="mb-5">
-      Zuletzt aktualisiert am{" "}
-      {
-        new Date(privacyWebsite.updatedAt || "").toLocaleDateString("de-DE", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-      }
+    <div class="prose mb-10">
+      <p>
+        Für Besuchende der Website gilt die Datenschutzerklärung der
+        Bücher-Heimat gGmbH, die unter folgendem Link abrufbar ist:
+      </p>
+      <a target="_blank" href={url}>{url}</a>
     </div>
-    <div set:html={html} class="prose mb-10" />
     <h2 class="font-serif font-bold text-xl">
       Für Teilnehmende an Wettbewerben
     </h2>
@@ -36,7 +32,7 @@ const htmlCompetition = privacyCompetition.privacy_html;
             year: "numeric",
             month: "long",
             day: "numeric",
-          }
+          },
         )
       }
     </div>

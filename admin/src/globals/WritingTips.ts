@@ -20,12 +20,6 @@ const WritingTips: GlobalConfig = {
                     required: true,
                 }
             ]
-        },
-        {
-            name: "last_updated",
-            type: "date",
-            label: "Last updated",
-            required: true,
         }
     ],
 };
