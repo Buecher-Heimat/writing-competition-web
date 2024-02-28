@@ -148,11 +148,13 @@ const shareButtons = [
               ])
             } Jahre
           </div>
-          <div
-            class="rounded-lg px-3 py-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm"
-          >
-            <Trophy class="w-4 h-4 text-twine-400" />
-          </div>
+          {
+            post.winner && (
+              <div class="rounded-lg px-3 py-1 border-[1px] border-bandicoot-400 text-bandicoot-400 flex items-center text-sm">
+                <Trophy class="w-4 h-4 text-twine-400" />
+              </div>
+            )
+          }
         </div>
         <div set:html={content} class="prose font-serif" />
         <div class="flex gap-3 mt-5">
