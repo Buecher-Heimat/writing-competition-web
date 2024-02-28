@@ -4,12 +4,13 @@ import qs from "qs";
 import Layout from "../../layouts/Layout.astro";
 import PostCard from "../../components/PostCard.astro";
 import { Trophy } from "lucide-vue-next";
+import { PUBLIC_BACKEND_URL } from "../../lib/api";
 
 const LIMIT_PER_PAGE = 12;
 
 // Get all competitions
 const competitionsResponse = await fetch(
-    import.meta.env.PUBLIC_BACKEND_URL + "/api/competitions",
+    PUBLIC_BACKEND_URL + "/api/competitions",
 );
 const competitionsData = await competitionsResponse.json();
 const competitions = competitionsData.docs;
@@ -61,7 +62,7 @@ const stringifiedQuery = qs.stringify({
 
 // Fetch the posts
 const response = await fetch(
-    import.meta.env.PUBLIC_BACKEND_URL +
+    PUBLIC_BACKEND_URL +
         "/api/posts?" +
         new URLSearchParams({
             page: page && !isNaN(parseFloat(page)) ? page.toString() : "1",

@@ -19,6 +19,7 @@ import {
   fetchCompetitions,
   fetchRecentPosts,
   fetchInstructionSteps,
+  PUBLIC_BACKEND_URL,
 } from "../lib/api";
 import type { Competition, InstructionStep, Media, Post } from "../payload";
 
@@ -119,8 +120,7 @@ const pastCompetitions = getPastCompetitions(competitions);
       <img
         class="h-full z-0 relative w-full object-cover object-center"
         src={promotedCompetition
-          ? import.meta.env.PUBLIC_BACKEND_URL +
-            (promotedCompetition.image_hero as Media)?.url
+          ? PUBLIC_BACKEND_URL + (promotedCompetition.image_hero as Media)?.url
           : "/images/baustelle.png"}
         alt="Ein Blick auf die Baustelle der B4 in Bad Harzburg"
       />
@@ -417,7 +417,7 @@ const pastCompetitions = getPastCompetitions(competitions);
   const postContainer = document.getElementById("post-container");
   if (postContainer) {
     const grid = document.querySelector(
-      "#post-container > .grid",
+      "#post-container > .grid"
     ) as HTMLElement;
     if (grid) {
       grid.style.gridTemplateColumns = `repeat(${grid.children.length}, ${window.innerWidth > 540 ? 500 : window.innerWidth - 40}px)`;

@@ -9,6 +9,7 @@ import {
   fetchWritingTips,
   fetchRecentCompetitionPosts,
   fetchCompetitionData,
+PUBLIC_BACKEND_URL,
 } from "../../lib/api";
 import { createAgeGroupString } from "../../lib/ageGroups";
 import type { WritingTip, Post, Competition, Media } from "../../payload";
@@ -91,7 +92,7 @@ if (today < competitionData.date_start) {
       </div>
       <img
         class="min-w-[36rem] md:min-w-0 w-[36rem] h-[36rem] md:w-[24rem] md:h-[24rem] xs:w-[20rem] xs:h-[20rem] 2xs:w-[12rem] 2xs:h-[12rem] rounded-2xl shadow-2xl object-cover"
-        src={import.meta.env.PUBLIC_BACKEND_URL +
+        src={PUBLIC_BACKEND_URL +
           (competitionData.image_hero as Media).url}
         alt={(competitionData.image_hero as Media).alt}
       />
@@ -174,7 +175,7 @@ if (today < competitionData.date_start) {
           <a href={sponsor.link}>
             <img
               class="h-16 object-cover object-center md:h-14 xs:h-12"
-              src={import.meta.env.PUBLIC_BACKEND_URL + sponsor.logo.url}
+              src={PUBLIC_BACKEND_URL + sponsor.logo.url}
               alt={sponsor.logo.alt}
             />
           </a>
