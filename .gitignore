@@ -20,7 +20,6 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-
 # Logs
 logs
 *.log
@@ -62,3 +61,5 @@ node_modules
 media/
 
 migrations/
+
+data
