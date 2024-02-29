@@ -2,7 +2,10 @@ import qs from "qs";
 import type { Competition, InstructionStep, Post, PrivacyCompetition, PrivacyWebsite, WritingTip } from "../payload";
 import type { PostCreationInput } from "./entryFormStore";
 
-const BASE_URL = import.meta.env.PUBLIC_BACKEND_URL + "/api";
+// I'm not quite sure why sometimes the import.meta.env... is undefined
+export const PUBLIC_BACKEND_URL: string = import.meta.env.PUBLIC_BACKEND_URL || process.env.PUBLIC_BACKEND_URL || "http://localhost:49152";
+
+const BASE_URL = PUBLIC_BACKEND_URL + "/api";
 
 export async function fetchCompetitions(limit: number = 10) {
     const competitionsResponse = await fetch(
@@ -150,7 +153,7 @@ export async function createPost(data: PostCreationInput) {
 
 export async function validateEmail(token: string) {
     const response = await fetch(
-        import.meta.env.PUBLIC_BACKEND_URL + "/verify/" + token,
+        PUBLIC_BACKEND_URL + "/verify/" + token,
     );
 
     if (!response.ok) {

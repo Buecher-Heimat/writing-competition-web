@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  admin:
+    build:
+      context: ./admin
+    ports:
+      - "${FORWARD_ADMIN_PORT:-49152}:3000"
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    env_file:
+      - .env
+
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    command:
+      - --storageEngine=wiredTiger
+    volumes:
+      - "${DB_VOLUME_PATH:-./data}:/data/db"
+    env_file:
+      - .env
+    logging:
+      driver: none
+
+  organizer:
+    build:
+      context: ./organizer
+      args:
+        # Change this!!!!
+        # I would love to use the .env file here, but it's not possible (https://github.com/docker/compose/issues/4618)
+        - VITE_BACKEND_URL=http://localhost:49152
+    ports:
+      - "${FORWARD_ORGA_PORT:-49153}:80"
+    depends_on:
+      - admin
+    restart: unless-stopped
+    env_file:
+      - .env
+
+  user:
+    build:
+      context: ./user
+    ports:
+      - "${FORWARD_USER_PORT:-49154}:4321"
+    depends_on:
+      - admin
+    env_file:
+      - .env
+    restart: unless-stopped

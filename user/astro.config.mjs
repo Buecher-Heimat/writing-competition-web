@@ -28,5 +28,10 @@ export default defineConfig({
   output: "server",
   adapter: node({
     mode: "standalone"
-  })
+  }),
+  vite: {
+    define: {
+      'process.env.PUBLIC_BACKEND_URL': JSON.stringify(process.env.PUBLIC_BACKEND_URL),
+    }
+  }
 });

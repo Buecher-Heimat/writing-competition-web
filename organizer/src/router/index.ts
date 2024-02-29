@@ -17,11 +17,11 @@ const router = createRouter({
       name: 'Login',
       component: LoginViewVue
     },
-    {
-      path: '/wettbewerb/erstellen',
-      name: 'Erstellen',
-      component: () => import('@/views/competition/CreateView.vue')
-    },
+    // {
+    //   path: '/wettbewerb/erstellen',
+    //   name: 'Erstellen',
+    //   component: () => import('@/views/competition/CreateView.vue')
+    // },
     {
       path: '/wettbewerb/:competitionId',
       component: () => import('@/views/CompetitionView.vue'),
