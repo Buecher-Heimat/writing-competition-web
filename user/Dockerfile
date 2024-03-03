@@ -13,6 +13,9 @@ FROM base AS build-deps
 RUN npm install --production=false
 
 FROM build-deps AS build
+
+ARG PUBLIC_BACKEND_URL
+
 COPY . .
 RUN npm run build
 
