@@ -5,6 +5,9 @@ import type { PostCreationInput } from "./entryFormStore";
 // I'm not quite sure why sometimes the import.meta.env... is undefined
 export const PUBLIC_BACKEND_URL: string = import.meta.env.PUBLIC_BACKEND_URL || process.env.PUBLIC_BACKEND_URL || "http://localhost:49152";
 
+console.log(`Using "${PUBLIC_BACKEND_URL}" as backend_url.`);
+
+
 const BASE_URL = PUBLIC_BACKEND_URL + "/api";
 
 export async function fetchCompetitions(limit: number = 10) {

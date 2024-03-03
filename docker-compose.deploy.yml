@@ -30,7 +30,7 @@ services:
       args:
         # Change this!!!!
         # I would love to use the .env file here, but it's not possible (https://github.com/docker/compose/issues/4618)
-        - VITE_BACKEND_URL=http://localhost:49152
+        - VITE_BACKEND_URL=https://admin.schreiben.die-buecherheimat.de
     ports:
       - "${FORWARD_ORGA_PORT:-49153}:80"
     depends_on:
@@ -42,6 +42,10 @@ services:
   user:
     build:
       context: ./user
+      args:
+        # Change this!!!!
+        # I would love to use the .env file here, but it's not possible (https://github.com/docker/compose/issues/4618)
+        - PUBLIC_BACKEND_URL=https://admin.schreiben.die-buecherheimat.de
     ports:
       - "${FORWARD_USER_PORT:-49154}:4321"
     depends_on:
