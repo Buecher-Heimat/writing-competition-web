@@ -9,6 +9,8 @@ services:
     depends_on:
       - mongo
     restart: unless-stopped
+    volumes:
+      - "${ADMIN_MEDIA_PATH:-./media}:/home/node/dist/media"
     env_file:
       - .env
 
